@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Race</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&amp;family=Nunito+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E3B78}a:hover{color:#1E2A36}
+@keyframes grr-ping{0%{transform:scale(0.6);opacity:0.7}100%{transform:scale(1.8);opacity:0}}
+.grr-ping{animation:grr-ping 1.8s ease-out infinite}
+@media (prefers-reduced-motion: reduce){.grr-ping{animation:none;opacity:0}}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF2E2; font-family: 'Nunito Sans', sans-serif; color: #1E2A36; display: flex; flex-direction: column;">
+  <header style="position: relative; padding: 18px 16px 10px; text-align: center;">
+    <a href="Main.dc.html" aria-label="Terug" style="position: absolute; left: 10px; top: 22px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #1E2A36;">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></a>
+    <button aria-label="Journaal openen" style="position: absolute; right: 14px; top: 24px; width: 40px; height: 40px; border-radius: 12px; border: 1px solid #E2D6BE; background: #FFFFFF; color: #1E2A36; display: flex; align-items: center; justify-content: center; padding: 0;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M8 8h8M8 12h8M8 16h5"></path></svg></button>
+    <h1 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 32px; line-height: 1.1;">Race #284</h1>
+    <div style="font-size: 15px; color: #3E4752;">The Extremely Long Race</div>
+    <div style="display: inline-block; margin-top: 6px; background: #D5E8F7; color: #0E3B78; border-radius: 999px; padding: 3px 12px; font-size: 13px; font-weight: 700;">Nog 4 dagen</div>
+  </header>
+
+  <main style="flex: 1; padding: 0 12px; position: relative;">
+    <div style="position: relative; width: 366px; height: 562px;">
+      <img src="../../../public/images/courses/grote-bosrace-kaart.webp" alt="Geïllustreerde kaart van De Grote Bosrace met Gerard op plek 3" style="width: 366px; height: 562px; display: block;">
+      <sc-for list="{{signs}}" as="s" hint-placeholder-count="6">
+        <div style="{{s.style}}">{{s.label}}</div>
+      </sc-for>
+      <div style="position: absolute; left: 140px; top: 46px; background: #1E2A36; color: #FFFFFF; border-radius: 999px; padding: 3px 10px; font-size: 11px; font-weight: 800; white-space: nowrap;">7. Kasteeltuin · Finish</div>
+      <div class="grr-ping" style="position: absolute; left: 153px; top: 128px; width: 56px; height: 56px; border-radius: 999px; border: 4px solid #FFFFFF;"></div>
+      <img src="../../../public/images/racers/gerard.webp" alt="" style="position: absolute; left: 155px; top: 135px; width: 54px; height: 39px; object-fit: contain;">
+      <div style="position: absolute; left: 196px; top: 116px; background: #FFFFFF; color: #1E2A36; border-radius: 10px; padding: 3px 8px; font-size: 12px; font-weight: 800; box-shadow: 0 2px 6px rgba(0,0,0,0.2); white-space: nowrap;">Gerard · #3</div>
+    </div>
+    <div style="position: absolute; left: 24px; right: 24px; bottom: 18px; background: #FFFBF3; border: 1px solid #EFE4CF; border-radius: 18px; padding: 14px 16px 12px; box-shadow: 0 6px 18px rgba(30,42,54,0.16); display: flex; flex-direction: column; gap: 8px; align-items: center;">
+      <div style="width: 100%; height: 14px; border-radius: 999px; background: #E3E6E3; overflow: hidden;">
+        <div style="width: 90%; height: 100%; border-radius: 999px; background: linear-gradient(180deg, #5DBB63, #33923B);"></div>
+      </div>
+      <div style="font-size: 14px; font-weight: 800;">38,7 km / 42,7 km</div>
+    </div>
+  </main>
+  <div style="height: 20px;"></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+var sign = function (cx, cy, label) {
+return { label: label, style: 'position: absolute; left: ' + (cx - 42) + 'px; top: ' + (cy - 15) + 'px; width: 84px; height: 30px; display: flex; align-items: center; justify-content: center; text-align: center; font-family: \'Barlow Condensed\', sans-serif; font-size: 13px; font-weight: 800; line-height: 1.05; color: #5A3A1A;' };
+};
+return {
+signs: [
+sign(266, 488, '1. Startweide'),
+sign(146, 379, '2. Bos'),
+sign(292, 319, '3. Modderveld'),
+sign(112, 195, '4. Beekje'),
+sign(281, 140, '5. Vreemde Open Plek'),
+sign(85, 93, '6. Heuvel')
+]
+};
+}
+}
+</script>
+</body>
+</html>

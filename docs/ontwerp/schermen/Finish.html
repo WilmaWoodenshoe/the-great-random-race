@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Finish</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&amp;family=Nunito+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E3B78}a:hover{color:#1E2A36}
+@keyframes grr-fall{0%{transform:translateY(-60px) rotate(0deg)}100%{transform:translateY(900px) rotate(540deg)}}
+@keyframes grr-sway{0%,100%{margin-left:0}50%{margin-left:18px}}
+.grr-confetti{animation-name:grr-fall,grr-sway;animation-timing-function:linear,ease-in-out;animation-iteration-count:infinite,infinite}
+@keyframes grr-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+.grr-gerard{transform-origin:50% 100%;animation:grr-breathe 3.2s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){.grr-confetti{animation:none;display:none}.grr-gerard{animation:none}}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF2E2; font-family: 'Nunito Sans', sans-serif; color: #1E2A36; display: flex; flex-direction: column; position: relative; overflow: hidden;">
+
+  <header style="position: relative; padding: 46px 16px 10px; display: flex; flex-direction: column; align-items: center; gap: 4px;">
+    <div style="background: linear-gradient(180deg, #F0573E, #D63A24); border-radius: 10px; transform: rotate(-3deg); padding: 6px 18px; color: #FFFFFF; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 22px; letter-spacing: 0.06em; box-shadow: 0 4px 0 #A72A18;">FINISH!</div>
+    <h1 style="margin: 12px 0 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 38px; line-height: 1.02; text-align: center;">GERARD HEEFT<br>GEWONNEN!</h1>
+    <div style="font-size: 15px; color: #3E4752;">Race #284 · The Extremely Long Race</div>
+  </header>
+
+  <main style="position: relative; flex: 1; padding: 6px 16px 0; display: flex; flex-direction: column; gap: 12px;">
+    <div style="border-radius: 22px; overflow: hidden; box-shadow: 0 4px 14px rgba(30,42,54,0.12);">
+      <div style="position: relative; width: 358px; height: 196px; overflow: hidden;">
+    <img src="../../../public/images/backgrounds/bg-landschap.webp" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
+    <img class="grr-gerard" src="../../../public/images/racers/gerard-kroon.webp" alt="Gerard met kroontje, de winnaar" style="position: absolute; left: 50%; bottom: 8px; width: 270px; height: 172px; margin-left: -135px; object-fit: contain; object-position: bottom;">
+  </div>
+    </div>
+
+    <section aria-label="Podium" style="background: #FFFFFF; border: 1px solid #EFE4CF; border-radius: 18px; padding: 4px 12px; display: flex; flex-direction: column;">
+      <div style="display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid #EFE6D4;"><img src="../../../public/images/ui/medal1.png" alt="1e" style="width: 30px; height: 30px;"><img src="../../../public/images/racers/gerard.webp" alt="" style="width: 42px; height: 38px; object-fit: contain;"><div style="flex: 1; font-weight: 800;">Gerard</div><div style="font-size: 14px; font-weight: 700;">6 d 22 u</div></div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid #EFE6D4;"><img src="../../../public/images/ui/medal2.png" alt="2e" style="width: 30px; height: 30px;"><img src="../../../public/images/racers/eend.webp" alt="" style="width: 42px; height: 38px; object-fit: contain;"><div style="flex: 1; font-weight: 800;">Ducky</div><div style="font-size: 14px; font-weight: 700;">6 d 23 u</div></div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 6px 0;"><img src="../../../public/images/ui/medal3.png" alt="3e" style="width: 30px; height: 30px;"><img src="../../../public/images/racers/schildpad.webp" alt="" style="width: 42px; height: 38px; object-fit: contain;"><div style="flex: 1; font-weight: 800;">Turbo</div><div style="font-size: 14px; font-weight: 700;">42,6 km</div></div>
+    </section>
+
+    <section style="background: #D5E8F7; border-radius: 18px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 1.35;">
+      <div style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 18px; color: #0E3B78;">STATISTIEKEN DIE NIEMAND VROEG</div>
+      <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Tijd naar één bloem gekeken</span><b>4 u 12 min</b></div>
+      <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Verloren aan ‘kortere wegen’ (Ducky)</span><b>31 meter</b></div>
+      <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Steve aangezien voor decor</span><b>14 keer</b></div>
+    </section>
+  </main>
+
+  <div style="position: relative; padding: 12px 16px 28px;">
+    <a href="Welcome.dc.html" style="display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; background: linear-gradient(180deg, #4FB255, #2E7D32); color: #FFFFFF; border-radius: 999px; height: 60px; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 24px; letter-spacing: 0.04em; box-shadow: 0 4px 0 #1F5E24, 0 10px 18px rgba(46,125,50,0.25);">NIEUWE RACE
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+  </div>
+
+  <div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none; overflow: hidden;">
+    <sc-for list="{{confetti}}" as="c" hint-placeholder-count="0">
+      <div class="grr-confetti" style="{{c.style}}"></div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844},"confetti":{"editor":"boolean","default":true}}'>
+class Component extends DCLogic {
+renderVals() {
+var on = this.props.confetti !== false;
+var colors = ['#F0573E', '#F2B71F', '#3FA34D', '#2E8AD8', '#7B4FC4', '#F7893A'];
+var pieces = [];
+if (on) {
+for (var i = 0; i < 46; i++) {
+var x = (i * 37 + 11) % 380;
+var w = 6 + (i * 7) % 6;
+var h = 10 + (i * 5) % 8;
+var dur = 3.2 + ((i * 13) % 25) / 10;
+var delay = -((i * 17) % 50) / 10;
+var round = i % 5 === 0 ? '999px' : '2px';
+pieces.push({ style: 'position: absolute; top: 0; left: ' + x + 'px; width: ' + w + 'px; height: ' + (i % 5 === 0 ? w : h) + 'px; border-radius: ' + round + '; background: ' + colors[i % colors.length] + '; animation-duration: ' + dur + 's, ' + (dur / 2) + 's; animation-delay: ' + delay + 's, ' + delay + 's;' });
+}
+}
+return { confetti: pieces };
+}
+}
+</script>
+</body>
+</html>

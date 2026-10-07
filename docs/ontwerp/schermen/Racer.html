@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Gerard – profiel</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&amp;family=Nunito+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E3B78}a:hover{color:#1E2A36}
+@keyframes grr-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+.grr-gerard{transform-origin:50% 100%;animation:grr-breathe 3.2s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){.grr-gerard{animation:none}}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF2E2; font-family: 'Nunito Sans', sans-serif; color: #1E2A36; display: flex; flex-direction: column;">
+  <header style="position: relative; padding: 16px 16px 8px; text-align: center;">
+    <a href="Main.dc.html" aria-label="Terug" style="position: absolute; left: 10px; top: 20px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #1E2A36;">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></a>
+    <button aria-label="Naam en bijnaam wijzigen" style="position: absolute; right: 10px; top: 20px; width: 44px; height: 44px; border: 0; background: transparent; color: #1E2A36; display: flex; align-items: center; justify-content: center; padding: 0;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 20l1-5L16 4l4 4L9 19z"></path></svg></button>
+    <h1 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 34px; line-height: 1.1;">Gerard</h1>
+    <div style="font-size: 15px; color: #3E4752;">The Determined</div>
+  </header>
+
+  <div style="position: relative; width: 390px; height: 236px; overflow: hidden;">
+    <img src="../../../public/images/backgrounds/bg-landschap.webp" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
+    <img class="grr-gerard" src="../../../public/images/racers/gerard.webp" alt="Gerard in het landschap" style="position: absolute; left: 50%; bottom: 8px; width: 270px; height: 212px; margin-left: -135px; object-fit: contain; object-position: bottom;">
+  </div>
+
+  <main style="flex: 1; padding: 12px 18px 0; display: flex; flex-direction: column; gap: 12px;">
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); text-align: center;">
+      <div style="border-right: 1px solid #E2D6BE;"><div style="font-size: 13px; color: #3E4752;">Races</div><div style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 24px;">3</div></div>
+      <div style="border-right: 1px solid #E2D6BE;"><div style="font-size: 13px; color: #3E4752;">Overwinningen</div><div style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 24px;">0</div></div>
+      <div><div style="font-size: 13px; color: #3E4752;">Beste positie</div><div style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 24px;">#2</div></div>
+    </div>
+
+    <section style="display: flex; flex-direction: column; gap: 9px;">
+      <h2 style="margin: 0; font-size: 16px; font-weight: 800;">Eigenschappen</h2>
+      <sc-for list="{{traits}}" as="tr" hint-placeholder-count="4">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 128px; font-size: 14px;">{{tr.label}}</div>
+          <div style="flex: 1; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 3px;">
+            <sc-for list="{{tr.segs}}" as="s" hint-placeholder-count="8">
+              <div style="{{s.style}}"></div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </section>
+
+    <section style="border-top: 1px solid #E2D6BE; padding-top: 12px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 11px; font-size: 14px;">
+      <div style="display: flex; align-items: center; gap: 8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12h8M12 8v8"></path></svg>Favoriete eten</div>
+      <div style="display: flex; align-items: center; gap: 8px;"><img src="../../../public/images/ui/t-sla.png" alt="" style="width: 22px; height: 22px;">Sla</div>
+      <div style="display: flex; align-items: center; gap: 8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M6 6l12 12"></path></svg>Kan niet tegen</div>
+      <div style="display: flex; align-items: center; gap: 8px;"><img src="../../../public/images/ui/t-steen.png" alt="" style="width: 22px; height: 22px;">Kiezelstenen</div>
+      <div style="display: flex; align-items: center; gap: 8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 3l2.6 5.6 6 .7-4.5 4 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.5-4 6-.7z"></path></svg>Favoriete activiteit</div>
+      <div style="display: flex; align-items: center; gap: 8px;"><img src="../../../public/images/ui/t-zzz.png" alt="" style="width: 22px; height: 22px;">Stilstaan</div>
+      <div style="display: flex; align-items: center; gap: 8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>Geheime talent</div>
+      <div style="display: flex; align-items: center; gap: 8px;"><img src="../../../public/images/ui/t-ster.png" alt="" style="width: 22px; height: 22px;">Verdwijnt soms</div>
+    </section>
+  </main>
+
+  <nav aria-label="Hoofdmenu" style="margin-top: 10px; background: #FBF2E2; border-top: 1px solid #EADFC8; padding: 10px 6px 22px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));">
+    <a href="Main.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #6B7280; font-size: 12px; font-weight: 700;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11 12 4l9 7"></path><path d="M5 10v10h14V10"></path></svg>Home</a>
+    <a href="Race.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #6B7280; font-size: 12px; font-weight: 700;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4"></path><path d="M5 4h12l-2 4 2 4H5"></path></svg>Race</a>
+    <a href="Racer.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #0E3B78; font-size: 12px; font-weight: 800;"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="15" r="4.5"></circle><circle cx="5.5" cy="10" r="2.2"></circle><circle cx="9.5" cy="5.5" r="2.2"></circle><circle cx="14.5" cy="5.5" r="2.2"></circle><circle cx="18.5" cy="10" r="2.2"></circle></svg>Gerard</a>
+    <a href="Accessoires.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #6B7280; font-size: 12px; font-weight: 700;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"></rect><path d="M9 3v4M15 3v4"></path><circle cx="12" cy="13" r="3"></circle></svg>Collectie</a>
+    <a href="Leaderboard.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #6B7280; font-size: 12px; font-weight: 700;"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg>Meer</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+var mk = function (label, filled, color) {
+var segs = [];
+for (var i = 0; i < 8; i++) {
+segs.push({ style: 'height: 14px; border-radius: 3px; background: ' + (i < filled ? color : '#E8E1D2') + ';' });
+}
+return { label: label, segs: segs };
+};
+return {
+traits: [
+mk('Snelheid', 3, '#3FA34D'),
+mk('Energie', 5, '#F2B71F'),
+mk('Nieuwsgierigheid', 7, '#2E8AD8'),
+mk('Focus', 2, '#F06A2A')
+]
+};
+}
+}
+</script>
+</body>
+</html>

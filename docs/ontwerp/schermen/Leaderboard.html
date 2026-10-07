@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Leaderboard</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&amp;family=Nunito+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E3B78}a:hover{color:#1E2A36}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF2E2; font-family: 'Nunito Sans', sans-serif; color: #1E2A36; display: flex; flex-direction: column;">
+  <header style="padding: 20px 16px 12px; display: flex; flex-direction: column; gap: 14px;">
+    <h1 style="margin: 0; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 32px;">
+      <svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v5a5 5 0 0 1-10 0z" fill="#F2B71F" stroke="#B07B0A" stroke-width="1.4"></path><path d="M7 5H4a3 3 0 0 0 3 4M17 5h3a3 3 0 0 1-3 4" fill="none" stroke="#B07B0A" stroke-width="1.6"></path><path d="M10 13h4v4h-4z" fill="#F2B71F"></path><rect x="7" y="17" width="10" height="4" rx="1" fill="#B07B0A"></rect></svg>Leaderboard</h1>
+    <div style="text-align: center;"><span style="display: inline-block; background: #D5E8F7; color: #0E3B78; border-radius: 999px; padding: 4px 14px; font-size: 13px; font-weight: 700;">Race #284 · 5 racers · nog 4 dagen</span></div>
+  
+  </header>
+
+  <main style="flex: 1; padding: 6px 12px 0; display: flex; flex-direction: column;">
+    <div style="display: flex; align-items: center; gap: 12px; padding: 10px 10px; border-bottom: 1px solid #EADFC8;">
+      <img src="../../../public/images/ui/medal1.png" alt="1e plaats" style="width: 36px; height: 36px;">
+      <img src="../../../public/images/racers/eend.webp" alt="" style="width: 60px; height: 54px; object-fit: contain;">
+      <div style="flex: 1; font-weight: 800; font-size: 17px;">Ducky</div>
+      <div style="font-weight: 700; font-size: 15px;">40,1 km</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px; padding: 10px 10px; border-bottom: 1px solid #EADFC8;">
+      <img src="../../../public/images/ui/medal2.png" alt="2e plaats" style="width: 36px; height: 36px;">
+      <img src="../../../public/images/racers/schildpad.webp" alt="" style="width: 60px; height: 54px; object-fit: contain;">
+      <div style="flex: 1; font-weight: 800; font-size: 17px;">Turbo</div>
+      <div style="font-weight: 700; font-size: 15px;">39,4 km</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px; padding: 10px 10px; background: #D5E8F7; border-radius: 12px;">
+      <img src="../../../public/images/ui/medal3.png" alt="3e plaats" style="width: 36px; height: 36px;">
+      <img src="../../../public/images/racers/gerard.webp" alt="" style="width: 60px; height: 54px; object-fit: contain;">
+      <div style="flex: 1; font-weight: 800; font-size: 17px;">Gerard</div>
+      <div style="font-weight: 800; font-size: 15px;">38,7 km</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px; padding: 10px 10px; border-bottom: 1px solid #EADFC8;">
+      <div style="width: 36px; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: #3E4752;">4</div>
+      <img src="../../../public/images/racers/rups.webp" alt="" style="width: 60px; height: 54px; object-fit: contain;">
+      <div style="flex: 1; font-weight: 800; font-size: 17px;">Kevin</div>
+      <div style="font-weight: 700; font-size: 15px;">21,3 km</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px; padding: 10px 10px; border-bottom: 1px solid #EADFC8;">
+      <div style="width: 36px; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: #3E4752;">5</div>
+      <img src="../../../public/images/racers/steen.webp" alt="" style="width: 60px; height: 54px; object-fit: contain;">
+      <div style="flex: 1; font-weight: 800; font-size: 17px;">Steve</div>
+      <div style="font-weight: 700; font-size: 15px;">0,4 km</div>
+    </div>
+    <div style="margin-top: 16px; background: #FFFFFF; border: 1px solid #EFE4CF; border-radius: 16px; padding: 12px 14px; font-size: 14px; line-height: 1.45; color: #3E4752;">
+      <b style="color: #1E2A36;">Gerard staat 0,7 km achter Turbo.</b> Turbo weet het nog niet. Steve heeft zich sinds dinsdag niet verplaatst.
+    </div>
+  </main>
+
+  <nav aria-label="Hoofdmenu" style="margin-top: 10px; background: #FBF2E2; border-top: 1px solid #EADFC8; padding: 10px 6px 22px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));">
+    <a href="Main.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #6B7280; font-size: 12px; font-weight: 700;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11 12 4l9 7"></path><path d="M5 10v10h14V10"></path></svg>Home</a>
+    <a href="Race.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #0E3B78; font-size: 12px; font-weight: 800;"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4" fill="none"></path><path d="M5 4h12l-2 4 2 4H5"></path></svg>Race</a>
+    <a href="Racer.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #6B7280; font-size: 12px; font-weight: 700;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="15" r="4"></circle><circle cx="5.5" cy="10" r="2"></circle><circle cx="9.5" cy="5.5" r="2"></circle><circle cx="14.5" cy="5.5" r="2"></circle><circle cx="18.5" cy="10" r="2"></circle></svg>Gerard</a>
+    <a href="Accessoires.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #6B7280; font-size: 12px; font-weight: 700;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"></rect><path d="M9 3v4M15 3v4"></path><circle cx="12" cy="13" r="3"></circle></svg>Collectie</a>
+    <a href="Leaderboard.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #6B7280; font-size: 12px; font-weight: 700;"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg>Meer</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

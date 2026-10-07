@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Actie van vandaag</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&amp;family=Nunito+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E3B78}a:hover{color:#1E2A36}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF2E2; font-family: 'Nunito Sans', sans-serif; color: #1E2A36; display: flex; flex-direction: column;">
+  <header style="position: relative; padding: 20px 16px 6px; text-align: center;">
+    <a href="Main.dc.html" aria-label="Terug" style="position: absolute; left: 10px; top: 18px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #1E2A36;">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></a>
+    <h1 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 32px; line-height: 1.2;">Actie van vandaag</h1>
+    <p style="margin: 4px 0 0; font-size: 15px; color: #3E4752;">Je mag één ding doen voor Gerard. Kies verstandig. Of niet.</p>
+  </header>
+
+  <main style="flex: 1; padding: 14px 16px 0; display: flex; flex-direction: column; gap: 10px;">
+    <sc-for list="{{options}}" as="o" hint-placeholder-count="4">
+      <button onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="{{o.style}}">
+        <span style="{{o.iconWrap}}">
+          <sc-if value="{{o.isFood}}" hint-placeholder-val="{{false}}"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14c0-6 6-10 16-10 0 10-4 16-10 16-3 0-6-2-6-6z" fill="#5DBB63" stroke="#1F5E24" stroke-width="1.4"></path><path d="M6 18c4-4 8-8 12-12" stroke="#1F5E24" stroke-width="1.4" fill="none"></path></svg></sc-if>
+          <sc-if value="{{o.isCheer}}" hint-placeholder-val="{{false}}"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10v4h3l6 5V5L6 10z" fill="#F2B71F" stroke="#9A6A06" stroke-width="1.4" stroke-linejoin="round"></path><path d="M16 9c1.5 1.5 1.5 4.5 0 6M19 6c3 3 3 9 0 12" fill="none" stroke="#9A6A06" stroke-width="1.8" stroke-linecap="round"></path></svg></sc-if>
+          <sc-if value="{{o.isHat}}" hint-placeholder-val="{{false}}"><img src="../../../public/images/accessories/hoed.png" alt="" style="width: 46px; height: 40px; object-fit: contain;"></sc-if>
+          <sc-if value="{{o.isRest}}" hint-placeholder-val="{{false}}"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h6l-6 7h6M13 4h5l-5 6h5M15 14h4l-4 5h4" fill="none" stroke="#2E8AD8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+        </span>
+        <span style="flex: 1; display: flex; flex-direction: column; gap: 2px; text-align: left;">
+          <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 22px; color: #1E2A36;">{{o.title}}</span>
+          <span style="font-family: 'Nunito Sans', sans-serif; font-size: 14px; color: #3E4752;">{{o.effect}}</span>
+        </span>
+      </button>
+    </sc-for>
+
+    <sc-if value="{{done}}" hint-placeholder-val="{{false}}">
+      <div style="background: #DCEFD9; border-radius: 16px; padding: 12px 14px; font-size: 15px; line-height: 1.45;"><b>Gedaan.</b> {{doneText}}</div>
+    </sc-if>
+  </main>
+
+  <div style="padding: 10px 16px 30px; display: flex; flex-direction: column; gap: 8px;">
+    <sc-if value="{{notDone}}" hint-placeholder-val="{{true}}">
+      <button onClick="{{confirm}}" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; border: 0; cursor: pointer; background: linear-gradient(180deg, #4FB255, #2E7D32); color: #FFFFFF; border-radius: 999px; height: 60px; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 24px; letter-spacing: 0.04em; box-shadow: 0 4px 0 #1F5E24, 0 10px 18px rgba(46,125,50,0.25);">DOE HET</button>
+    </sc-if>
+    <sc-if value="{{done}}" hint-placeholder-val="{{false}}">
+      <div style="display: flex; align-items: center; justify-content: center; height: 60px; border-radius: 999px; background: #E8E1D2; color: #3E4752; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 22px; letter-spacing: 0.04em;">MORGEN WEER EEN ACTIE</div>
+    </sc-if>
+    <div style="text-align: center; font-size: 13px; color: #3E4752;">Eén actie per dag. Het effect is klein. Gerard waardeert het toch.</div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+var self = this;
+var st = this.state || {};
+var picked = st.picked || 'voeren';
+var done = !!st.done;
+var list = [
+{ id: 'voeren', title: 'Gerard voeren', effect: 'Een blaadje sla. 12 uur iets sneller.', bg: '#DCEFD9', after: 'Gerard heeft zijn sla. Hij kijkt er al een tijdje naar.' },
+{ id: 'aanmoedigen', title: 'Gerard aanmoedigen', effect: 'Een hele dag een klein beetje sneller.', bg: '#FCEFC7', after: 'Gerard is aangemoedigd. Hij lijkt het gehoord te hebben.' },
+{ id: 'hoed', title: 'Gerard een hoed geven', effect: 'Geen effect op snelheid. Wel op stijl.', bg: '#F3EAD8', after: 'Gerard draagt nu een hoed. De andere racers hebben het gezien.' },
+{ id: 'niets', title: 'Niets doen', effect: 'Gerard waardeert de rust.', bg: '#D5E8F7', after: 'Je hebt niets gedaan. Gerard vond dat prima.' }
+];
+var doneText = '';
+var options = list.map(function (o) {
+var on = o.id === picked;
+if (on) { doneText = o.after; }
+return {
+title: o.title, effect: o.effect, pressed: on ? 'true' : 'false',
+isFood: o.id === 'voeren', isCheer: o.id === 'aanmoedigen', isHat: o.id === 'hoed', isRest: o.id === 'niets',
+pick: function () { if (!self.state || !self.state.done) { self.setState({ picked: o.id }); } },
+iconWrap: 'width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: ' + o.bg + ';',
+style: 'display: flex; align-items: center; gap: 14px; width: 100%; padding: 12px 14px; border-radius: 18px; cursor: pointer; font-family: inherit; box-shadow: 0 2px 10px rgba(30,42,54,0.06); ' +
+(on ? 'background: #EAF3FC; border: 3px solid #2B79D0;' : 'background: #FFFFFF; border: 3px solid #EFE4CF;') + (done && !on ? ' opacity: 0.5;' : '')
+};
+});
+return {
+options: options, done: done, notDone: !done, doneText: doneText,
+confirm: function () { self.setState({ done: true }); }
+};
+}
+}
+</script>
+</body>
+</html>
