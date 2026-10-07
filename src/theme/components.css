@@ -33,9 +33,8 @@
   width: 270px;
   max-width: 75%;
   height: auto;
-  aspect-ratio: 260 / 104;
   object-fit: contain;
-  border-radius: 14px;
+  filter: drop-shadow(0 4px 6px rgba(30, 42, 54, 0.18));
 }
 
 .logo--groot {
