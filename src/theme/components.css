@@ -1,0 +1,504 @@
+/* Herbruikbare onderdelen: scherm, kaarten, knoppen, menubalk. */
+
+/* ---------- Scherm ---------- */
+
+.screen {
+  position: relative;
+  width: 100%;
+  max-width: var(--app-breedte);
+  min-height: 100dvh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  background: var(--creme);
+  overflow-x: clip;
+}
+
+.screen__main {
+  position: relative;
+  flex: 1;
+  padding: 0 var(--rand-scherm);
+}
+
+.screen__footer {
+  position: relative;
+  padding: 12px var(--rand-scherm) max(30px, calc(env(safe-area-inset-bottom) + 12px));
+}
+
+.center {
+  text-align: center;
+}
+
+.logo {
+  width: 270px;
+  max-width: 75%;
+  height: auto;
+  aspect-ratio: 260 / 104;
+  object-fit: contain;
+  border-radius: 14px;
+}
+
+.logo--groot {
+  width: 290px;
+}
+
+.sample-notice {
+  margin: 4px 0 12px;
+  font-size: 12px;
+  text-align: center;
+  color: var(--inkt-zacht);
+}
+
+/* ---------- Koppen ---------- */
+
+.kop {
+  font-family: var(--font-kop);
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.kop--26 { font-size: 26px; }
+.kop--30 { font-size: 30px; line-height: 1; }
+.kop--32 { font-size: 32px; }
+.kop--36 { font-size: 36px; }
+.kop--38 { font-size: 38px; line-height: 1.02; }
+
+.kop--met-icoon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* ---------- Kaarten ---------- */
+
+.card {
+  background: var(--kaart);
+  border: 1px solid var(--rand);
+  border-radius: var(--ronding-kaart);
+  box-shadow: var(--schaduw-kaart);
+}
+
+.card--wit {
+  background: var(--wit);
+  border-radius: 18px;
+  box-shadow: var(--schaduw-klein);
+}
+
+.pill {
+  display: inline-block;
+  background: var(--lichtblauw);
+  color: var(--navy);
+  border-radius: 999px;
+  padding: 3px 12px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.tip {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: var(--lichtblauw);
+  border-radius: var(--ronding-klein);
+  padding: 12px 14px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.tip svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--navy);
+}
+
+/* ---------- Voortgangsbalk ---------- */
+
+.progress {
+  width: 100%;
+  border-radius: 999px;
+  background: var(--balk-leeg);
+  overflow: hidden;
+}
+
+.progress__fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #5dbb63, #33923b);
+  transition: width 0.6s ease-out;
+}
+
+/* ---------- Knoppen ---------- */
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  border: 0;
+  cursor: pointer;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.btn:active {
+  transform: translateY(3px);
+}
+
+.btn--groot {
+  height: 60px;
+  border-radius: 999px;
+  font-size: 24px;
+}
+
+.btn--keuze {
+  height: 52px;
+  border-radius: 14px;
+  font-size: 21px;
+}
+
+.btn--groen {
+  background: linear-gradient(180deg, #4fb255, #2e7d32);
+  box-shadow: 0 4px 0 #1f5e24;
+}
+.btn--groen.btn--groot {
+  box-shadow: 0 4px 0 #1f5e24, 0 10px 18px rgba(46, 125, 50, 0.25);
+}
+.btn--blauw {
+  background: linear-gradient(180deg, #3d8ee0, #1e63b5);
+  box-shadow: 0 4px 0 #154a88;
+}
+.btn--oranje {
+  background: linear-gradient(180deg, #f7893a, #e0601a);
+  box-shadow: 0 4px 0 #a9450f;
+}
+
+.btn--groen:active { box-shadow: 0 1px 0 #1f5e24; }
+.btn--blauw:active { box-shadow: 0 1px 0 #154a88; }
+.btn--oranje:active { box-shadow: 0 1px 0 #a9450f; }
+
+.btn--uit {
+  background: var(--blok-leeg);
+  color: var(--inkt-zacht);
+  font-size: 22px;
+  cursor: default;
+}
+.btn--uit:active {
+  transform: none;
+}
+
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--inkt);
+}
+
+.icon-btn--rond {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.icon-btn--vierkant {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--rand-warm);
+  background: var(--wit);
+}
+
+/* ---------- Schuin label (EVENT! / FINISH!) ---------- */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #f0573e, #d63a24);
+  border-radius: 10px;
+  transform: rotate(-3deg);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-weight: 800;
+  text-transform: uppercase;
+  box-shadow: 0 4px 0 #a72a18;
+}
+
+/* ---------- Kop met terugknop ---------- */
+
+.back-header {
+  position: relative;
+  padding: 18px 60px 10px;
+  text-align: center;
+}
+
+.back-header__back {
+  position: absolute;
+  left: 10px;
+  top: 16px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--inkt);
+  cursor: pointer;
+}
+
+.back-header__right {
+  position: absolute;
+  right: 14px;
+  top: 18px;
+}
+
+.back-header__title {
+  font-family: var(--font-kop);
+  font-weight: 800;
+  font-size: 32px;
+  line-height: 1.2;
+}
+
+.back-header__subtitle {
+  font-size: 15px;
+  color: var(--inkt-zacht);
+}
+
+.back-header__pill {
+  margin-top: 6px;
+}
+
+.back-header__intro {
+  margin: 4px -44px 0;
+  font-size: 15px;
+  color: var(--inkt-zacht);
+}
+
+/* ---------- Menubalk ---------- */
+
+.nav {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  margin-top: 14px;
+  background: var(--creme);
+  border-top: 1px solid var(--lijn);
+  padding: 10px 6px max(22px, calc(env(safe-area-inset-bottom) + 8px));
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.nav__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-decoration: none;
+  color: var(--grijs);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.nav__item--active {
+  color: var(--navy);
+  font-weight: 800;
+}
+
+.nav__item--disabled {
+  opacity: 0.45;
+}
+
+.nav__soon {
+  position: absolute;
+  top: -6px;
+  right: 2px;
+  background: var(--lichtblauw);
+  color: var(--navy);
+  border-radius: 999px;
+  padding: 0 5px;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+/* ---------- Levende racer ---------- */
+
+.living {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.living__img {
+  display: block;
+  object-fit: contain;
+}
+
+/* ---------- Eigenschap-balkje ---------- */
+
+.trait {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.trait__label {
+  width: 128px;
+  flex-shrink: 0;
+  font-size: 14px;
+}
+
+.trait__blocks {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 3px;
+}
+
+.trait__block {
+  height: 14px;
+  border-radius: 3px;
+  background: var(--blok-leeg);
+}
+
+/* ---------- Journaalregel ---------- */
+
+.journal-entry {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--lijn-zacht);
+}
+
+.journal-entry__dot {
+  width: 12px;
+  height: 12px;
+  margin-left: 2px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  box-shadow: 0 0 0 3px var(--creme);
+}
+
+.journal-entry__dot--groen { background: #3fa34d; }
+.journal-entry__dot--oranje { background: #f06a2a; }
+.journal-entry__dot--paars { background: #7b4fc4; }
+.journal-entry__dot--grijs { background: #9aa1a8; }
+
+.journal-entry__time {
+  width: 40px;
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--inkt-zacht);
+}
+
+.journal-entry__icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.journal-entry__text {
+  flex: 1;
+  font-size: 15px;
+}
+
+/* ---------- Racekaart ---------- */
+
+.race-map {
+  position: relative;
+  width: 100%;
+  container-type: inline-size;
+}
+
+.race-map__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.race-map__sign {
+  position: absolute;
+  width: 23%;
+  height: 5.4%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--font-kop);
+  font-size: 13px;
+  font-size: clamp(10px, 3.55cqw, 16px);
+  font-weight: 800;
+  line-height: 1.05;
+  color: #5a3a1a;
+}
+
+.race-map__finish {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: var(--inkt);
+  color: var(--wit);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.race-map__marker {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.race-map__ping {
+  position: absolute;
+  max-width: none;
+  left: -28px;
+  top: -28px;
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: 4px solid var(--wit);
+}
+
+.race-map__racer {
+  position: absolute;
+  left: -27px;
+  top: -20px;
+  width: 54px;
+  max-width: none;
+  height: 39px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
+}
+
+.race-map__label {
+  position: absolute;
+  left: 14px;
+  top: -38px;
+  background: var(--wit);
+  color: var(--inkt);
+  border-radius: 10px;
+  padding: 3px 8px;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}

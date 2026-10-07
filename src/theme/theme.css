@@ -1,0 +1,165 @@
+/* Huisstijl uit Claude Design (docs/ontwerp/schermen/Huisstijl.html). */
+
+:root {
+  /* Kleuren */
+  --creme: #fbf2e2;
+  --kaart: #fffbf3;
+  --wit: #ffffff;
+  --inkt: #1e2a36;
+  --inkt-zacht: #3e4752;
+  --grijs: #6b7280;
+  --navy: #0e3b78;
+  --lichtblauw: #d5e8f7;
+  --groen: #2e7d32;
+  --blauw: #1e63b5;
+  --oranje: #e0601a;
+  --rood: #d63a24;
+  --geel: #f2b71f;
+
+  --lichtgroen: #dcefd9;
+  --rand: #efe4cf;
+  --rand-warm: #e2d6be;
+  --lijn: #eadfc8;
+  --lijn-zacht: #efe6d4;
+  --tabblad: #efe6d4;
+  --balk-leeg: #e3e6e3;
+  --blok-leeg: #e8e1d2;
+
+  /* Lettertypen */
+  --font-kop: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --font-tekst: 'Nunito Sans', system-ui, sans-serif;
+
+  /* Vormen */
+  --ronding-kaart: 20px;
+  --ronding-klein: 16px;
+  --schaduw-kaart: 0 4px 14px rgba(30, 42, 54, 0.08);
+  --schaduw-klein: 0 2px 10px rgba(30, 42, 54, 0.06);
+
+  /* Afstanden */
+  --rand-scherm: 16px;
+  --app-breedte: 480px;
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--creme);
+  color: var(--inkt);
+  font-family: var(--font-tekst);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  min-height: 100dvh;
+}
+
+#root {
+  min-height: 100dvh;
+}
+
+img {
+  max-width: 100%;
+}
+
+a {
+  color: var(--navy);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+:focus-visible {
+  outline: 3px solid var(--blauw);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Animaties (hoofdstuk 15) ---------- */
+
+@keyframes grr-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+@keyframes grr-wobble {
+  0%, 80%, 100% { transform: rotate(0deg); }
+  85% { transform: rotate(-4deg); }
+  90% { transform: rotate(3deg); }
+  95% { transform: rotate(-1.5deg); }
+}
+
+@keyframes grr-ping {
+  0% { transform: scale(0.6); opacity: 0.7; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+@keyframes grr-pop {
+  0% { transform: scale(0.92); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes grr-slide-in {
+  0% { transform: translateY(-8px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.grr-breathe {
+  transform-origin: 55% 90%;
+  animation: grr-breathe 3.2s ease-in-out infinite;
+}
+
+.grr-wobble {
+  transform-origin: 60% 95%;
+  animation: grr-wobble 6s ease-in-out infinite;
+}
+
+.grr-ping {
+  animation: grr-ping 1.8s ease-out infinite;
+}
+
+.grr-pop {
+  animation: grr-pop 0.35s ease-out both;
+}
+
+.grr-slide-in {
+  animation: grr-slide-in 0.4s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grr-breathe,
+  .grr-wobble,
+  .grr-pop,
+  .grr-slide-in {
+    animation: none;
+  }
+  .grr-ping {
+    animation: none;
+    opacity: 0;
+  }
+}
