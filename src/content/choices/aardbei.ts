@@ -5,6 +5,7 @@ const aardbei: Choice = {
   heading: 'Gerard heeft iets gevonden!',
   title: 'Een gigantische aardbei',
   text: 'Gerard heeft nog nooit zo’n grote aardbei gezien. Wat moet hij doen?',
+  announce: 'Gerard heeft een gigantische aardbei gevonden. Hij kijkt ernaar. De aardbei kijkt niet terug.',
   image: 'ui/event-aardbei.png',
   imageAlt: 'Gerard naast een gigantische aardbei',
   options: [
@@ -12,6 +13,7 @@ const aardbei: Choice = {
       id: 'eten',
       label: 'Eet hem',
       color: 'groen',
+      prefers: ['curious', 'lazy'],
       effects: [
         { minutes: 60, speed: 0 },
         { minutes: 180, speed: 1.15 },
@@ -27,6 +29,7 @@ const aardbei: Choice = {
       id: 'negeren',
       label: 'Negeer hem',
       color: 'blauw',
+      prefers: ['stubborn'],
       effects: [],
       journal: [
         'Gerard negeerde de aardbei. De aardbei negeerde Gerard ook.',
@@ -39,6 +42,7 @@ const aardbei: Choice = {
       id: 'zitten',
       label: 'Ga erop zitten',
       color: 'oranje',
+      prefers: ['chaotic'],
       effects: [{ minutes: 30, speed: 0 }],
       journal: [
         'Gerard is op de aardbei gaan zitten. Niemand weet waarom. Gerard ook niet.',

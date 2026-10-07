@@ -116,7 +116,7 @@ Snelheid is relatief aan Gerard (1,00). Eigenschappen lopen van 0 tot
 
 | **Naam** | **Soort** | **Snelheid** | **Curious / Stubborn / Chaotic / Lazy** | **Titel**             | **Rol in de race**                     |
 |----------|-----------|--------------|-----------------------------------------|-----------------------|----------------------------------------|
-| Gerard   | Slak      | 1,00         | 85 / 75 / 20 / 60                       | The Unreasonably Slow | De held. Kan winnen, maar nooit zeker. |
+| Gerard   | Slak      | 1,00         | 85 / 75 / 20 / 60                       | The Determined        | De held. Kan winnen, maar nooit zeker. |
 | Ducky    | Eend      | 1,30         | 60 / 30 / 90 / 30                       | Chaotic Excellence    | Snelste, maar verdwaalt vaak.          |
 | Turbo    | Schildpad | 0,85         | 30 / 90 / 15 / 50                       | The Relentless        | Traag maar onverstoorbaar.             |
 | Kevin    | Rups      | 0,70         | 70 / 20 / 60 / 80                       | Professional Napper   | Slaapt; haalt de finish zelden.        |

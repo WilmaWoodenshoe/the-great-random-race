@@ -6,7 +6,7 @@ const gerard: Racer = {
   species: 'Slak',
   speed: 1.0,
   traits: { curious: 85, stubborn: 75, chaotic: 20, lazy: 60 },
-  title: 'The Unreasonably Slow',
+  title: 'The Determined',
   image: 'racers/gerard.webp',
   playable: true,
   facts: {

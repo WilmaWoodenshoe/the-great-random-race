@@ -1,5 +1,5 @@
 // Alle teksten van de app op één plek.
-// Eigennamen en bijnamen (The Great Random Race, The Unreasonably Slow)
+// Eigennamen en bijnamen (The Great Random Race, The Determined)
 // blijven bewust Engels.
 
 export const nl = {
@@ -105,6 +105,198 @@ export const nl = {
         effect: 'Gerard waardeert de rust.',
         after: 'Je hebt niets gedaan. Gerard vond dat prima.',
       },
+    },
+  },
+  /** Teksten die de race-engine gebruikt voor het journaal en de status. */
+  engine: {
+    start: [
+      'Het startschot klinkt. Vijf racers vertrekken. Eén ervan is een steen.',
+      'De Grote Bosrace is begonnen. De spanning is te snijden, maar heel langzaam.',
+      'En ze zijn weg! Nou ja, de meesten.',
+      'Start. Gerard kijkt vastberaden voor zich uit. Dat is zijn snelste stand.',
+    ],
+    end: [
+      'De race is voorbij. Wie er nog onderweg is, mag rustig verder. Er kijkt niemand meer.',
+      'Zeven dagen zijn om. De Grote Bosrace zit erop.',
+      'Het eindsignaal klinkt. Steve heeft het niet gehoord.',
+      'Einde race. De commentatoren pakken hun spullen. Langzaam, uit respect.',
+    ],
+    segment: [
+      (name: string, place: string) => `${name} is aangekomen bij ${place}.`,
+      (name: string, place: string) => `${name} heeft ${place} bereikt. Het publiek houdt zijn adem in.`,
+      (name: string, place: string) => `Welkom bij ${place}, ${name}.`,
+      (name: string, place: string) => `${name} betreedt ${place}. Een nieuw hoofdstuk.`,
+    ],
+    finish: [
+      (name: string) => `${name} is over de finish! Het publiek is uitzinnig. Het publiek is één mier.`,
+      (name: string) => `FINISH voor ${name}. Er wordt geapplaudisseerd, met kleine pootjes.`,
+      (name: string) => `${name} heeft de finish gehaald. Historisch, volgens ${name}.`,
+      (name: string) => `${name} komt aan in de Kasteeltuin en is klaar. Helemaal klaar.`,
+    ],
+    /** Per eventtype minstens 4 varianten. `name` is de naam van de racer. */
+    events: {
+      flower: [
+        (n: string) => `${n} heeft een bloem gevonden. Hij weet nog niet wat hij ervan vindt. Hij kijkt nog steeds.`,
+        (n: string) => `${n} kijkt naar een bloem. De bloem kijkt terug. Dit kan even duren.`,
+        (n: string) => `${n} is gestopt bij een bloem. Hij noemt het onderzoek.`,
+        (n: string) => `Een bloem. ${n} is er stil van.`,
+        (n: string) => `${n} bewondert een bloem. Kenners spreken van een tactische pauze.`,
+      ],
+      rain: [
+        () => 'Het regent. Gerard is blij. De anderen minder.',
+        () => 'Regen! Slakken houden van regen. Eenden zeggen dat ook, maar ze worden nat.',
+        () => 'Er valt een bui over het parcours. Gerard glimt.',
+        () => 'Het regent. Steve wordt nat. Steve heeft geen mening.',
+      ],
+      food: [
+        (n: string) => `${n} heeft iets lekkers gevonden en is aan het eten. Dit gaat voor.`,
+        (n: string) => `${n} eet. Daarna gaat hij iets sneller. Dat is het plan.`,
+        (n: string) => `Lunchpauze voor ${n}. Niemand had het aangekondigd.`,
+        (n: string) => `${n} neemt een hapje. Het werd een maaltijd.`,
+      ],
+      bird: [
+        (n: string) => `Een vogel! ${n} verstopt zich. De vogel heeft niets gezien.`,
+        (n: string) => `${n} werd afgeleid door een vogel. Hij doet nu alsof hij een steentje is.`,
+        (n: string) => `Er vliegt een vogel over. ${n} houdt zich even heel stil.`,
+        (n: string) => `${n} zit verstopt. Er is een vogel. Of er was een vogel. Je weet het niet.`,
+      ],
+      mud: [
+        (n: string) => `${n} zit in de modder. Het gaat langzaam. Langzamer dan anders.`,
+        (n: string) => `Modder. ${n} vindt het niet erg. Hij vindt het wel plakkerig.`,
+        (n: string) => `${n} baant zich een weg door de modder. Met de nadruk op baant.`,
+        (n: string) => `${n} is modderig. Het staat hem eigenlijk wel.`,
+      ],
+      nap: [
+        (n: string) => `${n} doet een dutje.`,
+        (n: string) => `${n} slaapt. Hij noemt het herstel.`,
+        (n: string) => `${n} heeft even zijn ogen dichtgedaan. Het werd een dutje.`,
+        (n: string) => `Stilte op het parcours: ${n} slaapt.`,
+        (n: string) => `${n} doet een dutje. Eerder vandaag deed ${n} ook een dutje.`,
+      ],
+      shortcut: [
+        (n: string) => `${n} nam een kortere weg. Het was echt een kortere weg. Iedereen is verbaasd.`,
+        (n: string) => `${n} vond een geheim paadje. Hij is ineens een stuk verder.`,
+        (n: string) => `Een kortere weg voor ${n}. De andere racers kijken jaloers.`,
+        (n: string) => `${n} sneed een bocht af. Volgens de regels mag dat. Er zijn geen regels.`,
+      ],
+      wrong_turn: [
+        (n: string) => `${n} nam een kortere weg. Het was geen kortere weg.`,
+        (n: string) => `${n} is verkeerd gelopen. Hij doet alsof dat de bedoeling was.`,
+        (n: string) => `${n} sloeg links af. Het had rechts moeten zijn.`,
+        (n: string) => `${n} is even de weg kwijt. Hij is nu weer terug, een stukje terug.`,
+      ],
+      worm: [
+        (n: string) => `${n} is in gesprek met een worm. Het gaat over het weer.`,
+        (n: string) => `${n} heeft een worm ontmoet. Ze hebben veel gemeen.`,
+        (n: string) => `Een worm vraagt ${n} de weg. ${n} legt het rustig uit.`,
+        (n: string) => `${n} en een worm praten bij. Het gesprek is diepgaand.`,
+      ],
+      rock: [
+        (n: string) => `${n} moet om een steen heen. Het is niet Steve. Waarschijnlijk.`,
+        (n: string) => `Een steen op het pad. ${n} vraagt zich af of het Steve is.`,
+        (n: string) => `${n} klimt over een steentje. Het steentje vindt het prima.`,
+        (n: string) => `${n} stuit op een steen. Hij zegt sorry.`,
+      ],
+      rock_family: [
+        (n: string) => `${n} heeft een familielid ontmoet. Ze liggen nu naast elkaar.`,
+        (n: string) => `${n} kwam een neef tegen. Het werd een lange, stille reünie.`,
+        (n: string) => `${n} ontmoet een andere steen. Ze zeggen niets. Het is heel emotioneel.`,
+        (n: string) => `Familiebezoek voor ${n}. Oom Kiezel lag er ook.`,
+      ],
+      butterfly: [
+        (n: string) => `${n} kijkt naar een vlinder. De vlinder vliegt weg. ${n} kijkt nog steeds.`,
+        (n: string) => `Een vlinder! ${n} is even helemaal van de wijs.`,
+        (n: string) => `${n} volgt een vlinder met zijn ogen. Alleen met zijn ogen, gelukkig.`,
+        (n: string) => `${n} is betoverd door een vlinder. Dat gebeurt de besten.`,
+      ],
+      puddle: [
+        (n: string) => `${n} moet door een plas. Het gaat voorzichtig.`,
+        (n: string) => `Een plas. ${n} kijkt er even in. Hij ziet er goed uit.`,
+        (n: string) => `${n} waadt door een plas. Het is dieper dan gedacht.`,
+        (n: string) => `${n} is bij een plas aangekomen en gaat er heel netjes doorheen.`,
+      ],
+      puddle_duck: [
+        (n: string) => `${n} vond een plas. ${n} is nu heel snel. Dit is zijn moment.`,
+        (n: string) => `Een plas! ${n} zwemt erdoorheen alsof het niets is. Het is ook niets.`,
+        (n: string) => `${n} in een plas is een ander dier. Een sneller dier.`,
+        (n: string) => `${n} schiet door een plas. Het water spat alle kanten op.`,
+      ],
+      snack: [
+        (n: string) => `${n} heeft een snack gevonden. Hij voelt zich sterk.`,
+        (n: string) => `${n} eet onderweg een hapje. Hij gaat nu iets sneller.`,
+        (n: string) => `Een snack voor ${n}. Energie!`,
+        (n: string) => `${n} heeft gesnackt. Dit gaat het verschil maken, zegt hij.`,
+      ],
+      strange_noise: [
+        (n: string) => `${n} hoorde een vreemd geluid. Hij heeft besloten dat het niets was. Hij gaat nu iets sneller.`,
+        (n: string) => `Een raar geluid. ${n} staat even stil. Daarna gaat hij er snel vandoor.`,
+        (n: string) => `${n} schrok van iets. Niemand weet wat. ${n} ook niet.`,
+        (n: string) => `Er kraakte iets in de struiken. ${n} heeft opeens veel haast.`,
+      ],
+      nothing: [
+        (n: string) => `${n} heeft zich niet verplaatst. Kenners spreken van een gedurfde tactiek.`,
+        (n: string) => `Er gebeurt niets met ${n}. Hij geniet ervan.`,
+        (n: string) => `${n} gaat gewoon door. Verder valt er weinig te melden.`,
+        (n: string) => `${n} is onderweg. Dat is alles. Het is genoeg.`,
+      ],
+    },
+    /** "Gerard is momenteel…" */
+    status: {
+      racing: 'aan het racen.',
+      flower: 'naar een bloem aan het kijken.',
+      rain: 'van de regen aan het genieten.',
+      food: 'aan het eten.',
+      bird: 'zich aan het verstoppen voor een vogel.',
+      mud: 'door de modder aan het ploeteren.',
+      nap: 'een dutje aan het doen.',
+      shortcut: 'aan het racen.',
+      wrong_turn: 'aan het racen.',
+      worm: 'met een worm aan het praten.',
+      rock: 'om een steen heen aan het kruipen.',
+      butterfly: 'een vlinder aan het bewonderen.',
+      puddle: 'door een plas aan het waden.',
+      snack: 'aan het racen, met een volle buik.',
+      strange_noise: 'van een vreemd geluid aan het bijkomen.',
+      nothing: 'aan het racen.',
+      choice: 'aan het nadenken. Er moet een keuze gemaakt worden.',
+      finished: 'klaar. Hij is over de finish.',
+      raceOver: 'aan het uitrusten. De race is voorbij.',
+    } as Record<string, string>,
+    actions: {
+      voeren: [
+        'Gerard heeft een blaadje sla gekregen. Hij kijkt er al een tijdje naar.',
+        'Gerard is gevoerd. Hij kauwt met grote toewijding.',
+        'Sla voor Gerard. Hij is er zichtbaar blij mee, voor een slak.',
+        'Gerard heeft gegeten. Hij voelt zich sterk en een beetje vol.',
+      ],
+      aanmoedigen: [
+        'Gerard is aangemoedigd. Hij lijkt het gehoord te hebben.',
+        'Iemand riep "Hup Gerard!" Gerard heeft het gehoord en gaat er even voor.',
+        'Gerard werd aangemoedigd. Zijn voelsprieten staan recht overeind.',
+        'Aanmoediging voor Gerard. Hij doet net alsof het hem niets doet. Het doet hem iets.',
+      ],
+      hoed: [
+        'Gerard draagt nu een hoed. De andere racers hebben het gezien.',
+        'Gerard heeft een hoed op. Hij loopt er iets rechter door.',
+        'Gerard kreeg een hoed. Het is officieel de mooiste slak van het parcours.',
+        'Met hoed gaat Gerard verder. Stijl boven snelheid.',
+      ],
+      niets: [
+        'Je hebt niets gedaan. Gerard vond dat prima.',
+        'Vandaag geen bemoeienis. Gerard waardeert de rust.',
+        'Niets gedaan. Gerard heeft het niet gemerkt, maar zou het waarderen.',
+        'Een rustige dag. Gerard doet gewoon zijn ding.',
+      ],
+    },
+    /** Rare statistieken op het finishscherm. */
+    stats: {
+      flowerTime: (n: string) => `Tijd naar bloemen gekeken (${n})`,
+      napTime: (n: string) => `Tijd geslapen (${n})`,
+      wrongTurnLoss: (n: string) => `Verloren aan ‘kortere wegen’ (${n})`,
+      decor: (n: string) => `${n} aangezien voor decor`,
+      wormTalks: 'Gesprekken met wormen',
+      meters: (m: number) => `${m.toLocaleString('nl-NL')} meter`,
+      times: (n: number) => (n === 1 ? '1 keer' : `${n} keer`),
     },
   },
   event: {

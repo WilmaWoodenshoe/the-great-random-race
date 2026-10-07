@@ -15,12 +15,20 @@ Website (later): thegreatrandomrace.nl
 | Fase | Wat | Status |
 |---|---|---|
 | 1 | Project, navigatie, basisschermen in de huisstijl, testversie | Klaar |
-| 2 | Game-engine met tests | – |
+| 2 | Game-engine met tests | Klaar |
 | 3 | Race aanmaken en lokaal opslaan | – |
 | 4–9 | Schermen echt laten werken | – |
 | 10–11 | Afwerking, PWA, online op thegreatrandomrace.nl | – |
 
-In fase 1 tonen de schermen nog **voorbeeldgegevens** (`src/demo/voorbeeld.ts`). Vanaf fase 2–3 komen die uit de echte race.
+De schermen tonen nog **voorbeeldgegevens** (`src/demo/voorbeeld.ts`). De race-engine is klaar (fase 2); in fase 3 worden de schermen erop aangesloten.
+
+## Hoe de race werkt (kort)
+
+- Bij de start liggen starttijd, eindtijd (+ 7 dagen) en een *seed* (startgetal voor het toeval) vast. Daarmee wordt meteen het hele eventschema berekend: wie wanneer een bloem vindt, een dutje doet of verdwaalt.
+- De positie van elke racer wordt op elk moment uitgerekend uit dat schema. De app hoeft dus niet open te staan, en de race is altijd hetzelfde, hoe vaak je ook kijkt.
+- Keuzes van de speler en de dagelijkse actie tellen pas mee vanaf het moment dat ze gemaakt zijn. Wat al gebeurd is, verandert nooit.
+- De balanstest (`tests/balance.test.ts`) speelt 1.000 races en controleert de doelen uit de briefing. Uitkomst bij de huidige instellingen: Gerard wint ± 28%, finisht meestal halverwege dag 7; Ducky wint ± 71%; Turbo haalt in ± 55% van de races de finish; Kevin en Steve nooit.
+- Afstellen gebeurt in `src/game/racers.ts` (`BASE_KMH`), `src/game/events.ts` (kansen per event) en `src/game/personality.ts` (wat de eigenschappen doen).
 
 ## Nieuwe inhoud toevoegen
 
@@ -91,8 +99,8 @@ const groteBosrace: Course = {
   // share = aandeel van de afstand (samen 1), terrain = snelheid op dit deel,
   // sign = plek van het bordje op de kaart (in pixels)
   segments: [
-    { id: 'startweide', name: 'Startweide', share: 0.1, terrain: 1.0, sign: { x: 717, y: 1316 } },
-    { id: 'bos', name: 'Bos', share: 0.2, terrain: 0.95, sign: { x: 394, y: 1022 } },
+    { id: 'startweide', name: 'Startweide', withArticle: 'de Startweide', share: 0.1, terrain: 1.0, sign: { x: 717, y: 1316 } },
+    { id: 'bos', name: 'Bos', withArticle: 'het Bos', share: 0.2, terrain: 0.95, sign: { x: 394, y: 1022 } },
     // …
   ],
 };
@@ -110,6 +118,7 @@ const aardbei: Choice = {
   heading: 'Gerard heeft iets gevonden!',
   title: 'Een gigantische aardbei',
   text: 'Gerard heeft nog nooit zo’n grote aardbei gezien. Wat moet hij doen?',
+  announce: 'Gerard heeft een gigantische aardbei gevonden.', // journaalregel
   image: 'ui/event-aardbei.png',
   imageAlt: 'Gerard naast een gigantische aardbei',
   options: [
@@ -117,6 +126,7 @@ const aardbei: Choice = {
       id: 'eten',
       label: 'Eet hem',
       color: 'groen', // 'groen', 'blauw' of 'oranje'
+      prefers: ['curious', 'lazy'], // kiest Gerard zelf vaker als hij zo is
       // effecten na elkaar: eerst 60 min stilstaan, dan 3 uur 15% sneller
       effects: [
         { minutes: 60, speed: 0 },
@@ -148,6 +158,7 @@ Techniek: React + Vite + TypeScript, React Router, vite-plugin-pwa, IndexedDB (i
 | `src/screens/` | De schermen |
 | `src/components/` | Herbruikbare onderdelen (knoppen, kaart, menubalk…) |
 | `src/content/` | Teksten (`nl.ts`) en inhoud (racers, accessoires, routes, keuze-events) |
+| `src/game/` | De race-engine: rekenen zonder schermen (engine, events, keuzes, acties, journaal, statistieken) |
 | `src/models/` | Beschrijving van de gegevens |
 | `src/theme/` | Huisstijl: kleuren, letters, animaties |
 | `src/utils/` | Hulpfuncties |

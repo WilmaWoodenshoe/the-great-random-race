@@ -34,5 +34,7 @@ export default defineConfig({
   ],
   test: {
     include: ['tests/**/*.test.ts'],
+    // Vaste tijdzone, zodat 'kalenderdag'-tests overal hetzelfde uitpakken.
+    env: { TZ: 'Europe/Amsterdam' },
   },
 });

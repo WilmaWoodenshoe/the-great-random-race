@@ -8,6 +8,8 @@ export interface MapPoint {
 export interface CourseSegment {
   id: string;
   name: string;
+  /** Naam in een zin, bijv. 'het Modderveld' of 'de Heuvel'. */
+  withArticle: string;
   /** Aandeel van de totale afstand, tussen 0 en 1. Samen precies 1. */
   share: number;
   /** Terrein-modifier op de snelheid (1,00 = normaal). */

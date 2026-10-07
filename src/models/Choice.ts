@@ -1,3 +1,5 @@
+import type { Traits } from './Racer';
+
 /** Kleur van een keuzeknop, uit de huisstijl. */
 export type ChoiceColor = 'groen' | 'blauw' | 'oranje';
 
@@ -18,6 +20,11 @@ export interface ChoiceOption {
   effects: SpeedEffect[];
   /** Journaalteksten; de app kiest er willekeurig één. */
   journal: string[];
+  /**
+   * Bij welke eigenschappen Gerard deze optie zelf vaker kiest, als de
+   * speler binnen 12 uur niets kiest. Bijv. ['curious'].
+   */
+  prefers?: (keyof Traits)[];
 }
 
 /** Een keuze-event zoals het in src/content/choices/ staat. */
@@ -27,6 +34,8 @@ export interface Choice {
   heading: string;
   title: string;
   text: string;
+  /** Journaalregel op het moment dat Gerard het vindt. */
+  announce: string;
   /** Afbeelding, relatief aan public/images/. */
   image: string;
   imageAlt: string;

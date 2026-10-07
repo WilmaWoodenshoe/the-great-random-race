@@ -16,7 +16,7 @@ export interface Racer {
   /** Snelheid ten opzichte van Gerard (Gerard = 1,00). */
   speed: number;
   traits: Traits;
-  /** Engelse bijnaam, bijv. 'The Unreasonably Slow'. */
+  /** Engelse bijnaam, bijv. 'The Determined'. */
   title: string;
   /** Afbeelding, relatief aan public/images/. */
   image: string;

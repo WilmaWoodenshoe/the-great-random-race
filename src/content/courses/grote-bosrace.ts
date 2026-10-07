@@ -13,13 +13,13 @@ const groteBosrace: Course = {
     finish: { x: 553, y: 151 },
   },
   segments: [
-    { id: 'startweide', name: 'Startweide', share: 0.1, terrain: 1.0, sign: { x: 717, y: 1316 } },
-    { id: 'bos', name: 'Bos', share: 0.2, terrain: 0.95, sign: { x: 394, y: 1022 } },
-    { id: 'modderveld', name: 'Modderveld', share: 0.1, terrain: 0.7, sign: { x: 787, y: 860 } },
-    { id: 'beekje', name: 'Beekje', share: 0.1, terrain: 0.85, sign: { x: 302, y: 526 } },
-    { id: 'vreemde-open-plek', name: 'Vreemde Open Plek', share: 0.15, terrain: 1.05, sign: { x: 758, y: 378 } },
-    { id: 'heuvel', name: 'Heuvel', share: 0.15, terrain: 0.75, sign: { x: 229, y: 251 } },
-    { id: 'kasteeltuin', name: 'Kasteeltuin', share: 0.2, terrain: 1.0, sign: { x: 553, y: 151 } },
+    { id: 'startweide', name: 'Startweide', withArticle: 'de Startweide', share: 0.1, terrain: 1.0, sign: { x: 717, y: 1316 } },
+    { id: 'bos', name: 'Bos', withArticle: 'het Bos', share: 0.2, terrain: 0.95, sign: { x: 394, y: 1022 } },
+    { id: 'modderveld', name: 'Modderveld', withArticle: 'het Modderveld', share: 0.1, terrain: 0.7, sign: { x: 787, y: 860 } },
+    { id: 'beekje', name: 'Beekje', withArticle: 'het Beekje', share: 0.1, terrain: 0.85, sign: { x: 302, y: 526 } },
+    { id: 'vreemde-open-plek', name: 'Vreemde Open Plek', withArticle: 'de Vreemde Open Plek', share: 0.15, terrain: 1.05, sign: { x: 758, y: 378 } },
+    { id: 'heuvel', name: 'Heuvel', withArticle: 'de Heuvel', share: 0.15, terrain: 0.75, sign: { x: 229, y: 251 } },
+    { id: 'kasteeltuin', name: 'Kasteeltuin', withArticle: 'de Kasteeltuin', share: 0.2, terrain: 1.0, sign: { x: 553, y: 151 } },
   ],
 };
 
