@@ -4,7 +4,7 @@ const kevin: Racer = {
   id: 'kevin',
   name: 'Kevin',
   species: 'Rups',
-  speed: 0.7,
+  speed: 1.0,
   traits: { curious: 70, stubborn: 20, chaotic: 60, lazy: 80 },
   title: 'Professional Napper',
   image: 'racers/rups.webp',

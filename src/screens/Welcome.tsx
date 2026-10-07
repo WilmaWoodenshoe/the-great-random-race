@@ -1,4 +1,8 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { nl } from '../content/nl';
+import { useGame } from '../state/GameProvider';
+import { canStartRace } from '../game/session';
 import { playerRacer } from '../content';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { PhoneDownload } from '../components/Icons';
@@ -8,6 +12,22 @@ import { img } from '../utils/images';
 /** Eerste start (Welcome.html). */
 export function Welcome() {
   const t = nl.welcome;
+  const { startNewRace, save, now } = useGame();
+  const navigate = useNavigate();
+  const [busy, setBusy] = useState(false);
+
+  const start = async () => {
+    if (busy) return;
+    setBusy(true);
+    try {
+      // Loopt er al een race, dan gewoon daarheen.
+      if (canStartRace(save, now)) await startNewRace();
+      navigate('/home', { replace: true });
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
     <div className="screen welcome">
       <img className="welcome__bg" src={img('backgrounds/bg-staand.webp')} alt="" />
@@ -35,8 +55,8 @@ export function Welcome() {
       </main>
 
       <div className="screen__footer">
-        <PrimaryButton to="/home" arrow>
-          {t.start}
+        <PrimaryButton onClick={start} arrow={!busy}>
+          {busy ? t.starting : t.start}
         </PrimaryButton>
       </div>
     </div>

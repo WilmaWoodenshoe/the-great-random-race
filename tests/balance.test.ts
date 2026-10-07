@@ -25,7 +25,8 @@ describe('balans over 1.000 races', () => {
     expect(pct(p.turbo.finishes)).toBeLessThan(0.8);
   });
 
-  it('Kevin haalt de finish (bijna) nooit, Steve nooit', () => {
+  it('Kevin haalt de finish zelden, Steve nooit', () => {
+    expect(pct(p.kevin.finishes)).toBeGreaterThan(0);
     expect(pct(p.kevin.finishes)).toBeLessThan(0.15);
     expect(p.steve.finishes).toBe(0);
   });

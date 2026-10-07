@@ -16,18 +16,20 @@ Website (later): thegreatrandomrace.nl
 |---|---|---|
 | 1 | Project, navigatie, basisschermen in de huisstijl, testversie | Klaar |
 | 2 | Game-engine met tests | Klaar |
-| 3 | Race aanmaken en lokaal opslaan | – |
+| 3 | Race aanmaken en lokaal opslaan | Klaar |
 | 4–9 | Schermen echt laten werken | – |
 | 10–11 | Afwerking, PWA, online op thegreatrandomrace.nl | – |
 
-De schermen tonen nog **voorbeeldgegevens** (`src/demo/voorbeeld.ts`). De race-engine is klaar (fase 2); in fase 3 worden de schermen erop aangesloten.
+De schermen tonen nog **voorbeeldgegevens** (`src/demo/voorbeeld.ts`). De race-engine (fase 2) en de opslag op het toestel (fase 3) zijn klaar; vanaf fase 4 worden de schermen één voor één op de echte race aangesloten.
+
+**Testen zonder een week te wachten:** onder *Meer → Testversie: tijdmachine* kun je de klok van de app een uur of een dag vooruit zetten, en alles wissen. Dit verdwijnt in de echte versie.
 
 ## Hoe de race werkt (kort)
 
 - Bij de start liggen starttijd, eindtijd (+ 7 dagen) en een *seed* (startgetal voor het toeval) vast. Daarmee wordt meteen het hele eventschema berekend: wie wanneer een bloem vindt, een dutje doet of verdwaalt.
 - De positie van elke racer wordt op elk moment uitgerekend uit dat schema. De app hoeft dus niet open te staan, en de race is altijd hetzelfde, hoe vaak je ook kijkt.
 - Keuzes van de speler en de dagelijkse actie tellen pas mee vanaf het moment dat ze gemaakt zijn. Wat al gebeurd is, verandert nooit.
-- De balanstest (`tests/balance.test.ts`) speelt 1.000 races en controleert de doelen uit de briefing. Uitkomst bij de huidige instellingen: Gerard wint ± 28%, finisht meestal halverwege dag 7; Ducky wint ± 71%; Turbo haalt in ± 55% van de races de finish; Kevin en Steve nooit.
+- De balanstest (`tests/balance.test.ts`) speelt 1.000 races en controleert de doelen uit de briefing. Uitkomst bij de huidige instellingen: Gerard wint ± 27%, finisht meestal halverwege dag 7; Ducky wint ± 71%; Turbo haalt in ± 55% van de races de finish, Kevin in ± 9%, Steve nooit.
 - Afstellen gebeurt in `src/game/racers.ts` (`BASE_KMH`), `src/game/events.ts` (kansen per event) en `src/game/personality.ts` (wat de eigenschappen doen).
 
 ## Nieuwe inhoud toevoegen
@@ -160,6 +162,8 @@ Techniek: React + Vite + TypeScript, React Router, vite-plugin-pwa, IndexedDB (i
 | `src/content/` | Teksten (`nl.ts`) en inhoud (racers, accessoires, routes, keuze-events) |
 | `src/game/` | De race-engine: rekenen zonder schermen (engine, events, keuzes, acties, journaal, statistieken) |
 | `src/models/` | Beschrijving van de gegevens |
+| `src/storage/` | Opslag op het toestel (IndexedDB) |
+| `src/state/` | Verbindt engine en opslag met de schermen |
 | `src/theme/` | Huisstijl: kleuren, letters, animaties |
 | `src/utils/` | Hulpfuncties |
 | `src/demo/` | Voorbeeldgegevens voor fase 1 (verdwijnt later) |

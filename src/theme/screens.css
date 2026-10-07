@@ -861,3 +861,74 @@
   padding: 32px;
   text-align: center;
 }
+
+/* ---------- Meer: race-info en testhulpjes ---------- */
+
+.info {
+  padding: 14px 16px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.info__list {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 16px;
+}
+
+.info__list dt {
+  font-weight: 800;
+}
+
+.info__list dd {
+  margin: 0;
+  text-align: right;
+  color: var(--inkt-zacht);
+}
+
+.info__empty,
+.info__hint {
+  color: var(--inkt-zacht);
+}
+
+.info__clock {
+  margin-top: 8px;
+  font-weight: 800;
+}
+
+.info__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.chip-btn {
+  border: 0;
+  border-radius: 10px;
+  padding: 9px 14px;
+  background: var(--navy);
+  color: var(--wit);
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.chip-btn:disabled {
+  background: var(--tabblad);
+  color: var(--inkt-zacht);
+  cursor: default;
+}
+
+.link-btn {
+  margin-top: 14px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--rood);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
