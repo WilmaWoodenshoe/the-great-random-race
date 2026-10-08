@@ -15,6 +15,8 @@ interface GameContextValue {
   startNewRace(): Promise<void>;
   decide(scheduledId: string, optionId: string): Promise<void>;
   act(actionId: ActionId): Promise<void>;
+  /** Onthoud dat de speler het journaal tot nu heeft gezien. */
+  markJournalSeen(time: number): Promise<void>;
   /** Testversie: klok vooruit of terug zetten. */
   setClockOffset(ms: number): Promise<void>;
   /** Testversie: alles wissen. */
@@ -92,6 +94,7 @@ export function GameProvider({ children, storage }: { children: ReactNode; stora
       decide: (scheduledId, optionId) =>
         update((s, at) => ({ ...s, race: s.race && decideChoice(s.race, scheduledId, optionId, at) })),
       act: (actionId) => update((s, at) => ({ ...s, race: s.race && doAction(s.race, actionId, at) })),
+      markJournalSeen: (time) => update((s) => ({ ...s, journalSeenAt: Math.max(s.journalSeenAt, time) })),
       setClockOffset: (ms) => update((s) => ({ ...s, clockOffset: ms })),
       resetAll: async () => {
         await store.clear();

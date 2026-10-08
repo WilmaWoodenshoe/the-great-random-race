@@ -25,6 +25,7 @@ export function parseSave(raw: unknown): SaveData {
     history: Array.isArray(data.history) ? data.history : [],
     raceCounter: typeof data.raceCounter === 'number' ? data.raceCounter : 0,
     clockOffset: typeof data.clockOffset === 'number' ? data.clockOffset : 0,
+    journalSeenAt: typeof data.journalSeenAt === 'number' ? data.journalSeenAt : 0,
   };
 }
 

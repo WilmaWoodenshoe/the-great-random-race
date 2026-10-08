@@ -466,13 +466,68 @@
 
 /* ---------- Journaal ---------- */
 
-.journal__race {
+.journal__bar {
   display: flex;
-  justify-content: flex-end;
-  margin: 12px -44px 0 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 12px -44px 0;
+}
+
+.tabs {
+  display: flex;
+  gap: 6px;
+}
+
+.tab {
+  border: 0;
+  border-radius: 10px;
+  padding: 8px 12px;
+  background: var(--tabblad);
+  color: var(--inkt-zacht);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tab--on {
+  background: var(--navy);
+  color: var(--wit);
+  font-weight: 800;
+}
+
+.journal__new {
+  display: inline-block;
+  margin-top: 10px;
+  background: var(--lichtblauw);
+  color: var(--navy);
+  border-radius: 999px;
+  padding: 3px 12px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.journal__day + .journal__day {
+  margin-top: 14px;
+}
+
+.journal__day-label {
+  margin: 4px 0 2px 26px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--inkt-zacht);
+}
+
+.journal__empty {
+  padding: 24px 8px;
+  text-align: center;
+  color: var(--inkt-zacht);
 }
 
 .journal__race-label {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   height: 38px;

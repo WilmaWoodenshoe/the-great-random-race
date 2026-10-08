@@ -26,6 +26,8 @@ export interface SaveData {
    * app voor op de echte tijd ("tijd vooruitspoelen").
    */
   clockOffset: number;
+  /** Tot welk moment de speler het journaal al gezien heeft (voor 'nieuw'). */
+  journalSeenAt: number;
 }
 
-export const EMPTY_SAVE: SaveData = { version: 1, race: null, history: [], raceCounter: 0, clockOffset: 0 };
+export const EMPTY_SAVE: SaveData = { version: 1, race: null, history: [], raceCounter: 0, clockOffset: 0, journalSeenAt: 0 };

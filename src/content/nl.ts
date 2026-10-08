@@ -95,6 +95,14 @@ export const nl = {
   },
   journal: {
     title: (name: string) => `${name}s journaal`,
+    all: 'Alles',
+    onlyPlayer: (name: string) => `Alleen ${name}`,
+    filterLabel: 'Welke berichten',
+    today: 'Vandaag',
+    yesterday: 'Gisteren',
+    day: (time: number) => new Date(time).toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' }),
+    empty: 'Nog niets gebeurd. Gerard staat nog in de startblokken.',
+    newCount: (n: number) => (n === 1 ? '1 nieuw bericht' : `${n} nieuwe berichten`),
   },
   action: {
     title: 'Actie van vandaag',
