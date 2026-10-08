@@ -550,3 +550,33 @@
   white-space: nowrap;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
+
+.race-map__marker--player {
+  z-index: 3;
+}
+
+.race-map__marker--other {
+  z-index: 2;
+}
+
+.race-map__racer--other {
+  left: -20px;
+  top: -18px;
+  width: 40px;
+  height: 30px;
+}
+
+.race-map__tag {
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--inkt);
+  border-radius: 8px;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}

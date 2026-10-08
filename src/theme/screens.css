@@ -260,9 +260,21 @@
   gap: 8px;
 }
 
+.race__progress {
+  text-decoration: none;
+  color: var(--inkt);
+  z-index: 5;
+}
+
 .race__km {
   font-size: 14px;
   font-weight: 800;
+}
+
+.race__more {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--navy);
 }
 
 /* ---------- Racerprofiel ---------- */

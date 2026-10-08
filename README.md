@@ -18,10 +18,11 @@ Website (later): thegreatrandomrace.nl
 | 2 | Game-engine met tests | Klaar |
 | 3 | Race aanmaken en lokaal opslaan | Klaar |
 | 4 | Home en eerste start, met de bewegende Gerard | Klaar |
-| 5–9 | Overige schermen echt laten werken | – |
+| 5 | Racekaart en tussenstand | Klaar |
+| 6–9 | Overige schermen echt laten werken | – |
 | 10–11 | Afwerking, PWA, online op thegreatrandomrace.nl | – |
 
-De meeste schermen tonen nog **voorbeeldgegevens** (`src/demo/voorbeeld.ts`). De race-engine (fase 2) en de opslag op het toestel (fase 3) zijn klaar; Home, het welkomstscherm en het keuze-event werken met de echte race (fase 4); de andere schermen volgen in fase 5–9.
+De meeste schermen tonen nog **voorbeeldgegevens** (`src/demo/voorbeeld.ts`). De race-engine (fase 2) en de opslag op het toestel (fase 3) zijn klaar; Home, het welkomstscherm, het keuze-event (fase 4), de racekaart en de tussenstand (fase 5) werken met de echte race; journaal, profiel, actie en uitslag volgen in fase 6–9.
 
 **Testen zonder een week te wachten:** onder *Meer → Testversie: tijdmachine* kun je de klok van de app een uur of een dag vooruit zetten, en alles wissen. Dit verdwijnt in de echte versie.
 
@@ -100,10 +101,19 @@ const groteBosrace: Course = {
     finish: { x: 553, y: 151 }, // plek van het finishlabel op de kaart
   },
   // share = aandeel van de afstand (samen 1), terrain = snelheid op dit deel,
-  // sign = plek van het bordje op de kaart (in pixels)
+  // sign = plek van het bordje op de kaart (in pixels),
+  // path = punten langs de weg op de kaart; het laatste punt van een deel
+  //        is het eerste punt van het volgende deel
   segments: [
-    { id: 'startweide', name: 'Startweide', withArticle: 'de Startweide', share: 0.1, terrain: 1.0, sign: { x: 717, y: 1316 } },
-    { id: 'bos', name: 'Bos', withArticle: 'het Bos', share: 0.2, terrain: 0.95, sign: { x: 394, y: 1022 } },
+    {
+      id: 'startweide',
+      name: 'Startweide',
+      withArticle: 'de Startweide',
+      share: 0.1,
+      terrain: 1.0,
+      sign: { x: 717, y: 1316 },
+      path: [{ x: 360, y: 1290 }, { x: 300, y: 1215 }, { x: 240, y: 1160 }, { x: 212, y: 1105 }],
+    },
     // …
   ],
 };

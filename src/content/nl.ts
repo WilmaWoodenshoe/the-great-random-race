@@ -58,6 +58,7 @@ export const nl = {
   },
   race: {
     openJournal: 'Journaal openen',
+    standings: 'Bekijk de tussenstand',
     finish: 'Finish',
     mapAlt: (name: string, pos: number) =>
       `Geïllustreerde kaart van De Grote Bosrace met ${name} op plek ${pos}`,
@@ -81,6 +82,16 @@ export const nl = {
   leaderboard: {
     title: 'Tussenstand',
     place: (n: number) => `${n}e plaats`,
+    finishedAt: 'binnen',
+    leading: (n: string) => `${n} ligt aan kop.`,
+    behind: (n: string, km: string, ahead: string) => `${n} staat ${km} achter ${ahead}.`,
+    finished: (n: string, pos: number) => `${n} is binnen, als ${pos}e.`,
+    quips: [
+      (ahead: string, last: string) => `${ahead} weet het nog niet. ${last} heeft zich sinds gisteren nauwelijks verplaatst.`,
+      (_ahead: string, last: string) => `Kenners verwachten weinig van ${last}. ${last} verwacht zelf ook weinig.`,
+      (ahead: string) => `${ahead} kijkt af en toe achterom. Er is niemand. Nog niet.`,
+      (_ahead: string, last: string) => `${last} is nog onderweg. Op zijn eigen manier.`,
+    ],
   },
   journal: {
     title: (name: string) => `${name}s journaal`,

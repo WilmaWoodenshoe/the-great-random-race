@@ -16,6 +16,11 @@ export interface CourseSegment {
   terrain: number;
   /** Waar het bordje van dit deel op de kaart staat. */
   sign: MapPoint;
+  /**
+   * Het pad van dit deel op de kaart: punten langs de weg, van begin tot
+   * eind. Het laatste punt is het eerste punt van het volgende deel.
+   */
+  path: MapPoint[];
 }
 
 /** Een route zoals hij in src/content/courses/ staat. */
