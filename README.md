@@ -21,7 +21,7 @@ Website (later): thegreatrandomrace.nl
 | 5–9 | Overige schermen echt laten werken | – |
 | 10–11 | Afwerking, PWA, online op thegreatrandomrace.nl | – |
 
-De schermen tonen nog **voorbeeldgegevens** (`src/demo/voorbeeld.ts`). De race-engine (fase 2) en de opslag op het toestel (fase 3) zijn klaar; Home, het welkomstscherm en het keuze-event werken met de echte race (fase 4); de andere schermen volgen in fase 5–9.
+De meeste schermen tonen nog **voorbeeldgegevens** (`src/demo/voorbeeld.ts`). De race-engine (fase 2) en de opslag op het toestel (fase 3) zijn klaar; Home, het welkomstscherm en het keuze-event werken met de echte race (fase 4); de andere schermen volgen in fase 5–9.
 
 **Testen zonder een week te wachten:** onder *Meer → Testversie: tijdmachine* kun je de klok van de app een uur of een dag vooruit zetten, en alles wissen. Dit verdwijnt in de echte versie.
 
