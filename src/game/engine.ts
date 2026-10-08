@@ -120,7 +120,11 @@ export function standingsAt(race: Race, now: number): Standing[] {
       if (a.finishTime !== null && b.finishTime !== null) return a.finishTime - b.finishTime;
       if (a.finishTime !== null) return -1;
       if (b.finishTime !== null) return 1;
-      return b.km - a.km || a.racerId.localeCompare(b.racerId);
+      if (b.km !== a.km) return b.km - a.km;
+      // Gelijke stand (bijv. bij de start): de racer van de speler vooraan.
+      if (a.racerId === race.playerId) return -1;
+      if (b.racerId === race.playerId) return 1;
+      return a.racerId.localeCompare(b.racerId);
     })
     .map((s, i) => ({ racerId: s.racerId, position: i + 1, km: s.km, finishTime: s.finishTime }));
 }

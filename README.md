@@ -17,10 +17,11 @@ Website (later): thegreatrandomrace.nl
 | 1 | Project, navigatie, basisschermen in de huisstijl, testversie | Klaar |
 | 2 | Game-engine met tests | Klaar |
 | 3 | Race aanmaken en lokaal opslaan | Klaar |
-| 4–9 | Schermen echt laten werken | – |
+| 4 | Home en eerste start, met de bewegende Gerard | Klaar |
+| 5–9 | Overige schermen echt laten werken | – |
 | 10–11 | Afwerking, PWA, online op thegreatrandomrace.nl | – |
 
-De schermen tonen nog **voorbeeldgegevens** (`src/demo/voorbeeld.ts`). De race-engine (fase 2) en de opslag op het toestel (fase 3) zijn klaar; vanaf fase 4 worden de schermen één voor één op de echte race aangesloten.
+De schermen tonen nog **voorbeeldgegevens** (`src/demo/voorbeeld.ts`). De race-engine (fase 2) en de opslag op het toestel (fase 3) zijn klaar; Home, het welkomstscherm en het keuze-event werken met de echte race (fase 4); de andere schermen volgen in fase 5–9.
 
 **Testen zonder een week te wachten:** onder *Meer → Testversie: tijdmachine* kun je de klok van de app een uur of een dag vooruit zetten, en alles wissen. Dit verdwijnt in de echte versie.
 

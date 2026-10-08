@@ -15,6 +15,10 @@ export function Welcome() {
   const { startNewRace, save, now } = useGame();
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
+  // Staat de app al op het beginscherm, dan is de installatietip overbodig.
+  const installed =
+    window.matchMedia('(display-mode: standalone)').matches ||
+    (navigator as Navigator & { standalone?: boolean }).standalone === true;
 
   const start = async () => {
     if (busy) return;
@@ -37,21 +41,23 @@ export function Welcome() {
 
       <main className="welcome__main">
         <div className="welcome__hero">
-          <LivingRacer image={playerRacer.image} alt={t.gerardAlt} className="welcome__gerard" />
+          <LivingRacer image={playerRacer.image} alt={t.gerardAlt} wobble className="welcome__gerard" />
         </div>
         <div className="welcome__intro">
           <h1 className="kop kop--36">{t.title}</h1>
           <p className="welcome__text">{t.intro}</p>
           <p className="welcome__text welcome__text--zacht">{t.relax}</p>
         </div>
-        <div className="tip">
-          <PhoneDownload />
-          <div>
-            <b>{t.installTitle}</b> {t.installIphone} <b>{t.installIphoneShare}</b> {t.installIphoneChoose}{' '}
-            <b>{t.installIphoneAction}</b>. {t.installAndroid} <b>{t.installAndroidMenu}</b> {t.installIphoneChoose}{' '}
-            <b>{t.installAndroidAction}</b>. {t.installWhy}
+        {!installed && (
+          <div className="tip">
+            <PhoneDownload />
+            <div>
+              <b>{t.installTitle}</b> {t.installIphone} <b>{t.installIphoneShare}</b> {t.installIphoneChoose}{' '}
+              <b>{t.installIphoneAction}</b>. {t.installAndroid} <b>{t.installAndroidMenu}</b> {t.installIphoneChoose}{' '}
+              <b>{t.installAndroidAction}</b>. {t.installWhy}
+            </div>
           </div>
-        </div>
+        )}
       </main>
 
       <div className="screen__footer">

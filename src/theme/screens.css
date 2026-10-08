@@ -111,15 +111,10 @@
   padding: 12px 14px 14px 8px;
 }
 
-.hero-card .living {
-  width: 160px;
-  height: 136px;
-  flex-shrink: 0;
-}
-
 .hero-card__img {
   width: 160px;
   height: 136px;
+  flex-shrink: 0;
 }
 
 .hero-card__info {
@@ -294,8 +289,6 @@
   width: 270px;
   height: 212px;
   margin-left: -135px;
-  object-position: bottom;
-  transform-origin: 50% 100%;
 }
 
 .racer__main {
@@ -648,8 +641,9 @@
   width: 100%;
   max-width: 326px;
   aspect-ratio: 326 / 222;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 18px;
+  background: linear-gradient(180deg, #d5e8f7, #dcefd9);
 }
 
 .event__text {
@@ -726,8 +720,6 @@
   width: 270px;
   height: 172px;
   margin-left: -135px;
-  object-position: bottom;
-  transform-origin: 50% 100%;
 }
 
 .finish__podium {
@@ -931,4 +923,99 @@
   font-weight: 700;
   text-decoration: underline;
   cursor: pointer;
+}
+
+/* ---------- Home: event, laatste nieuws ---------- */
+
+.stat__big--oranje {
+  color: var(--oranje);
+}
+
+.stat__big--grijs {
+  color: var(--inkt-zacht);
+}
+
+.event-teaser {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+  padding: 18px 14px 14px;
+  border-radius: 18px;
+  background: var(--kaart);
+  border: 3px solid #f0573e;
+  box-shadow: 0 6px 16px rgba(214, 58, 36, 0.18);
+  text-decoration: none;
+  color: var(--inkt);
+}
+
+.event-teaser__badge {
+  position: absolute;
+  top: -14px;
+  left: 14px;
+  padding: 2px 12px;
+  font-size: 18px;
+  letter-spacing: 0.04em;
+}
+
+.event-teaser__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.event-teaser__title {
+  font-family: var(--font-kop);
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.event-teaser__text {
+  font-size: 13px;
+  color: var(--inkt-zacht);
+}
+
+.event-teaser__cta {
+  flex-shrink: 0;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #f7893a, #e0601a);
+  box-shadow: 0 3px 0 #a9450f;
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-weight: 800;
+  font-size: 17px;
+  text-transform: uppercase;
+}
+
+.news-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  text-decoration: none;
+  color: var(--inkt);
+}
+
+.news-card__label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--inkt-zacht);
+}
+
+.news-card__text {
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.news-card__more {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--navy);
 }

@@ -68,6 +68,12 @@ describe('positie en stand', () => {
     }
   });
 
+  it('bij de start staat iedereen gelijk, met Gerard vooraan', () => {
+    const s = standingsAt(makeRace(1), START);
+    expect(s[0].racerId).toBe('gerard');
+    expect(s.every((x) => x.km === 0)).toBe(true);
+  });
+
   it('na precies 7 dagen verandert er niets meer', () => {
     const race = makeRace(21);
     expect(standingsAt(race, race.endTime + 3 * DAY)).toEqual(finalStandings(race));

@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { nl } from '../content/nl';
 import { getChoice, getCourse } from '../content';
+import { useGame } from '../state/GameProvider';
+import { useRaceView } from '../state/useRaceView';
 import type { ChoiceColor } from '../models/Choice';
-import { demoRace } from '../demo/voorbeeld';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { AppleIcon, CloseIcon, SitIcon, SkipIcon } from '../components/Icons';
 import { img } from '../utils/images';
@@ -14,14 +15,22 @@ const ICONS: Record<ChoiceColor, JSX.Element> = {
 };
 
 /**
- * Keuze-event als pop-up (Event.html).
- * In fase 1 tonen we de aardbei als voorbeeld; de keuze telt nog niet mee.
+ * Keuze-event als pop-up (Event.html). Staat er een keuze open, dan telt
+ * de gekozen optie meteen mee. Zonder open keuze tonen we de aardbei als
+ * voorbeeld (testversie); dan gebeurt er niets.
  */
 export function Event() {
   const navigate = useNavigate();
-  const choice = getChoice('aardbei');
-  const course = getCourse(demoRace.courseId);
+  const { decide } = useGame();
+  const view = useRaceView();
+  const open = view?.openChoice ?? null;
+  const choice = open?.choice ?? getChoice('aardbei');
+  const course = view?.race.course ?? getCourse('grote-bosrace');
   const close = () => navigate('/home');
+  const pick = async (optionId: string) => {
+    if (open) await decide(open.id, optionId);
+    close();
+  };
 
   return (
     <div className="screen event">
@@ -41,7 +50,7 @@ export function Event() {
         <p className="event__text">{choice.text}</p>
         <div className="event__options">
           {choice.options.map((o) => (
-            <PrimaryButton key={o.id} color={o.color} size="keuze" icon={ICONS[o.color]} onClick={close}>
+            <PrimaryButton key={o.id} color={o.color} size="keuze" icon={ICONS[o.color]} onClick={() => pick(o.id)}>
               {o.label}
             </PrimaryButton>
           ))}

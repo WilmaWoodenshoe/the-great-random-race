@@ -336,14 +336,63 @@
 /* ---------- Levende racer ---------- */
 
 .living {
+  position: relative;
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  transition: transform 0.6s ease-out;
+}
+
+/* Kijkt ergens naar: kopje schuin naar voren. */
+.living--kijkt {
+  transform: rotate(4deg);
+  transform-origin: 50% 95%;
+}
+
+/* Schrikt: trekt zich een beetje terug in zijn huisje. */
+.living--schrikt {
+  transform: scale(0.93) translateX(-4%);
+  transform-origin: 50% 95%;
+}
+
+.living__zzz {
+  position: absolute;
+  right: 30%;
+  top: 18%;
+  font-family: var(--font-kop);
+  font-weight: 800;
+  color: var(--navy);
+  pointer-events: none;
+}
+
+.living__zzz span {
+  position: absolute;
+  font-size: 28px;
+  opacity: 0;
+  text-shadow: 0 0 4px var(--wit), 0 0 8px var(--wit);
+  animation: grr-zzz 3s ease-out infinite;
+}
+
+.living__zzz span:nth-child(2) {
+  left: 10px;
+  top: -12px;
+  font-size: 22px;
+  animation-delay: 1s;
+}
+
+.living__zzz span:nth-child(3) {
+  left: 20px;
+  top: -24px;
+  font-size: 18px;
+  animation-delay: 2s;
 }
 
 .living__img {
   display: block;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
+  object-position: bottom;
 }
 
 /* ---------- Eigenschap-balkje ---------- */
