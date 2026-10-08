@@ -62,7 +62,7 @@ export function Home() {
         <section className="card hero-card">
           <LivingRacer
             image={me.image}
-            alt={`${me.name} de ${me.species.toLowerCase()}`}
+            alt={t.racerAlt(me.name, me.species)}
             wobble
             mood={moodFor(view.activity)}
             hat={view.hat}

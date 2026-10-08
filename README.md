@@ -23,9 +23,10 @@ Website (later): thegreatrandomrace.nl
 | 7 | Racerprofiel | Klaar |
 | 8 | Dagelijkse actie | Klaar |
 | 9 | Finishscherm met confetti | Klaar |
-| 10–11 | Afwerking, PWA, online op thegreatrandomrace.nl | – |
+| 10 | Balanstest, tests en afwerking | Klaar |
+| 11 | PWA afmaken en online op thegreatrandomrace.nl | – |
 
-Alle schermen werken met de echte race (fase 1–9). Nog te doen: balanstest en afwerking (fase 10) en de app echt online op thegreatrandomrace.nl (fase 11).
+Alle schermen werken met de echte race (fase 1–9). Nog te doen: de app afmaken als installeerbare app en echt online zetten op thegreatrandomrace.nl (fase 11).
 
 **Testen zonder een week te wachten:** onder *Meer → Testversie: tijdmachine* kun je de klok van de app een uur of een dag vooruit zetten, en alles wissen. Dit verdwijnt in de echte versie.
 
@@ -35,6 +36,7 @@ Alle schermen werken met de echte race (fase 1–9). Nog te doen: balanstest en 
 - De positie van elke racer wordt op elk moment uitgerekend uit dat schema. De app hoeft dus niet open te staan, en de race is altijd hetzelfde, hoe vaak je ook kijkt.
 - Keuzes van de speler en de dagelijkse actie tellen pas mee vanaf het moment dat ze gemaakt zijn. Wat al gebeurd is, verandert nooit.
 - De balanstest (`tests/balance.test.ts`) speelt 1.000 races en controleert de doelen uit de briefing. Uitkomst bij de huidige instellingen: Gerard wint ± 27%, finisht meestal halverwege dag 7; Ducky wint ± 71%; Turbo haalt in ± 55% van de races de finish, Kevin in ± 9%, Steve nooit.
+- Een tweede balanstest speelt 1.000 races waarin de speler elke dag Gerard voert: hij wint dan iets vaker, maar minder dan 10 procentpunt. De actie helpt, maar beslist de race niet.
 - Afstellen gebeurt in `src/game/racers.ts` (`BASE_KMH`), `src/game/events.ts` (kansen per event) en `src/game/personality.ts` (wat de eigenschappen doen).
 
 ## Nieuwe inhoud toevoegen

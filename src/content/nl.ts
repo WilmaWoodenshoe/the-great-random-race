@@ -55,6 +55,7 @@ export const nl = {
     raceOverCta: 'Bekijk de uitslag',
     raceOver: 'Afgelopen',
     statusAlt: 'Wat Gerard nu doet',
+    racerAlt: (name: string, species: string) => `${name} de ${species.toLowerCase()}`,
     actionOpen: 'Je mag vandaag nog één ding doen voor Gerard.',
     actionDone: 'Actie van vandaag gedaan.',
   },
@@ -403,6 +404,13 @@ export const nl = {
     hours: (n: number) => (n === 1 ? '1 uur' : `${n} uur`),
     dateTime: (time: number) =>
       new Date(time).toLocaleString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }),
+  },
+  error: {
+    title: 'Oeps.',
+    text: 'Er ging iets mis. Gerard heeft er niets mee te maken. Waarschijnlijk.',
+    retry: 'Opnieuw proberen',
+    reset: 'Alles wissen en opnieuw beginnen',
+    resetConfirm: 'Weet je het zeker? De race en alle uitslagen worden gewist.',
   },
   notFound: {
     title: 'Hier is niets.',

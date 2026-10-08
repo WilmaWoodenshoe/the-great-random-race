@@ -1,6 +1,7 @@
 import { choices, getCourse, racers } from '../content';
 import { DAY } from '../utils/dates';
-import { createRace, finalStandings } from './engine';
+import type { ActionId } from '../models/Race';
+import { canDoAction, createRace, doAction, finalStandings } from './engine';
 
 export interface BalanceReport {
   races: number;
@@ -18,10 +19,10 @@ export interface BalanceReport {
 }
 
 /**
- * Simuleer veel races (zonder acties van de speler; keuzes maakt Gerard
- * zelf) en tel wie er wint en finisht. Voor de balanstest (hoofdstuk 10).
+ * Simuleer veel races (standaard zonder acties van de speler; keuzes maakt
+ * Gerard zelf) en tel wie er wint en finisht. Voor de balanstest (hoofdstuk 10).
  */
-export function runBalance(count: number, firstSeed = 1): BalanceReport {
+export function runBalance(count: number, firstSeed = 1, dailyAction: ActionId | null = null): BalanceReport {
   const course = getCourse('grote-bosrace');
   const perRacer: BalanceReport['perRacer'] = {};
   const finishDays: Record<string, number[]> = {};
@@ -33,7 +34,14 @@ export function runBalance(count: number, firstSeed = 1): BalanceReport {
   }
   const start = Date.UTC(2026, 9, 5, 7, 0);
   for (let i = 0; i < count; i++) {
-    const race = createRace({ now: start, seed: firstSeed + i * 7919, number: i + 1, course, racers, choices });
+    let race = createRace({ now: start, seed: firstSeed + i * 7919, number: i + 1, course, racers, choices });
+    // Optioneel: elke dag om 10 uur dezelfde actie (zoals een trouwe speler).
+    if (dailyAction) {
+      for (let d = 0; d < course.days; d++) {
+        const t = start + d * DAY + DAY / 8;
+        if (canDoAction(race, t)) race = doAction(race, dailyAction, t);
+      }
+    }
     const standings = finalStandings(race);
     perRacer[standings[0].racerId].wins++;
     for (const s of standings) {

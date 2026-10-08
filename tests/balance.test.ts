@@ -25,6 +25,14 @@ describe('balans over 1.000 races', () => {
     expect(pct(p.turbo.finishes)).toBeLessThan(0.8);
   });
 
+  it('de dagelijkse actie helpt een beetje, maar beslist de race niet', () => {
+    const fed = runBalance(1000, 1, 'voeren');
+    const winsWithout = pct(p.gerard.wins);
+    const winsWith = fed.perRacer.gerard.wins / fed.races;
+    expect(winsWith).toBeGreaterThanOrEqual(winsWithout);
+    expect(winsWith - winsWithout).toBeLessThan(0.1);
+  });
+
   it('Kevin haalt de finish zelden, Steve nooit', () => {
     expect(pct(p.kevin.finishes)).toBeGreaterThan(0);
     expect(pct(p.kevin.finishes)).toBeLessThan(0.15);

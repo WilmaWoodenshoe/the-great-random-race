@@ -140,7 +140,7 @@ export function finalStandings(race: Race): Standing[] {
 
 /** Hele dagen die nog over zijn, naar boven afgerond (0 als de race voorbij is). */
 export function daysLeft(race: Race, now: number): number {
-  return Math.max(0, Math.ceil((race.endTime - now) / DAY));
+  return Math.min(race.course.days, Math.max(0, Math.ceil((race.endTime - now) / DAY)));
 }
 
 // ---------- Keuze-events ----------

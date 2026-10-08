@@ -33,20 +33,41 @@ const TICK_MS = 30_000;
 export function GameProvider({ children, storage }: { children: ReactNode; storage?: GameStorage }) {
   const store = useRef(storage ?? createIndexedDbStorage()).current;
   const [loading, setLoading] = useState(true);
-  const [save, setSave] = useState<SaveData>(EMPTY_SAVE);
+  const [save, setSaveState] = useState<SaveData>(EMPTY_SAVE);
   const [realNow, setRealNow] = useState(() => Date.now());
+  // Altijd de nieuwste stand, ook als er snel na elkaar iets verandert.
+  const latest = useRef<SaveData>(EMPTY_SAVE);
+  const setSave = useCallback((data: SaveData) => {
+    latest.current = data;
+    setSaveState(data);
+  }, []);
+
+  /** Opslaan; lukt het niet (bijv. privévenster), dan speelt de app gewoon door. */
+  const persist = useCallback(
+    async (data: SaveData) => {
+      try {
+        await store.save(data);
+      } catch (err) {
+        console.warn('Opslaan op dit toestel lukte niet', err);
+      }
+    },
+    [store],
+  );
 
   useEffect(() => {
     let cancelled = false;
-    store.load().then((data) => {
-      if (cancelled) return;
-      setSave(data);
-      setLoading(false);
-    });
+    store
+      .load()
+      .catch(() => ({ ...EMPTY_SAVE }))
+      .then((data) => {
+        if (cancelled) return;
+        setSave(data);
+        setLoading(false);
+      });
     return () => {
       cancelled = true;
     };
-  }, [store]);
+  }, [store, setSave]);
 
   // De klok loopt door, en springt bij terugkomen in de app meteen bij.
   useEffect(() => {
@@ -65,22 +86,32 @@ export function GameProvider({ children, storage }: { children: ReactNode; stora
   // Afgelopen races komen vanzelf in de geschiedenis.
   useEffect(() => {
     if (loading) return;
-    const archived = archiveIfFinished(save, now);
-    if (archived !== save) {
+    const archived = archiveIfFinished(latest.current, now);
+    if (archived !== latest.current) {
       setSave(archived);
-      void store.save(archived);
+      void persist(archived);
     }
-  }, [loading, save, now, store]);
+  }, [loading, save, now, persist, setSave]);
 
   const update = useCallback(
     async (change: (current: SaveData, at: number) => SaveData) => {
-      const at = Date.now() + save.clockOffset;
-      const next = change(save, at);
+      const current = latest.current;
+      const at = Date.now() + current.clockOffset;
+      let next: SaveData;
+      try {
+        next = change(current, at);
+      } catch (err) {
+        // Bijv. een keuze die net verlopen is: niets doen, het scherm toont de echte stand.
+        console.warn(err);
+        setRealNow(Date.now());
+        return;
+      }
+      if (next === current) return;
       setSave(next);
       setRealNow(Date.now());
-      await store.save(next);
+      await persist(next);
     },
-    [save, store],
+    [persist, setSave],
   );
 
   const value = useMemo<GameContextValue>(
@@ -97,14 +128,18 @@ export function GameProvider({ children, storage }: { children: ReactNode; stora
         update((s, at) => ({ ...s, race: s.race && decideChoice(s.race, scheduledId, optionId, at) })),
       act: (actionId) => update((s, at) => ({ ...s, race: s.race && doAction(s.race, actionId, at) })),
       markFinishSeen: (raceId) => update((s) => (s.finishSeenRaceId === raceId ? s : { ...s, finishSeenRaceId: raceId })),
-      markJournalSeen: (time) => update((s) => ({ ...s, journalSeenAt: Math.max(s.journalSeenAt, time) })),
+      markJournalSeen: (time) => update((s) => (time <= s.journalSeenAt ? s : { ...s, journalSeenAt: time })),
       setClockOffset: (ms) => update((s) => ({ ...s, clockOffset: ms })),
       resetAll: async () => {
-        await store.clear();
+        try {
+          await store.clear();
+        } catch {
+          // Niet erg: we beginnen hoe dan ook opnieuw.
+        }
         setSave({ ...EMPTY_SAVE });
       },
     }),
-    [loading, save, now, update, store],
+    [loading, save, now, update, store, setSave],
   );
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

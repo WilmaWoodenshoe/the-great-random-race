@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { HashRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { GameProvider } from './state/GameProvider';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { Start } from './screens/Start';
 import { Welcome } from './screens/Welcome';
 import { Home } from './screens/Home';
@@ -25,25 +26,27 @@ function ScrollToTop() {
 // eenvoudige webserver (ook GitHub Pages) zonder extra instellingen.
 export function App() {
   return (
-    <GameProvider>
-      <HashRouter>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Start />} />
-          <Route path="/welkom" element={<Welcome />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/race" element={<Race />} />
-          <Route path="/gerard" element={<Racer />} />
-          <Route path="/racer/:id" element={<Racer />} />
-          <Route path="/tussenstand" element={<Leaderboard />} />
-          <Route path="/journaal" element={<Journal />} />
-          <Route path="/actie" element={<Action />} />
-          <Route path="/event" element={<Event />} />
-          <Route path="/finish" element={<Finish />} />
-          <Route path="/meer" element={<More />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </HashRouter>
-    </GameProvider>
+    <ErrorBoundary>
+      <GameProvider>
+        <HashRouter>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Start />} />
+            <Route path="/welkom" element={<Welcome />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/race" element={<Race />} />
+            <Route path="/gerard" element={<Racer />} />
+            <Route path="/racer/:id" element={<Racer />} />
+            <Route path="/tussenstand" element={<Leaderboard />} />
+            <Route path="/journaal" element={<Journal />} />
+            <Route path="/actie" element={<Action />} />
+            <Route path="/event" element={<Event />} />
+            <Route path="/finish" element={<Finish />} />
+            <Route path="/meer" element={<More />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </HashRouter>
+      </GameProvider>
+    </ErrorBoundary>
   );
 }
