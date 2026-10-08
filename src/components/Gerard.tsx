@@ -1,3 +1,4 @@
+import type { Racer } from '../models/Racer';
 import { img } from '../utils/images';
 
 /** Hoe de racer erbij staat; past bij wat hij nu doet (hoofdstuk 15). */
@@ -12,7 +13,7 @@ interface Props {
   wobble?: boolean;
   mood?: Mood;
   /** Een hoed op het hoofd: afbeelding en plek (zie Racer.hatSpot). */
-  hat?: { image: string; alt: string; spot: { left: number; top: number; width: number; aspect: number } };
+  hat?: { image: string; alt: string; spot: NonNullable<Racer['hatSpot']> };
 }
 
 /** Zet wat de racer doet (een eventtype of status) om in een houding. */
@@ -41,7 +42,12 @@ export function LivingRacer({ image, alt, className = '', wobble = false, mood =
         className="living__hat"
         src={img(hat.image)}
         alt={hat.alt}
-        style={{ left: `${hat.spot.left}%`, top: `${hat.spot.top}%`, width: `${hat.spot.width}%` }}
+        style={{
+          left: `${hat.spot.left}%`,
+          top: `${hat.spot.top}%`,
+          width: `${hat.spot.width}%`,
+          transform: hat.spot.rotate ? `rotate(${hat.spot.rotate}deg)` : undefined,
+        }}
       />
     </span>
   ) : (

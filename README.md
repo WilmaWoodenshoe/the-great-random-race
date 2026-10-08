@@ -72,7 +72,7 @@ const ducky: Racer = {
 export default ducky;
 ```
 
-**Hoed op het hoofd:** een racer kan alleen een hoed dragen als in zijn bestand `hatSpot` staat: waar de hoed zit, in procenten van de afbeelding. Voor Gerard: `hatSpot: { left: 70.6, top: 17.6, width: 18.1, aspect: 720 / 519 }` (`aspect` = breedte ÷ hoogte van zijn afbeelding in pixels).
+**Hoed:** een racer kan alleen een hoed dragen als in zijn bestand `hatSpot` staat: waar de hoed zit, in procenten van de afbeelding. Gerard draagt hem op zijn huisje: `hatSpot: { left: 27, top: -8, width: 26, rotate: -8, aspect: 720 / 519 }` (`rotate` = scheve stand in graden, `aspect` = breedte ÷ hoogte van zijn afbeelding in pixels).
 
 ### Accessoire — `src/content/accessories/<naam>.ts`
 

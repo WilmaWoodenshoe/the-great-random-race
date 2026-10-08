@@ -9,7 +9,7 @@ const gerard: Racer = {
   title: 'The Determined',
   image: 'racers/gerard.webp',
   playable: true,
-  hatSpot: { left: 70.6, top: 17.6, width: 18.1, aspect: 720 / 519 },
+  hatSpot: { left: 27, top: -8, width: 26, rotate: -8, aspect: 720 / 519 }, // op het huisje
   facts: {
     favoriteFood: 'Sla',
     dislikes: 'Kiezelstenen',
