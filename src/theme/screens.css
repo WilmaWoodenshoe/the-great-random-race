@@ -247,10 +247,9 @@
 }
 
 .race__progress {
-  position: absolute;
-  left: 24px;
-  right: 24px;
-  bottom: 38px;
+  /* Onder de kaart, niet eroverheen: anders vallen racers bij de start weg. */
+  position: relative;
+  margin: 12px 12px 0;
   padding: 14px 16px 12px;
   border-radius: 18px;
   box-shadow: 0 6px 18px rgba(30, 42, 54, 0.16);
@@ -263,7 +262,6 @@
 .race__progress {
   text-decoration: none;
   color: var(--inkt);
-  z-index: 5;
 }
 
 .race__km {
