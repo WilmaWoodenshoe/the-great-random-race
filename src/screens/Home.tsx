@@ -34,10 +34,12 @@ function statusIcon(activity: string): string {
 
 /** Home (Main.html). */
 export function Home() {
-  const { loading } = useGame();
+  const { loading, save } = useGame();
   const view = useRaceView();
   if (loading) return <div className="screen" aria-busy="true" />;
   if (!view) return <Navigate to="/" replace />;
+  // Net afgelopen en de uitslag nog niet gezien: meteen naar de finish.
+  if (view.finished && save.finishSeenRaceId !== view.race.id) return <Navigate to="/finish" replace />;
 
   const { race, player: me, me: standing, journal } = view;
   const t = nl.home;

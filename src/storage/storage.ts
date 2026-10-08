@@ -26,6 +26,7 @@ export function parseSave(raw: unknown): SaveData {
     raceCounter: typeof data.raceCounter === 'number' ? data.raceCounter : 0,
     clockOffset: typeof data.clockOffset === 'number' ? data.clockOffset : 0,
     journalSeenAt: typeof data.journalSeenAt === 'number' ? data.journalSeenAt : 0,
+    finishSeenRaceId: typeof data.finishSeenRaceId === 'string' ? data.finishSeenRaceId : null,
   };
 }
 

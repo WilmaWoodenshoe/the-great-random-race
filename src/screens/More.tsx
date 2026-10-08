@@ -87,7 +87,6 @@ export function More() {
           items={[
             { to: '/welkom', title: t.welcome, hint: t.welcomeHint },
             { to: '/event', title: t.event, hint: t.eventHint },
-            { to: '/finish', title: t.finish, hint: t.finishHint },
           ]}
         />
 

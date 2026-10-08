@@ -28,6 +28,8 @@ export interface SaveData {
   clockOffset: number;
   /** Tot welk moment de speler het journaal al gezien heeft (voor 'nieuw'). */
   journalSeenAt: number;
+  /** Van welke race de speler de uitslag al gezien heeft. */
+  finishSeenRaceId: string | null;
 }
 
-export const EMPTY_SAVE: SaveData = { version: 1, race: null, history: [], raceCounter: 0, clockOffset: 0, journalSeenAt: 0 };
+export const EMPTY_SAVE: SaveData = { version: 1, race: null, history: [], raceCounter: 0, clockOffset: 0, journalSeenAt: 0, finishSeenRaceId: null };

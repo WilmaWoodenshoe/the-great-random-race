@@ -1180,3 +1180,33 @@ a.board__row {
 .action__done--closed {
   background: var(--lichtblauw);
 }
+
+/* ---------- Finish: extra ---------- */
+
+.finish__line {
+  margin: 0 4px;
+  font-size: 15px;
+  line-height: 1.45;
+  text-align: center;
+  color: var(--inkt-zacht);
+}
+
+.finish__row--me .finish__name {
+  color: var(--navy);
+}
+
+.finish__row--me {
+  background: var(--lichtblauw);
+  border-radius: 10px;
+  margin: 0 -6px;
+  padding: 6px;
+}
+
+.finish__place {
+  width: 30px;
+  text-align: center;
+  font-family: var(--font-kop);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--inkt-zacht);
+}

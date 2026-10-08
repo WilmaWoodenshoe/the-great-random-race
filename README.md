@@ -22,10 +22,10 @@ Website (later): thegreatrandomrace.nl
 | 6 | Journaal | Klaar |
 | 7 | Racerprofiel | Klaar |
 | 8 | Dagelijkse actie | Klaar |
-| 9 | Finishscherm met confetti | – |
+| 9 | Finishscherm met confetti | Klaar |
 | 10–11 | Afwerking, PWA, online op thegreatrandomrace.nl | – |
 
-De meeste schermen tonen nog **voorbeeldgegevens** (`src/demo/voorbeeld.ts`). De race-engine (fase 2) en de opslag op het toestel (fase 3) zijn klaar; Home, het welkomstscherm, het keuze-event (fase 4), de racekaart en de tussenstand (fase 5) het journaal (fase 6), de racerprofielen (fase 7) en de dagelijkse actie (fase 8) werken met de echte race; de uitslag volgt in fase 9.
+Alle schermen werken met de echte race (fase 1–9). Nog te doen: balanstest en afwerking (fase 10) en de app echt online op thegreatrandomrace.nl (fase 11).
 
 **Testen zonder een week te wachten:** onder *Meer → Testversie: tijdmachine* kun je de klok van de app een uur of een dag vooruit zetten, en alles wissen. Dit verdwijnt in de echte versie.
 
@@ -182,5 +182,4 @@ Techniek: React + Vite + TypeScript, React Router, vite-plugin-pwa, IndexedDB (i
 | `src/state/` | Verbindt engine en opslag met de schermen |
 | `src/theme/` | Huisstijl: kleuren, letters, animaties |
 | `src/utils/` | Hulpfuncties |
-| `src/demo/` | Voorbeeldgegevens voor fase 1 (verdwijnt later) |
 | `tests/` | Tests |
