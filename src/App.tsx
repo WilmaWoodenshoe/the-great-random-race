@@ -34,6 +34,7 @@ export function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/race" element={<Race />} />
           <Route path="/gerard" element={<Racer />} />
+          <Route path="/racer/:id" element={<Racer />} />
           <Route path="/tussenstand" element={<Leaderboard />} />
           <Route path="/journaal" element={<Journal />} />
           <Route path="/actie" element={<Action />} />

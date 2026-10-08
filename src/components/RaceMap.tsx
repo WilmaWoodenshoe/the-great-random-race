@@ -1,4 +1,5 @@
 import type { Course, MapPoint } from '../models/Course';
+import { Link } from 'react-router-dom';
 import { nl } from '../content/nl';
 import { img } from '../utils/images';
 
@@ -46,16 +47,28 @@ export function RaceMap({ course, markers, alt }: Props) {
       </div>
       {ordered.map((m) =>
         m.isPlayer ? (
-          <div key={m.racerId} className="race-map__marker race-map__marker--player" style={pos(m.point)}>
+          <Link
+            key={m.racerId}
+            to="/gerard"
+            className="race-map__marker race-map__marker--player"
+            style={pos(m.point)}
+            aria-label={nl.racer.open(m.label)}
+          >
             <div className="race-map__ping grr-ping" />
             <img className="race-map__racer" src={img(m.image)} alt="" />
             <div className="race-map__label">{m.label}</div>
-          </div>
+          </Link>
         ) : (
-          <div key={m.racerId} className="race-map__marker race-map__marker--other" style={pos(m.point)}>
+          <Link
+            key={m.racerId}
+            to={`/racer/${m.racerId}`}
+            className="race-map__marker race-map__marker--other"
+            style={pos(m.point)}
+            aria-label={nl.racer.open(m.label)}
+          >
             <img className="race-map__racer race-map__racer--other" src={img(m.image)} alt="" />
             <div className="race-map__tag">{m.label}</div>
-          </div>
+          </Link>
         ),
       )}
     </div>

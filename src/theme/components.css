@@ -522,6 +522,9 @@
 }
 
 .race-map__marker {
+  display: block;
+  color: inherit;
+  text-decoration: none;
   position: absolute;
   width: 0;
   height: 0;
@@ -591,4 +594,15 @@
   font-weight: 800;
   white-space: nowrap;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Ruim tikvlak rond elke racer op de kaart. */
+.race-map__marker::before {
+  content: '';
+  position: absolute;
+  left: -24px;
+  top: -24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
 }

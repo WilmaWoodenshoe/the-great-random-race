@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { nl } from '../content/nl';
 import { BottomNav } from '../components/BottomNav';
 import { TrophyIcon } from '../components/Icons';
@@ -61,17 +61,23 @@ export function Leaderboard() {
             const racer = getRaceRacer(race, s.racerId);
             const isMe = s.racerId === race.playerId;
             return (
-              <li key={s.racerId} className={`board__row${isMe ? ' board__row--me' : ''}`}>
-                {s.position <= 3 ? (
-                  <img className="board__medal" src={img(`ui/medal${s.position}.png`)} alt={nl.leaderboard.place(s.position)} />
-                ) : (
-                  <div className="board__place">{s.position}</div>
-                )}
-                <img className="board__racer" src={img(racer.image)} alt="" />
-                <div className="board__name">{racer.name}</div>
-                <div className={`board__km${isMe ? ' board__km--me' : ''}`}>
-                  {s.finishTime !== null ? formatDaysHours((s.finishTime - race.startTime) / 3_600_000) : formatKm(s.km)}
-                </div>
+              <li key={s.racerId}>
+                <Link
+                  to={isMe ? '/gerard' : `/racer/${s.racerId}`}
+                  className={`board__row${isMe ? ' board__row--me' : ''}`}
+                  aria-label={nl.racer.open(racer.name)}
+                >
+                  {s.position <= 3 ? (
+                    <img className="board__medal" src={img(`ui/medal${s.position}.png`)} alt={nl.leaderboard.place(s.position)} />
+                  ) : (
+                    <div className="board__place">{s.position}</div>
+                  )}
+                  <img className="board__racer" src={img(racer.image)} alt="" />
+                  <div className="board__name">{racer.name}</div>
+                  <div className={`board__km${isMe ? ' board__km--me' : ''}`}>
+                    {s.finishTime !== null ? formatDaysHours((s.finishTime - race.startTime) / 3_600_000) : formatKm(s.km)}
+                  </div>
+                </Link>
               </li>
             );
           })}

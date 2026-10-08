@@ -20,10 +20,11 @@ Website (later): thegreatrandomrace.nl
 | 4 | Home en eerste start, met de bewegende Gerard | Klaar |
 | 5 | Racekaart en tussenstand | Klaar |
 | 6 | Journaal | Klaar |
-| 7–9 | Profiel, actie en uitslag echt laten werken | – |
+| 7 | Racerprofiel | Klaar |
+| 8–9 | Dagelijkse actie en uitslag echt laten werken | – |
 | 10–11 | Afwerking, PWA, online op thegreatrandomrace.nl | – |
 
-De meeste schermen tonen nog **voorbeeldgegevens** (`src/demo/voorbeeld.ts`). De race-engine (fase 2) en de opslag op het toestel (fase 3) zijn klaar; Home, het welkomstscherm, het keuze-event (fase 4), de racekaart en de tussenstand (fase 5) en het journaal (fase 6) werken met de echte race; profiel, actie en uitslag volgen in fase 7–9.
+De meeste schermen tonen nog **voorbeeldgegevens** (`src/demo/voorbeeld.ts`). De race-engine (fase 2) en de opslag op het toestel (fase 3) zijn klaar; Home, het welkomstscherm, het keuze-event (fase 4), de racekaart en de tussenstand (fase 5) het journaal (fase 6) en de racerprofielen (fase 7) werken met de echte race; actie en uitslag volgen in fase 8–9.
 
 **Testen zonder een week te wachten:** onder *Meer → Testversie: tijdmachine* kun je de klok van de app een uur of een dag vooruit zetten, en alles wissen. Dit verdwijnt in de echte versie.
 

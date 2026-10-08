@@ -1103,3 +1103,30 @@
   font-weight: 800;
   color: var(--navy);
 }
+
+/* ---------- Racerprofiel: recent ---------- */
+
+.racer__recent {
+  border-top: 1px solid var(--rand-warm);
+  padding: 12px 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.racer__empty {
+  font-size: 14px;
+  color: var(--inkt-zacht);
+}
+
+.racer__more {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--navy);
+  text-decoration: none;
+}
+
+a.board__row {
+  text-decoration: none;
+  color: var(--inkt);
+}
