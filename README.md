@@ -21,10 +21,11 @@ Website (later): thegreatrandomrace.nl
 | 5 | Racekaart en tussenstand | Klaar |
 | 6 | Journaal | Klaar |
 | 7 | Racerprofiel | Klaar |
-| 8–9 | Dagelijkse actie en uitslag echt laten werken | – |
+| 8 | Dagelijkse actie | Klaar |
+| 9 | Finishscherm met confetti | – |
 | 10–11 | Afwerking, PWA, online op thegreatrandomrace.nl | – |
 
-De meeste schermen tonen nog **voorbeeldgegevens** (`src/demo/voorbeeld.ts`). De race-engine (fase 2) en de opslag op het toestel (fase 3) zijn klaar; Home, het welkomstscherm, het keuze-event (fase 4), de racekaart en de tussenstand (fase 5) het journaal (fase 6) en de racerprofielen (fase 7) werken met de echte race; actie en uitslag volgen in fase 8–9.
+De meeste schermen tonen nog **voorbeeldgegevens** (`src/demo/voorbeeld.ts`). De race-engine (fase 2) en de opslag op het toestel (fase 3) zijn klaar; Home, het welkomstscherm, het keuze-event (fase 4), de racekaart en de tussenstand (fase 5) het journaal (fase 6), de racerprofielen (fase 7) en de dagelijkse actie (fase 8) werken met de echte race; de uitslag volgt in fase 9.
 
 **Testen zonder een week te wachten:** onder *Meer → Testversie: tijdmachine* kun je de klok van de app een uur of een dag vooruit zetten, en alles wissen. Dit verdwijnt in de echte versie.
 
@@ -70,6 +71,8 @@ const ducky: Racer = {
 
 export default ducky;
 ```
+
+**Hoed op het hoofd:** een racer kan alleen een hoed dragen als in zijn bestand `hatSpot` staat: waar de hoed zit, in procenten van de afbeelding. Voor Gerard: `hatSpot: { left: 70.6, top: 17.6, width: 18.1, aspect: 720 / 519 }` (`aspect` = breedte ÷ hoogte van zijn afbeelding in pixels).
 
 ### Accessoire — `src/content/accessories/<naam>.ts`
 

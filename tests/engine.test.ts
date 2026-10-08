@@ -13,6 +13,7 @@ import {
   todaysAction,
 } from '../src/game/engine';
 import { hasHat } from '../src/game/actions';
+import { nl } from '../src/content/nl';
 import { journalAt } from '../src/game/journal';
 import { activityAt, statusText } from '../src/game/status';
 import { finishStats } from '../src/game/stats';
@@ -141,6 +142,15 @@ describe('dagelijkse actie', () => {
     const hat = doAction(race, 'hoed', morning);
     expect(hasHat(hat, morning - 1)).toBe(false);
     expect(hasHat(hat, race.endTime)).toBe(true);
+  });
+
+  it('met hoed reageert het journaal er soms op', () => {
+    const hat = doAction(race, 'hoed', morning);
+    const remarks = nl.engine.hatRemarks;
+    const later = journalAt(hat, race.endTime).filter((e) => e.kind === 'event' && e.racerId === 'gerard' && e.time > morning);
+    const before = journalAt(race, race.endTime).filter((e) => e.kind === 'event' && e.racerId === 'gerard');
+    expect(later.some((e) => remarks.some((r) => e.text.endsWith(r)))).toBe(true);
+    expect(before.some((e) => remarks.some((r) => e.text.endsWith(r)))).toBe(false);
   });
 
   it('kan niet meer na het einde van de race', () => {

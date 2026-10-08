@@ -3,6 +3,7 @@ import type { EventType } from '../models/Event';
 import type { JournalEntry } from '../models/JournalEntry';
 import type { Race } from '../models/Race';
 import { createRng, deriveSeed } from '../utils/random';
+import { hasHat } from './actions';
 import { effectiveDecisions } from './choices';
 import { getRaceRacer, racerMovement } from './engine';
 
@@ -66,13 +67,18 @@ export function journalAt(race: Race, now: number): JournalEntry[] {
     const name = e.racerId ? getRaceRacer(race, e.racerId).name : '';
     const key = (e.textKey ?? e.type) as EventTextKey;
     const texts = t.events[key] as readonly ((n: string) => string)[];
+    let text = pickText(texts, e.variant)(name);
+    // Met hoed op reageert het journaal er af en toe op.
+    if (e.racerId === race.playerId && e.variant % 2 === 0 && hasHat(race, e.time)) {
+      text += ` ${pickText(t.hatRemarks, e.variant >> 1)}`;
+    }
     entries.push({
       id: e.id,
       time: e.time,
       kind: 'event',
       racerId: e.racerId,
       eventType: e.type as EventType,
-      text: pickText(texts, e.variant)(name),
+      text,
     });
   }
 

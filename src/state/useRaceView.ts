@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
-import { daysLeft, getRaceRacer, isFinished, openChoice, standingsAt } from '../game/engine';
+import { nl } from '../content/nl';
+import { hasHat } from '../game/actions';
+import { canDoAction, daysLeft, getRaceRacer, isFinished, openChoice, standingsAt, todaysAction } from '../game/engine';
 import { journalAt } from '../game/journal';
 import { activityAt, statusText } from '../game/status';
 import { HOUR, DAY } from '../utils/dates';
@@ -37,6 +39,14 @@ export function useRaceView() {
       finished: isFinished(race, now),
       openChoice: openChoice(race, now),
       journal: journalAt(race, now),
+      /** Mag de speler vandaag nog een actie doen? */
+      canAct: canDoAction(race, now),
+      todaysAction: todaysAction(race, now),
+      /** De hoed voor Gerard, als hij die heeft gekregen (en een hoed past). */
+      hat:
+        hasHat(race, now) && player.hatSpot
+          ? { image: 'accessories/hoed.png', alt: nl.action.hatAlt, spot: player.hatSpot }
+          : undefined,
     };
   }, [race, now]);
 }

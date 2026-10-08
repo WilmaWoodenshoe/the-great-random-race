@@ -63,6 +63,7 @@ export function Home() {
             alt={`${me.name} de ${me.species.toLowerCase()}`}
             wobble
             mood={moodFor(view.activity)}
+            hat={view.hat}
             className="hero-card__img"
           />
           <div className="hero-card__info">
@@ -105,6 +106,19 @@ export function Home() {
           <PrimaryButton to="/race" arrow>
             {t.viewRace}
           </PrimaryButton>
+        )}
+
+        {view.canAct && (
+          <Link to="/actie" className="card card--wit action-teaser">
+            <span className="action-teaser__icon" aria-hidden="true">
+              <img src={img('ui/t-sla.png')} alt="" />
+            </span>
+            <span className="action-teaser__body">
+              <span className="action-teaser__title">{nl.action.title}</span>
+              <span className="action-teaser__text">{t.actionOpen}</span>
+            </span>
+            <span className="action-teaser__arrow" aria-hidden="true">→</span>
+          </Link>
         )}
 
         {latest && (

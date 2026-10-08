@@ -55,6 +55,8 @@ export const nl = {
     raceOverCta: 'Bekijk de uitslag',
     raceOver: 'Afgelopen',
     statusAlt: 'Wat Gerard nu doet',
+    actionOpen: 'Je mag vandaag nog één ding doen voor Gerard.',
+    actionDone: 'Actie van vandaag gedaan.',
   },
   race: {
     openJournal: 'Journaal openen',
@@ -120,6 +122,9 @@ export const nl = {
     done: 'Gedaan.',
     tomorrow: 'Morgen weer een actie',
     footer: 'Eén actie per dag. Het effect is klein. Gerard waardeert het toch.',
+    raceOver: 'De race is voorbij. Gerard heeft geen hulp meer nodig, wel rust.',
+    finished: 'Gerard is al binnen. Hij heeft geen hulp meer nodig. Hij is trots.',
+    hatAlt: 'een hoed',
     options: {
       voeren: {
         title: 'Gerard voeren',
@@ -298,6 +303,13 @@ export const nl = {
       finished: 'klaar. Hij is over de finish.',
       raceOver: 'aan het uitrusten. De race is voorbij.',
     } as Record<string, string>,
+    /** Soms reageert het journaal op Gerards hoed. */
+    hatRemarks: [
+      'De hoed blijft zitten.',
+      'Met hoed, uiteraard.',
+      'De hoed doet ondertussen niets, maar staat hem goed.',
+      'Hoed: nog steeds op.',
+    ],
     actions: {
       voeren: [
         'Gerard heeft een blaadje sla gekregen. Hij kijkt er al een tijdje naar.',

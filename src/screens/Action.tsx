@@ -1,11 +1,13 @@
 import { useState, type ReactNode } from 'react';
+import { Navigate } from 'react-router-dom';
 import { nl } from '../content/nl';
+import type { ActionId } from '../models/Race';
 import { BackHeader } from '../components/BackHeader';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { LeafIcon, MegaphoneIcon, ZzzIcon } from '../components/Icons';
+import { useGame } from '../state/GameProvider';
+import { useRaceView } from '../state/useRaceView';
 import { img } from '../utils/images';
-
-type ActionId = keyof typeof nl.action.options;
 
 const ACTIONS: { id: ActionId; bg: string; icon: ReactNode }[] = [
   { id: 'voeren', bg: '#DCEFD9', icon: <LeafIcon /> },
@@ -14,14 +16,31 @@ const ACTIONS: { id: ActionId; bg: string; icon: ReactNode }[] = [
   { id: 'niets', bg: '#D5E8F7', icon: <ZzzIcon /> },
 ];
 
-/**
- * Actie van vandaag (Action.html).
- * In fase 1 wordt de keuze nog niet bewaard; dat komt in fase 8.
- */
+/** Actie van vandaag (Action.html): één keer per kalenderdag iets doen voor Gerard. */
 export function Action() {
-  const t = nl.action;
+  const { loading, act } = useGame();
+  const view = useRaceView();
   const [picked, setPicked] = useState<ActionId>('voeren');
-  const [done, setDone] = useState(false);
+  const [busy, setBusy] = useState(false);
+  if (loading) return <div className="screen" aria-busy="true" />;
+  if (!view) return <Navigate to="/" replace />;
+
+  const t = nl.action;
+  const done = view.todaysAction;
+  const selected = done?.actionId ?? picked;
+  // Geen actie mogelijk en ook niet al gedaan: race voorbij of Gerard al binnen.
+  const closed = !view.canAct && !done;
+  const closedText = view.finished ? t.raceOver : t.finished;
+
+  const confirm = async () => {
+    if (busy || !view.canAct) return;
+    setBusy(true);
+    try {
+      await act(picked);
+    } finally {
+      setBusy(false);
+    }
+  };
 
   return (
     <div className="screen">
@@ -31,15 +50,16 @@ export function Action() {
 
       <main className="screen__main action">
         {ACTIONS.map((a) => {
-          const on = a.id === picked;
+          const on = a.id === selected && !closed;
+          const locked = !!done || closed;
           return (
             <button
               key={a.id}
               type="button"
               aria-pressed={on}
-              disabled={done && !on}
-              className={`action__option${on ? ' action__option--on' : ''}${done && !on ? ' action__option--off' : ''}`}
-              onClick={() => !done && setPicked(a.id)}
+              disabled={locked && !on}
+              className={`action__option${on ? ' action__option--on' : ''}${locked && !on ? ' action__option--off' : ''}`}
+              onClick={() => !locked && setPicked(a.id)}
             >
               <span className="action__icon" style={{ background: a.bg }}>
                 {a.icon}
@@ -54,16 +74,21 @@ export function Action() {
 
         {done && (
           <div className="action__done grr-slide-in" role="status">
-            <b>{t.done}</b> {t.options[picked].after}
+            <b>{t.done}</b> {nl.engine.actions[done.actionId][done.variant % nl.engine.actions[done.actionId].length]}
+          </div>
+        )}
+        {closed && (
+          <div className="action__done action__done--closed" role="status">
+            {closedText}
           </div>
         )}
       </main>
 
       <div className="screen__footer action__footer">
-        {done ? (
+        {done || closed ? (
           <div className="btn btn--groot btn--uit">{t.tomorrow}</div>
         ) : (
-          <PrimaryButton onClick={() => setDone(true)}>{t.confirm}</PrimaryButton>
+          <PrimaryButton onClick={confirm}>{busy ? nl.welcome.starting : t.confirm}</PrimaryButton>
         )}
         <div className="action__note">{t.footer}</div>
       </div>

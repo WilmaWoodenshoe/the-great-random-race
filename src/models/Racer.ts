@@ -22,6 +22,12 @@ export interface Racer {
   image: string;
   /** True voor de racer van de speler. In v0.1 alleen Gerard. */
   playable?: boolean;
+  /**
+   * Waar een hoed op het hoofd past, in procenten van de afbeelding
+   * (links, boven, breedte), plus de verhouding breedte/hoogte van de
+   * afbeelding. Zonder dit kan deze racer geen hoed dragen.
+   */
+  hatSpot?: { left: number; top: number; width: number; aspect: number };
   /** Weetjes voor het racerprofiel (optioneel). */
   facts?: {
     favoriteFood?: string;
