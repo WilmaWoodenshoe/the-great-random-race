@@ -27,7 +27,14 @@ export function RaceMap({ course, markers, alt }: Props) {
   const ordered = [...markers].sort((a, b) => Number(!!a.isPlayer) - Number(!!b.isPlayer) || a.point.y - b.point.y);
 
   return (
-    <div className="race-map" style={{ aspectRatio: `${width} / ${height}` }}>
+    <div
+      className="race-map"
+      style={{
+        aspectRatio: `${width} / ${height}`,
+        // Zo groot mogelijk, maar nooit hoger dan de ruimte die er is.
+        width: `min(100cqw, calc(100cqh * ${width / height}))`,
+      }}
+    >
       <img className="race-map__img" src={img(course.map.image)} alt={alt} />
       {course.segments.slice(0, -1).map((s, i) => (
         <div key={s.id} className="race-map__sign" style={pos(s.sign)}>

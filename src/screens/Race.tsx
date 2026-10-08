@@ -33,7 +33,7 @@ export function Race() {
   });
 
   return (
-    <div className="screen">
+    <div className="screen screen--passend">
       <BackHeader
         title={nl.common.raceNumber(race.number)}
         subtitle={course.name}
@@ -49,7 +49,9 @@ export function Race() {
       </BackHeader>
 
       <main className="race">
-        <RaceMap course={course} alt={nl.race.mapAlt(player.name, me.position)} markers={markers} />
+        <div className="race__map">
+          <RaceMap course={course} alt={nl.race.mapAlt(player.name, me.position)} markers={markers} />
+        </div>
         <Link to="/tussenstand" className="race__progress card">
           <ProgressBar value={view.progress} height={14} label={course.name} />
           <div className="race__km">

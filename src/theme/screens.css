@@ -240,23 +240,42 @@
 
 /* ---------- Race ---------- */
 
+/* Het racescherm past altijd op één scherm, zonder scrollen. */
+.screen--passend {
+  height: 100dvh;
+  min-height: 0;
+}
+
 .race {
   position: relative;
   flex: 1;
-  padding: 0 12px 20px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0 12px max(12px, env(safe-area-inset-bottom));
+}
+
+.race__map {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  container-type: size;
 }
 
 .race__progress {
   /* Onder de kaart, niet eroverheen: anders vallen racers bij de start weg. */
   position: relative;
-  margin: 12px 12px 0;
-  padding: 14px 16px 12px;
+  flex-shrink: 0;
+  margin: 8px 12px 0;
+  padding: 10px 16px 8px;
   border-radius: 18px;
   box-shadow: 0 6px 18px rgba(30, 42, 54, 0.16);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .race__progress {
