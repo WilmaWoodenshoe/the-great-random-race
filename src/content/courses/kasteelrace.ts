@@ -15,6 +15,7 @@ const kasteelrace: Course = {
     finish: { x: 300, y: 40 },
   },
   background: 'backgrounds/bg-kasteel.webp',
+  extraEvents: ['fountain'],
   segments: [
     {
       id: 'ophaalbrug',

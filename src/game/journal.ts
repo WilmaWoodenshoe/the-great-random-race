@@ -109,7 +109,7 @@ export function journalAt(race: Race, now: number, wearing: Accessory[] = []): J
         time,
         kind: 'event',
         racerId: null,
-        eventType: 'strange_noise',
+        eventType: 'easter_egg',
         text: fill(pickText(texts, rng.int(0, 99)), player),
       });
     }

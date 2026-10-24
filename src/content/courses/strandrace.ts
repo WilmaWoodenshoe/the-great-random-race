@@ -17,6 +17,7 @@ const strandrace: Course = {
     easterEgg: { image: 'courses/strandrace-kaart-84.webp', chance: 0.25, journalKey: 'kingOfSand' },
   },
   background: 'backgrounds/bg-strand.webp',
+  extraEvents: ['beach_ball'],
   segments: [
     {
       id: 'prikgraspad',

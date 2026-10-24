@@ -35,6 +35,8 @@ export interface Choice {
    * alleen voor als die racer meedoet en niet de racer van de speler is.
    */
   aboutRacer?: string;
+  /** Alleen op deze routes (route-id's). Zonder dit: op elke route. */
+  courses?: string[];
   /** Grote kop bovenaan de pop-up. */
   heading: string;
   title: string;

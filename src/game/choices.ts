@@ -38,9 +38,15 @@ export function scheduleChoices(
   racerIds: string[] = [],
   label = 'choices',
   idPrefix = 'keuze',
+  courseId?: string,
 ): ScheduledChoice[] {
-  // Een event over een andere racer alleen als die meedoet en niet de speler is.
-  available = available.filter((c) => !c.aboutRacer || (c.aboutRacer !== player.id && racerIds.includes(c.aboutRacer)));
+  // Een event over een andere racer alleen als die meedoet en niet de speler is;
+  // een event voor een bepaalde route alleen op die route.
+  available = available.filter(
+    (c) =>
+      (!c.aboutRacer || (c.aboutRacer !== player.id && racerIds.includes(c.aboutRacer))) &&
+      (!c.courses || !courseId || c.courses.includes(courseId)),
+  );
   if (available.length === 0) return [];
   const rng = createRng(deriveSeed(seed, label));
   // Elke keuze eerst één keer, in willekeurige volgorde.

@@ -44,6 +44,8 @@ export interface Course {
      */
     easterEgg?: { image: string; chance: number; journalKey: string };
   };
+  /** Extra events die alleen op deze route voorkomen, bijv. ['fountain']. */
+  extraEvents?: ('fountain' | 'beach_ball')[];
   /** Achtergrond bij je racer (Home, profiel, finish), relatief aan public/images/. */
   background?: string;
   segments: CourseSegment[];

@@ -58,10 +58,14 @@ export function Inventory() {
   const [fit, setFit] = useState<Partial<Record<AccessorySlot, string>>>({ hoofd: 'kroon', ogen: 'zonnebril' });
   if (!isTestVersion && !me?.isAdmin) return <Navigate to="/meer" replace />;
 
-  const totalWeight = Object.values(BASE_WEIGHTS).reduce((a, b) => a + b, 0);
+  // Routegebonden events (fontein, strandbal) tellen niet mee in het percentage.
+  const totalWeight = Object.entries(BASE_WEIGHTS)
+    .filter(([k]) => k !== 'fountain' && k !== 'beach_ball')
+    .reduce((a, [, b]) => a + b, 0);
   const eventTypes = [
     ...(Object.entries(BASE_WEIGHTS) as [EventType, number][]).sort((a, b) => b[1] - a[1]),
     ['rain', 0] as [EventType, number],
+    ['easter_egg', 0] as [EventType, number],
   ];
   const texts = nl.engine.events as Record<string, string[]>;
 
@@ -149,6 +153,7 @@ export function Inventory() {
             ...(texts[type] ?? []),
             ...(type === 'rock' ? texts.rock_family : []),
             ...(type === 'puddle' ? texts.puddle_duck : []),
+            ...(type === 'easter_egg' ? nl.engine.easterEggs.kingOfSand : []),
           ];
           return (
             <article key={type} className={`card card--wit inv__card inv__event inv__event--${look.tone}`}>

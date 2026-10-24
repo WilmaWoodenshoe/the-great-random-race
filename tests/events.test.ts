@@ -84,7 +84,10 @@ describe('eventschema', () => {
 
 describe('teksten', () => {
   it('elk eventtype heeft minstens 4 tekstvarianten', () => {
-    for (const type of EVENT_TYPES) expect(nl.engine.events[type].length).toBeGreaterThanOrEqual(4);
+    for (const type of EVENT_TYPES) {
+      if (type === 'easter_egg') continue; // eigen teksten in nl.engine.easterEggs
+      expect(nl.engine.events[type].length).toBeGreaterThanOrEqual(4);
+    }
     expect(nl.engine.events.rock_family.length).toBeGreaterThanOrEqual(4);
     expect(nl.engine.events.puddle_duck.length).toBeGreaterThanOrEqual(4);
   });
@@ -95,8 +98,8 @@ describe('teksten', () => {
 });
 
 describe('keuze-events', () => {
-  it('er zijn 5 keuze-events', () => {
-    expect(allChoices).toHaveLength(5);
+  it('er zijn 6 keuze-events', () => {
+    expect(allChoices).toHaveLength(6);
   });
 
   it('maximaal één per kalenderdag, 12 uur om te kiezen, nooit twee tegelijk open', () => {

@@ -21,32 +21,28 @@ export function journalLook(e: JournalEntry): { tone: JournalTone; icon: string 
     case 'event':
       break;
   }
+  const icon = `events/${e.eventType ?? 'nothing'}.png`;
   switch (e.eventType) {
     case 'flower':
-      return { tone: 'oranje', icon: 'journal/j01.png' };
     case 'butterfly':
     case 'worm':
     case 'strange_noise':
-      return { tone: 'oranje', icon: 'journal/j02.png' };
     case 'bird':
-      return { tone: 'oranje', icon: 'journal/j08.png' };
-    case 'nap':
-      return { tone: 'grijs', icon: 'ui/t-zzz.png' };
     case 'rock':
-      return { tone: 'oranje', icon: 'journal/j07.png' };
+    case 'wrong_turn':
+    case 'mud':
+    case 'beach_ball':
+      return { tone: 'oranje', icon };
     case 'food':
     case 'snack':
-      return { tone: 'groen', icon: 'journal/j06.png' };
     case 'shortcut':
-      return { tone: 'groen', icon: 'journal/j04.png' };
-    case 'wrong_turn':
-      return { tone: 'oranje', icon: 'journal/j03.png' };
-    case 'mud':
-      return { tone: 'oranje', icon: 'journal/j05.png' };
+    case 'fountain':
+      return { tone: 'groen', icon };
     case 'rain':
     case 'puddle':
-      return { tone: 'paars', icon: 'journal/j09.png' };
+    case 'easter_egg':
+      return { tone: 'paars', icon };
     default:
-      return { tone: 'grijs', icon: 'journal/j05.png' };
+      return { tone: 'grijs', icon };
   }
 }

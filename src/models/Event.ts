@@ -15,6 +15,11 @@ export const EVENT_TYPES = [
   'snack',
   'strange_noise',
   'nothing',
+  // Alleen op bepaalde routes (Course.extraEvents):
+  'fountain',
+  'beach_ball',
+  // Paasei van een route (alleen in het journaal):
+  'easter_egg',
 ] as const;
 
 export type EventType = (typeof EVENT_TYPES)[number];

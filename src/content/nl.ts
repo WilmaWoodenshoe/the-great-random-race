@@ -296,6 +296,18 @@ export const nl = {
         '{naam} gaat gewoon door. Verder valt er weinig te melden.',
         '{naam} is onderweg. Dat is alles. Het is genoeg.',
       ],
+      fountain: [
+        '{naam} staat bij een fontein en spettert even. Daarna gaat {hij} verfrist verder.',
+        'Een fontein! {naam} neemt een verkoelende pauze. Hofdames kijken afkeurend.',
+        '{naam} heeft een munt in de fontein gegooid. De wens: harder gaan. Het lijkt te werken.',
+        '{naam} is per ongeluk in de fontein beland. Nat, maar opvallend energiek.',
+      ],
+      beach_ball: [
+        'Een strandbal rolt voorbij. {naam} rent erachteraan. De verkeerde kant op.',
+        '{naam} doet even mee met beachvolleybal. Het is niet duidelijk voor welk team.',
+        '{naam} kreeg een strandbal tegen {zijn} hoofd. {Hij} doet alsof er niets gebeurd is.',
+        '{naam} probeert een strandbal terug te gooien. Het duurt even.',
+      ],
     },
     /** "{naam} is momenteel…" */
     status: {
@@ -315,6 +327,9 @@ export const nl = {
       snack: 'aan het racen, met een volle buik.',
       strange_noise: 'van een vreemd geluid aan het bijkomen.',
       nothing: 'aan het racen.',
+      fountain: 'aan het spetteren bij een fontein.',
+      beach_ball: 'achter een strandbal aan.',
+      easter_egg: 'aan het racen.',
       choice: 'aan het nadenken. Er moet een keuze gemaakt worden.',
       finished: 'klaar. {Hij} is over de finish.',
       raceOver: 'aan het uitrusten. De race is voorbij.',
@@ -636,6 +651,9 @@ export const nl = {
       snack: { name: 'Snack', effect: '2 uur 20% sneller.', trait: '' },
       strange_noise: { name: 'Vreemd geluid', effect: '15 min schrik, daarna 1 uur 30% sneller.', trait: 'nieuwsgierig' },
       nothing: { name: 'Niets', effect: 'Geen effect; alleen een grappige regel.', trait: '' },
+      fountain: { name: 'Fontein', effect: 'Alleen op De Kasteelrace: 15–45 min spetteren, daarna 1,5 uur 15% sneller.', trait: '' },
+      beach_ball: { name: 'Strandbal', effect: 'Alleen op De Strandrace: 20–60 min op 50% snelheid.', trait: '' },
+      easter_egg: { name: 'Paasei #84', effect: 'Alleen op De Strandrace, in 1 op de 4 races: The King of Sand komt langs.', trait: '' },
       rain: { name: 'Regen', effect: 'Voor iedereen: kans 45% per dag, 1–3 uur. Slakken 15% sneller, de rest op 80%.', trait: '' },
     } as Record<string, { name: string; effect: string; trait: string }>,
     fitting: 'Pasruimte',

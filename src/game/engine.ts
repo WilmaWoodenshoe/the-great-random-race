@@ -51,8 +51,8 @@ export function createRace(input: CreateRaceInput): Race {
   const choices = humans
     .flatMap((h) =>
       humans.length === 1
-        ? scheduleChoices(seed, input.choices, getById(racers, h), startTime, endTime, racerIds)
-        : scheduleChoices(seed, input.choices, getById(racers, h), startTime, endTime, racerIds, `choices:${h}`, `keuze-${h}`),
+        ? scheduleChoices(seed, input.choices, getById(racers, h), startTime, endTime, racerIds, undefined, undefined, course.id)
+        : scheduleChoices(seed, input.choices, getById(racers, h), startTime, endTime, racerIds, `choices:${h}`, `keuze-${h}`, course.id),
     )
     .sort((a, b) => a.time - b.time);
 

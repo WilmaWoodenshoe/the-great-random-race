@@ -101,4 +101,13 @@ describe('kies je racer', () => {
     expect(careerStats(save, at, 'steve').races).toBe(0);
     expect(careerStats(save, at).races).toBe(2);
   });
+
+  it('de reuzenkrab komt alleen op de Strandrace voor', () => {
+    for (let seed = 1; seed < 40; seed++) {
+      const race = startRace(EMPTY_SAVE, START, 'gerard', seed).race!;
+      for (const sc of race.choices) {
+        if (sc.choice.id === 'krab') expect(race.course.id).toBe('strandrace');
+      }
+    }
+  });
 });

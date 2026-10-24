@@ -47,6 +47,7 @@ export function upgradeRace(race: Race): Race {
       return nowOption ? { ...o, label: nowOption.label, journal: nowOption.journal } : o;
     });
     const { heading, title, text, announce, image, imageByCourse, imageAlt } = now;
+    // (aboutRacer en courses tellen alleen bij het aanmaken van een race)
     return { ...sc, choice: { ...sc.choice, heading, title, text, announce, image, imageByCourse, imageAlt, options } };
   });
 

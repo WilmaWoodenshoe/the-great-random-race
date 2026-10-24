@@ -11,7 +11,7 @@ import { chaosScale, dampen, dampenStopDuration, eventWeightFactor, napScale } f
 // de race vooraf berekend met de seed.
 
 /** Basiskans per eventtype (voor persoonlijkheid). Regen is weer en komt apart. */
-export const BASE_WEIGHTS: Record<Exclude<EventType, 'rain'>, number> = {
+export const BASE_WEIGHTS: Record<Exclude<EventType, 'rain' | 'easter_egg'>, number> = {
   flower: 10,
   food: 6,
   bird: 6,
@@ -26,7 +26,13 @@ export const BASE_WEIGHTS: Record<Exclude<EventType, 'rain'>, number> = {
   snack: 5,
   strange_noise: 5,
   nothing: 8,
+  // Alleen op routes met deze extraEvents:
+  fountain: 5,
+  beach_ball: 5,
 };
+
+/** Events die alleen op bepaalde routes voorkomen. */
+const ROUTE_EVENTS = ['fountain', 'beach_ball'] as const;
 
 /** Hoeveel vaker modder voorkomt als de racer op het modderdeel van de route is (Plakveld). */
 const MUD_SEGMENT_BOOST = 8;
@@ -53,7 +59,7 @@ interface Built {
 }
 
 /** Duur en effect van één event voor één racer, vanaf moment `t`. */
-function buildEffect(type: Exclude<EventType, 'rain'>, racer: Racer, course: Course, t: number, rng: Rng): Built {
+function buildEffect(type: Exclude<EventType, 'rain' | 'easter_egg'>, racer: Racer, course: Course, t: number, rng: Rng): Built {
   const s = racer.traits.stubborn;
   const slow = (ms: number, speed: number): SpeedPhase => ({ start: t, end: t + ms, speed: dampen(speed, s) });
   const stop = (ms: number): SpeedPhase => ({ start: t, end: t + dampenStopDuration(ms, s), speed: 0 });
@@ -105,6 +111,14 @@ function buildEffect(type: Exclude<EventType, 'rain'>, racer: Racer, course: Cou
     }
     case 'nothing':
       return { phases: [] };
+    case 'fountain': {
+      // Even spetteren bij de fontein, daarna verfrist verder.
+      const splash = stop(minutes(rng, 15, 45));
+      return { phases: [splash, then(splash, 90 * MINUTE, 1.15)] };
+    }
+    case 'beach_ball':
+      // Achter een strandbal aan: de verkeerde kant op.
+      return { phases: [slow(minutes(rng, 20, 60), 0.5)] };
   }
 }
 
@@ -158,7 +172,9 @@ export function generateRacerEvents(input: GenerateInput): RaceEvent[] {
       const onMud = muddy >= 0 && segmentIndexAt(course, here.km) === muddy;
 
       const type = rng.weighted(
-        (Object.keys(BASE_WEIGHTS) as (keyof typeof BASE_WEIGHTS)[]).map((t) => ({
+        (Object.keys(BASE_WEIGHTS) as (keyof typeof BASE_WEIGHTS)[])
+          .filter((t) => !(ROUTE_EVENTS as readonly string[]).includes(t) || course.extraEvents?.includes(t as never))
+          .map((t) => ({
           item: t,
           weight:
             BASE_WEIGHTS[t] * eventWeightFactor(t, racer.traits) * (t === 'mud' && onMud ? MUD_SEGMENT_BOOST : 1),
