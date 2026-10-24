@@ -34,6 +34,16 @@ jobs:
         run: npm run typecheck
       - name: Tests
         run: npm test
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: server/requirements-test.txt
+      - name: Servertests
+        working-directory: server
+        run: |
+          pip install -q -r requirements-test.txt
+          python -m pytest -q
       - name: App bouwen
         run: npm run build
         env:
@@ -75,6 +85,12 @@ jobs:
         run: npm run build
         env:
           BASE_PATH: /
+      - name: Servercode erbij (map _server, nginx deelt die niet uit)
+        run: |
+          mkdir -p dist/_server
+          cp -r server/app server/requirements.txt dist/_server/
+          find dist/_server -name __pycache__ -prune -exec rm -rf {} +
+          echo "${GITHUB_SHA}" > dist/_server/VERSION
       - name: In de tak 'productie' zetten
         run: |
           cd dist

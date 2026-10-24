@@ -65,7 +65,7 @@ systemctl reload nginx
 
 Dit kan pas als stap 1 klaar is.
 
-Heb je stap 4 vóór 24 oktober gedaan? Haal dan eerst de bijgewerkte nginx-instelling op (die houdt geen bezoekerslogboek bij, zoals de privacyverklaring belooft):
+Haal eerst de nieuwste nginx-instelling op. Die houdt geen bezoekerslogboek bij (zoals de privacyverklaring belooft) en bevat de doorgang naar de server van stap 8:
 
 ```
 curl -fsSL -o /etc/nginx/sites-available/thegreatrandomrace https://raw.githubusercontent.com/WilmaWoodenshoe/the-great-random-race/main/deploy/nginx-thegreatrandomrace.conf
@@ -102,11 +102,60 @@ Je ziet de regel met `*/5` staan (eventueel naast regels die er al stonden).
 
 Open op je telefoon **https://thegreatrandomrace.nl**. Je ziet het welkomstscherm met Gerard en een slotje in de adresbalk.
 
+## Stap 8 — De server voor accounts (v0.2)
+
+Dit is het stukje programma dat accounts (bijnaam + passkey) en de opgeslagen spellen bijhoudt. Het draait naast nginx, alleen bereikbaar via `https://thegreatrandomrace.nl/api`. Doe dit pas als stap 5 (het slotje) gelukt is.
+
+**8a — Controleren of de servercode er al is** (komt vanzelf mee via stap 6):
+
+```
+ls /var/www/thegreatrandomrace/_server
+```
+
+Je ziet `app`, `requirements.txt` en `VERSION`. Zie je `No such file or directory`? Wacht 5 minuten en probeer opnieuw.
+
+**8b — Python klaarzetten** (één regel per keer):
+
+```
+apt-get install -y python3-venv
+python3 -m venv /opt/grr-api/venv
+/opt/grr-api/venv/bin/pip install -r /var/www/thegreatrandomrace/_server/requirements.txt
+```
+
+De laatste regel eindigt met `Successfully installed …`.
+
+**8c — De server aanmelden bij het systeem:**
+
+```
+curl -fsSL -o /etc/systemd/system/grr-api.service https://raw.githubusercontent.com/WilmaWoodenshoe/the-great-random-race/main/deploy/grr-api.service
+curl -fsSL -o /etc/systemd/system/grr-api-update.service https://raw.githubusercontent.com/WilmaWoodenshoe/the-great-random-race/main/deploy/grr-api-update.service
+curl -fsSL -o /etc/systemd/system/grr-api-update.path https://raw.githubusercontent.com/WilmaWoodenshoe/the-great-random-race/main/deploy/grr-api-update.path
+systemctl daemon-reload
+systemctl enable --now grr-api grr-api-update.path
+```
+
+**8d — Controleren:**
+
+```
+curl -s http://127.0.0.1:8100/api/health
+```
+
+Er moet staan: `{"ok":true}`. Open daarna op je telefoon **https://thegreatrandomrace.nl/api/health**: daar staat hetzelfde.
+
+Werkt het niet? Stuur de uitkomst van deze regel door:
+
+```
+journalctl -u grr-api -n 30 --no-pager
+```
+
+**Wat er daarna vanzelf gaat:** bij een nieuwe versie haalt de server binnen 5 minuten de nieuwe code op (stap 6) en herstart dit programma zichzelf. De gegevens staan in één bestand: `/var/lib/private/thegreatrandomrace/grr.db`.
+
 ---
 
 ## Later
 
-- **Een nieuwe versie** komt vanzelf: binnen 5 minuten nadat GitHub klaar is.
+- **Een nieuwe versie** komt vanzelf: binnen 5 minuten nadat GitHub klaar is. Dat geldt ook voor de server van stap 8.
+- **De server tijdelijk uitzetten** (de app blijft werken, alleen accounts niet): `systemctl stop grr-api`. Weer aan: `systemctl start grr-api`.
 - **Iets misgegaan?** De site uitzetten zonder de andere sites te raken:
   ```
   rm /etc/nginx/sites-enabled/thegreatrandomrace && systemctl reload nginx

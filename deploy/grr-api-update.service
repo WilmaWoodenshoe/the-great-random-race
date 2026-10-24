@@ -1,0 +1,9 @@
+# Nieuwe servercode: onderdelen bijwerken en de server herstarten.
+# Komt op de server in /etc/systemd/system/grr-api-update.service
+[Unit]
+Description=The Great Random Race - server bijwerken
+
+[Service]
+Type=oneshot
+ExecStart=/opt/grr-api/venv/bin/pip install -q -r /var/www/thegreatrandomrace/_server/requirements.txt
+ExecStart=/bin/systemctl restart grr-api

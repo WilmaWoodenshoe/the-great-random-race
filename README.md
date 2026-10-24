@@ -31,7 +31,7 @@ Website (later): thegreatrandomrace.nl
 | Fase | Wat | Status |
 |---|---|---|
 | A | Kies je racer (10 racers), 5 willekeurige tegenstanders, teksten voor elke racer | Klaar |
-| B | Server met accounts (passkey) | Nog te doen |
+| B | Server met accounts (passkey), map `server/` (Python + FastAPI + SQLite, met tests) | Gebouwd; op de server zetten na het slotje (deploy/UITLEG.md, stap 8) |
 | C | Inloggen in de app, race bewaren per account | Nog te doen |
 | D | Overzicht wie met welke racer speelt, privacy, account verwijderen | Nog te doen |
 
@@ -194,6 +194,14 @@ npm run dev        # app lokaal starten
 npm run typecheck  # TypeScript-controle
 npm test           # tests
 npm run build      # productieversie in dist/
+
+# server (map server/)
+cd server
+python3 -m venv .venv && . .venv/bin/activate
+pip install -r requirements-test.txt
+python -m pytest   # servertests
+GRR_DB=grr.db GRR_RP_ID=localhost GRR_ORIGIN=http://localhost:5173 GRR_COOKIE_SECURE=0 \
+  uvicorn app.main:create_app --factory --port 8100
 ```
 
 Techniek: React + Vite + TypeScript, React Router, vite-plugin-pwa, IndexedDB (idb-keyval), Vitest, canvas-confetti. Lettertypen (Barlow Condensed, Nunito Sans) worden meegeleverd in plaats van via Google geladen, zodat de app niets naar derden stuurt en offline werkt.

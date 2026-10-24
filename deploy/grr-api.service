@@ -1,0 +1,28 @@
+# De server van The Great Random Race (accounts en opgeslagen spellen).
+# Komt op de server in /etc/systemd/system/grr-api.service
+[Unit]
+Description=The Great Random Race - server
+After=network.target
+
+[Service]
+# De code komt mee met de tak 'productie' (map _server).
+WorkingDirectory=/var/www/thegreatrandomrace/_server
+ExecStart=/opt/grr-api/venv/bin/uvicorn app.main:create_app --factory --host 127.0.0.1 --port 8100 --no-access-log
+Environment=GRR_RP_ID=thegreatrandomrace.nl
+Environment=GRR_ORIGIN=https://thegreatrandomrace.nl
+Environment=GRR_DB=/var/lib/thegreatrandomrace/grr.db
+Restart=always
+RestartSec=5
+
+# Veilig opgesloten: eigen tijdelijke gebruiker, mag alleen in zijn eigen datamap schrijven.
+DynamicUser=yes
+StateDirectory=thegreatrandomrace
+StateDirectoryMode=0700
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+
+[Install]
+WantedBy=multi-user.target

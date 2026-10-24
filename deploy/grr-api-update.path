@@ -1,0 +1,10 @@
+# Let op nieuwe servercode: na elke update in de tak 'productie' verandert VERSION.
+# Komt op de server in /etc/systemd/system/grr-api-update.path
+[Unit]
+Description=The Great Random Race - let op nieuwe servercode
+
+[Path]
+PathChanged=/var/www/thegreatrandomrace/_server/VERSION
+
+[Install]
+WantedBy=multi-user.target
