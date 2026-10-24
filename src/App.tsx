@@ -18,7 +18,11 @@ import { NotFound } from './screens/NotFound';
 /** Bij elk nieuw scherm bovenaan beginnen. */
 function ScrollToTop() {
   const { pathname } = useLocation();
-  useEffect(() => window.scrollTo(0, 0), [pathname]);
+  useEffect(() => {
+    // Met accolades: nieuwere Chrome-versies geven bij scrollTo iets terug,
+    // en React zou dat anders als 'opruimfunctie' proberen uit te voeren.
+    window.scrollTo(0, 0);
+  }, [pathname]);
   return null;
 }
 
