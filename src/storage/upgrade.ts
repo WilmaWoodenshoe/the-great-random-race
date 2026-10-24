@@ -17,7 +17,7 @@ export function upgradeRace(race: Race): Race {
         segments: race.course.segments.map((s) => {
           const now = course.segments.find((x) => x.id === s.id);
           if (!now) return s;
-          return { ...s, withArticle: now.withArticle, sign: now.sign, path: now.path };
+          return { ...s, name: now.name, withArticle: now.withArticle, sign: now.sign, path: now.path };
         }),
       }
     : race.course;

@@ -15,8 +15,8 @@ const groteBosrace: Course = {
   segments: [
     {
       id: 'startweide',
-      name: 'Startweide',
-      withArticle: 'de Startweide',
+      name: 'Zenuwweide',
+      withArticle: 'de Zenuwweide',
       share: 0.1,
       terrain: 1.0,
       sign: { x: 705, y: 1340 },
@@ -24,8 +24,8 @@ const groteBosrace: Course = {
     },
     {
       id: 'bos',
-      name: 'Bos',
-      withArticle: 'het Bos',
+      name: 'Fluisterbos',
+      withArticle: 'het Fluisterbos',
       share: 0.2,
       terrain: 0.95,
       sign: { x: 757, y: 1108 },
@@ -33,8 +33,8 @@ const groteBosrace: Course = {
     },
     {
       id: 'modderveld',
-      name: 'Modderveld',
-      withArticle: 'het Modderveld',
+      name: 'Plakveld',
+      withArticle: 'het Plakveld',
       share: 0.1,
       terrain: 0.7,
       sign: { x: 762, y: 858 },
@@ -42,8 +42,8 @@ const groteBosrace: Course = {
     },
     {
       id: 'beekje',
-      name: 'Beekje',
-      withArticle: 'het Beekje',
+      name: 'Natte Voetenbeek',
+      withArticle: 'de Natte Voetenbeek',
       share: 0.1,
       terrain: 0.85,
       sign: { x: 747, y: 580 },
@@ -51,8 +51,8 @@ const groteBosrace: Course = {
     },
     {
       id: 'vreemde-open-plek',
-      name: 'Vreemde Open Plek',
-      withArticle: 'de Vreemde Open Plek',
+      name: 'Paddenstoelenkring',
+      withArticle: 'de Paddenstoelenkring',
       share: 0.15,
       terrain: 1.05,
       sign: { x: 730, y: 352 },
@@ -60,8 +60,8 @@ const groteBosrace: Course = {
     },
     {
       id: 'heuvel',
-      name: 'Heuvel',
-      withArticle: 'de Heuvel',
+      name: 'Hijgheuvel',
+      withArticle: 'de Hijgheuvel',
       share: 0.15,
       terrain: 0.75,
       sign: { x: 682, y: 148 },

@@ -4,11 +4,11 @@ export interface MapPoint {
   y: number;
 }
 
-/** Eén deel van het parcours, bijv. 'Modderveld'. */
+/** Eén deel van het parcours, bijv. 'Plakveld'. */
 export interface CourseSegment {
   id: string;
   name: string;
-  /** Naam in een zin, bijv. 'het Modderveld' of 'de Heuvel'. */
+  /** Naam in een zin, bijv. 'het Plakveld' of 'de Hijgheuvel'. */
   withArticle: string;
   /** Aandeel van de totale afstand, tussen 0 en 1. Samen precies 1. */
   share: number;

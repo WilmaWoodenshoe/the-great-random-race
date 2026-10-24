@@ -17,7 +17,7 @@ import { fill, who } from '../utils/text';
 
 const t = nl.inventory;
 const gerard = who(racers.find((r) => r.id === 'gerard') ?? racers[0]);
-const sample = (s: string) => fill(s, { ...gerard, plek: 'de Rozentuin', route: 'De Kasteelrace', finish: 'de Rozentuin' });
+const sample = (s: string) => fill(s, { ...gerard, plek: 'de Walszaal', route: 'De Kasteelrace', finish: 'het Rozenhof' });
 const comma = (n: number) => n.toFixed(2).replace('.', ',');
 const TRAIT_COLORS = { curious: '#2E8AD8', stubborn: '#F2B71F', chaotic: '#F06A2A', lazy: '#7B4FC4' } as const;
 const COLORS = { groen: '#2e7d32', blauw: '#1e63b5', oranje: '#e0601a' } as const;

@@ -17,8 +17,8 @@ const kasteelrace: Course = {
   segments: [
     {
       id: 'ophaalbrug',
-      name: 'Ophaalbrug',
-      withArticle: 'de Ophaalbrug',
+      name: 'Krakende Brug',
+      withArticle: 'de Krakende Brug',
       share: 0.12,
       terrain: 0.85,
       sign: { x: 720, y: 1308 },
@@ -26,8 +26,8 @@ const kasteelrace: Course = {
     },
     {
       id: 'grote-hal',
-      name: 'Grote Hal',
-      withArticle: 'de Grote Hal',
+      name: 'Galmhal',
+      withArticle: 'de Galmhal',
       share: 0.15,
       terrain: 1.0,
       sign: { x: 762, y: 1038 },
@@ -35,8 +35,8 @@ const kasteelrace: Course = {
     },
     {
       id: 'eetzaal',
-      name: 'Eetzaal',
-      withArticle: 'de Eetzaal',
+      name: 'Kruimelzaal',
+      withArticle: 'de Kruimelzaal',
       share: 0.12,
       terrain: 0.8,
       sign: { x: 795, y: 808 },
@@ -44,8 +44,8 @@ const kasteelrace: Course = {
     },
     {
       id: 'balzaal',
-      name: 'Balzaal',
-      withArticle: 'de Balzaal',
+      name: 'Walszaal',
+      withArticle: 'de Walszaal',
       share: 0.13,
       terrain: 1.1,
       sign: { x: 778, y: 633 },
@@ -53,8 +53,8 @@ const kasteelrace: Course = {
     },
     {
       id: 'fonteintuin',
-      name: 'Fonteintuin',
-      withArticle: 'de Fonteintuin',
+      name: 'Spettertuin',
+      withArticle: 'de Spettertuin',
       share: 0.15,
       terrain: 0.95,
       sign: { x: 748, y: 410 },
@@ -62,8 +62,8 @@ const kasteelrace: Course = {
     },
     {
       id: 'doolhof',
-      name: 'Doolhof',
-      withArticle: 'het Doolhof',
+      name: 'Dwaalhof',
+      withArticle: 'het Dwaalhof',
       share: 0.18,
       terrain: 0.7,
       sign: { x: 760, y: 225 },
@@ -71,8 +71,8 @@ const kasteelrace: Course = {
     },
     {
       id: 'rozentuin',
-      name: 'Rozentuin',
-      withArticle: 'de Rozentuin',
+      name: 'Rozenhof',
+      withArticle: 'het Rozenhof',
       share: 0.15,
       terrain: 1.0,
       sign: { x: 685, y: 105 },

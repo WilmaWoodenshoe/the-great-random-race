@@ -7,7 +7,7 @@ const boerenhoed: Accessory = {
   kind: 'hoed',
   slot: 'hoofd',
   image: 'accessories/boerenhoed.png',
-  tagline: 'Tegen de zon in het Bloemenveld.',
+  tagline: 'Tegen de zon op de Hijgheuvel.',
   unlock: { type: 'finished', count: 1 },
 };
 

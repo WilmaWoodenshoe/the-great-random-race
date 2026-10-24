@@ -28,7 +28,7 @@ export const BASE_WEIGHTS: Record<Exclude<EventType, 'rain'>, number> = {
   nothing: 8,
 };
 
-/** Hoeveel vaker modder voorkomt als de racer op het Modderveld is. */
+/** Hoeveel vaker modder voorkomt als de racer op het modderdeel van de route is (Plakveld). */
 const MUD_SEGMENT_BOOST = 8;
 
 /** Aantal events per dag: de speler 2–4, tegenstanders 1–2. */

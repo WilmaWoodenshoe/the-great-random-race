@@ -164,7 +164,7 @@ export const nl = {
   /** Teksten die de race-engine gebruikt voor het journaal en de status. */
   engine: {
     // Invulplekken: {naam}, {hij}/{Hij}, {zijn}/{Zijn}, {hem}, {plek}, en {route}/{finish}
-    // (naam van de route en het laatste deel, bijv. 'De Kasteelrace' en 'de Rozentuin').
+    // (naam van de route en het laatste deel, bijv. 'De Kasteelrace' en 'het Rozenhof').
     // Zo werken de teksten voor elke racer (Isabelle wordt 'zij' en 'haar').
     start: [
       'Het startschot klinkt. Zes racers vertrekken. Nou ja, vertrekken.',
@@ -617,7 +617,7 @@ export const nl = {
       flower: { name: 'Bloem', effect: 'Blijft staan kijken: 30 min tot 4 uur op 30% snelheid.', trait: 'nieuwsgierig' },
       food: { name: 'Eten', effect: 'Eet 20–60 min (stilstand), daarna 2 uur 10% sneller.', trait: 'lui' },
       bird: { name: 'Vogel', effect: 'Verstopt zich 10–30 min (stilstand).', trait: '' },
-      mud: { name: 'Modder', effect: '1–3 uur op 60% snelheid. Veel vaker op het Modderveld.', trait: '' },
+      mud: { name: 'Modder', effect: '1–3 uur op 60% snelheid. Veel vaker op het Plakveld.', trait: '' },
       nap: { name: 'Dutje', effect: 'Slaapt 1–5 uur (stilstand); luie racers slapen langer.', trait: 'lui' },
       shortcut: { name: 'Kortere weg', effect: 'Springt 2–5% van de route vooruit.', trait: 'chaotisch' },
       wrong_turn: { name: 'Verkeerde afslag', effect: 'Gaat 1–4% van de route terug; koppige racers minder.', trait: 'chaotisch' },
