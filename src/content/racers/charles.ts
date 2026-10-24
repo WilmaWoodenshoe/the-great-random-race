@@ -12,7 +12,7 @@ const charles: Racer = {
   tagline: 'Was ooit kampioen. Nu vooral moe.',
   image: 'racers/konijn.webp',
   hatSpot: { left: 46, top: -12, width: 28, rotate: 5, aspect: 512 / 469 },
-  eyeSpot: { left: 53, top: 23, width: 25 },
+  eyeSpot: { left: 51, top: 22, width: 29 },
   neckSpot: { left: 35, top: 38, width: 40 },
   facts: {
     favoriteFood: 'Wortels, zoals vroeger',

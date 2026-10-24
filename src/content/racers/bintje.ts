@@ -10,9 +10,9 @@ const bintje: Racer = {
   title: 'The Couch Potato',
   tagline: 'Niemand weet hoe hij beweegt.',
   image: 'racers/aardappel.webp',
-  hatSpot: { left: 32, top: -19, width: 36, rotate: -5, aspect: 434 / 512 },
-  eyeSpot: { left: 50, top: 30, width: 26 },
-  neckSpot: { left: 30, top: 45, width: 50 },
+  hatSpot: { left: 36, top: -22, width: 38, rotate: 8, aspect: 441 / 512 },
+  eyeSpot: { left: 52, top: 28, width: 34 },
+  neckSpot: { left: 22, top: 44, width: 60 },
   facts: {
     favoriteFood: 'Liever niet over praten',
     dislikes: 'Frituurpannen',

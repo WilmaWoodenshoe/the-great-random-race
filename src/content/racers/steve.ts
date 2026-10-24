@@ -10,8 +10,8 @@ const steve: Racer = {
   tagline: 'Still going.',
   image: 'racers/steen.webp',
   hatSpot: { left: 36, top: -19, width: 28, rotate: -5, aspect: 512 / 433 },
-  eyeSpot: { left: 38, top: 55, width: 30 },
-  neckSpot: { left: 28, top: 64, width: 44 },
+  eyeSpot: { left: 36, top: 54, width: 34 },
+  neckSpot: { left: 28, top: 68, width: 44 },
   facts: {
     favoriteFood: 'Onbekend',
     dislikes: 'Niets',

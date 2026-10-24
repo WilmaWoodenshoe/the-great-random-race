@@ -10,7 +10,7 @@ const ducky: Racer = {
   tagline: 'Snel, maar weet zelden waarheen.',
   image: 'racers/eend.webp',
   hatSpot: { left: 53, top: -19, width: 30, rotate: 8, aspect: 512 / 464 },
-  eyeSpot: { left: 70, top: 9, width: 26, rotate: 8 },
+  eyeSpot: { left: 68, top: 8, width: 30, rotate: 8 },
   neckSpot: { left: 48, top: 28, width: 30 },
   facts: {
     favoriteFood: 'Broodkruimels',
