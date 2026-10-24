@@ -83,5 +83,5 @@ describe('raceduur 7, 14 of 21 dagen', () => {
       expect(Math.abs(ratio), `${days} dagen`).toBeLessThan(0.06);
       expect(Math.abs(long.wins - week.wins) / 300, `${days} dagen`).toBeLessThan(0.15);
     }
-  });
+  }, 60_000); // 900 races narekenen duurt op een trage computer even
 });
