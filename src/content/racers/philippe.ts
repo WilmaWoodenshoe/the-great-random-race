@@ -12,6 +12,8 @@ const philippe: Racer = {
   tagline: 'Moet steeds terug naar het stopcontact.',
   image: 'racers/stofzuiger.webp',
   hatSpot: { left: 22, top: 14, width: 27, rotate: -6, aspect: 498 / 512 },
+  eyeSpot: { left: 13, top: 62, width: 25 },
+  neckSpot: { left: 20, top: 45, width: 35 },
   facts: {
     favoriteFood: 'Kruimels',
     dislikes: 'Verlengsnoeren die te kort zijn',

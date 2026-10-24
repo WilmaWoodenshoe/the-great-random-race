@@ -11,6 +11,8 @@ const roger: Racer = {
   tagline: 'Draagt onderweg dingen die niet van hem zijn.',
   image: 'racers/mier.webp',
   hatSpot: { left: 58, top: 10, width: 24, rotate: 10, aspect: 510 / 512 },
+  eyeSpot: { left: 63, top: 41, width: 25, rotate: 8 },
+  neckSpot: { left: 45, top: 50, width: 22 },
   facts: {
     favoriteFood: 'Een kruimel, twintig keer zo groot als hij',
     dislikes: 'Pauzes',

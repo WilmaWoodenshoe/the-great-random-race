@@ -12,6 +12,8 @@ const isabelle: Racer = {
   tagline: 'Wordt overal geknuffeld. Dat kost tijd.',
   image: 'racers/knuffel.webp',
   hatSpot: { left: 38, top: -15, width: 34, rotate: 0, aspect: 488 / 512 },
+  eyeSpot: { left: 49, top: 33, width: 28 },
+  neckSpot: { left: 33, top: 42, width: 48 },
   facts: {
     favoriteFood: 'Thee met koekjes',
     dislikes: 'De wasmachine',

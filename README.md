@@ -100,12 +100,20 @@ import type { Accessory } from '../../models/Accessory';
 const kroon: Accessory = {
   id: 'kroon',
   name: 'Kroon',
-  kind: 'hoed', // 'hoed', 'ogen', 'rugzak' of 'speciaal'
+  withArticle: 'de kroon', // voor het journaal: "Met de kroon, uiteraard."
+  kind: 'hoed', // tabblad in de Collectie: 'hoed', 'ogen', 'rugzak' of 'speciaal'
+  slot: 'hoofd', // waar het zit: 'hoofd', 'ogen' of 'nek'
   image: 'accessories/kroon.png',
+  tagline: 'Niemand heeft gevraagd waarom. {Hij} heeft gewonnen.', // zinnetje in de Collectie
+  unlock: { type: 'win' }, // hoe je het verdient, zie hieronder
 };
 
 export default kroon;
 ```
+
+Manieren om te verdienen (`unlock`): `{ type: 'start' }` (meteen), `{ type: 'raceStarted' }` (eerste race begonnen), `{ type: 'finished', count: 1 }` (zoveel races uitgereden), `{ type: 'podium' }`, `{ type: 'win' }`, `{ type: 'races', count: 3 }` (zoveel races uitgespeeld), `{ type: 'daysOpened', count: 7 }` (app op zoveel dagen geopend), `{ type: 'longRace', days: 21 }` (race van zoveel dagen uitgespeeld).
+
+Accessoires zijn alleen voor de sier. Waar ze op een racer zitten, staat in het racerbestand: `hatSpot` (hoofd), `eyeSpot` (ogen) en `neckSpot` (nek), in procenten van de afbeelding.
 
 ### Route — `src/content/courses/<naam>.ts`
 

@@ -10,6 +10,8 @@ const turbo: Racer = {
   tagline: 'Laat zich door niets afleiden.',
   image: 'racers/schildpad.webp',
   hatSpot: { left: 63, top: -15, width: 24, rotate: 8, aspect: 512 / 363 },
+  eyeSpot: { left: 69, top: 15, width: 25, rotate: 6 },
+  neckSpot: { left: 60, top: 38, width: 25 },
   facts: {
     favoriteFood: 'Paardenbloemen',
     dislikes: 'Haast',

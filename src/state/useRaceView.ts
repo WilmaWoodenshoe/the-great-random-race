@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
-import { nl } from '../content/nl';
+import { accessories } from '../content';
+import { wearOn, worn } from '../game/collection';
 import { hasHat } from '../game/actions';
 import { canDoAction, daysLeft, getRaceRacer, isFinished, openChoice, standingsAt, todaysAction } from '../game/engine';
 import { journalAt } from '../game/journal';
@@ -13,7 +14,7 @@ import { useGame } from './GameProvider';
  * `now` van de app. Null als er geen race is.
  */
 export function useRaceView() {
-  const { race, now } = useGame();
+  const { race, now, save } = useGame();
 
   return useMemo(() => {
     if (!race) return null;
@@ -42,17 +43,20 @@ export function useRaceView() {
       daysLeft: daysLeft(race, now),
       finished: isFinished(race, now),
       openChoice: openChoice(race, now),
-      journal: journalAt(race, now),
+      journal: journalAt(race, now, worn(save, now)),
       /** Mag de speler vandaag nog een actie doen? */
       canAct: canDoAction(race, now),
       todaysAction: todaysAction(race, now),
-      /** De hoed voor de racer van de speler, als die er een kreeg (en een hoed past). */
-      hat:
-        hasHat(race, now) && player.hatSpot
-          ? { image: 'accessories/hoed.png', alt: nl.action.hatAlt, spot: player.hatSpot }
-          : undefined,
+      /**
+       * Wat de racer van de speler draagt: de accessoires uit de Collectie,
+       * en de hoed van de dagelijkse actie (die gaat voor op het hoofd).
+       */
+      wear: wearOn(player, [
+        ...(hasHat(race, now) ? accessories.filter((a) => a.id === 'hoed') : []),
+        ...worn(save, now),
+      ]),
     };
-  }, [race, now]);
+  }, [race, now, save]);
 }
 
 export type RaceView = NonNullable<ReturnType<typeof useRaceView>>;

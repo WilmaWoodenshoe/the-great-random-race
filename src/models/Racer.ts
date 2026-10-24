@@ -6,6 +6,14 @@ export interface Traits {
   lazy: number;
 }
 
+/** Plek van een accessoire op de afbeelding, in procenten (zie hatSpot). */
+export interface WearSpot {
+  left: number;
+  top: number;
+  width: number;
+  rotate?: number;
+}
+
 /** Een racer zoals hij in src/content/racers/ staat. */
 export interface Racer {
   /** Korte, unieke code zonder spaties, bijv. 'gerard'. */
@@ -32,7 +40,11 @@ export interface Racer {
    * (negatief = naar links) en de verhouding breedte/hoogte van de
    * afbeelding. Zonder dit kan deze racer geen hoed dragen.
    */
-  hatSpot?: { left: number; top: number; width: number; rotate?: number; aspect: number };
+  hatSpot?: WearSpot & { aspect: number };
+  /** Waar een bril zit (Collectie), zoals bij hatSpot. */
+  eyeSpot?: WearSpot;
+  /** Waar een sjaal zit (Collectie), zoals bij hatSpot. */
+  neckSpot?: WearSpot;
   /** Weetjes voor het racerprofiel (optioneel). */
   facts?: {
     favoriteFood?: string;

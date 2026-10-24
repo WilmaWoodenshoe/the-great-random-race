@@ -11,6 +11,8 @@ const gerard: Racer = {
   image: 'racers/gerard.webp',
   playable: true,
   hatSpot: { left: 27, top: -8, width: 26, rotate: -8, aspect: 720 / 519 }, // op het huisje
+  eyeSpot: { left: 75, top: 13, width: 21, rotate: 5 },
+  neckSpot: { left: 66, top: 45, width: 28 },
   facts: {
     favoriteFood: 'Sla',
     dislikes: 'Kiezelstenen',

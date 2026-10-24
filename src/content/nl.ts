@@ -13,6 +13,7 @@ export const nl = {
     race: 'Race',
     collection: 'Collectie',
     soon: 'binnenkort',
+    newBadge: 'nieuw',
     more: 'Meer',
   },
   common: {
@@ -318,6 +319,8 @@ export const nl = {
       finished: 'klaar. {Hij} is over de finish.',
       raceOver: 'aan het uitrusten. De race is voorbij.',
     } as Record<string, string>,
+    /** Soms reageert het journaal op wat de racer uit de Collectie draagt. */
+    wearRemarks: ['{Ding} blijft zitten.', 'Met {ding}, uiteraard.', '{Ding} staat {hem} goed.', 'Kenners letten vooral op {ding}.'],
     /** Soms reageert het journaal op de hoed van de speler. */
     hatRemarks: [
       'De hoed blijft zitten.',
@@ -548,6 +551,33 @@ export const nl = {
     open: 'begint nog',
     running: 'bezig',
     finished: 'klaar',
+  },
+  collection: {
+    title: 'Collectie',
+    intro: 'Verdien accessoires met je races en kleed je racer aan. Alleen voor de sier: sneller wordt {hij} er niet van.',
+    tabs: { alle: 'Alle', hoofd: 'Hoeden', ogen: 'Ogen', nek: 'Speciaal' } as Record<string, string>,
+    nothing: 'Niets',
+    nothingLine: (slot: string) =>
+      slot === 'hoofd' ? '{naam} zoals de natuur {hem} bedoeld heeft.' : slot === 'ogen' ? 'Gewoon met eigen ogen.' : 'Een blote nek. Dapper.',
+    wear: 'Draag dit',
+    takeOff: 'Afzetten',
+    wearing: 'Draagt {naam} nu',
+    locked: 'Nog niet verdiend',
+    progress: (have: number, need: number) => `${have} van ${need}`,
+    isNew: 'Nieuw!',
+    cantWear: '{naam} kan dit (nog) niet dragen.',
+    homeNew: (name: string) => `Nieuw in je Collectie: ${name}!`,
+    homeNewCta: 'Bekijk',
+    how: {
+      start: 'Heb je meteen.',
+      raceStarted: 'Begin je eerste race.',
+      finished: (n: number) => (n === 1 ? 'Rijd een race uit tot de finish.' : `Rijd ${n} races uit tot de finish.`),
+      podium: 'Eindig een keer bij de eerste drie.',
+      win: 'Win een race.',
+      races: (n: number) => `Speel ${n} races helemaal uit.`,
+      daysOpened: (n: number) => `Open de app op ${n} verschillende dagen.`,
+      longRace: (days: number) => `Speel een race van ${days} dagen helemaal uit.`,
+    },
   },
   inventory: {
     title: 'Inventaris',

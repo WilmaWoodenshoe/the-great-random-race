@@ -1,4 +1,4 @@
-import type { Racer } from '../models/Racer';
+import type { WearSpot } from '../models/Racer';
 import { img } from '../utils/images';
 
 /** Hoe de racer erbij staat; past bij wat hij nu doet (hoofdstuk 15). */
@@ -12,8 +12,17 @@ interface Props {
   /** Af en toe het kopje bewegen (wiebelen) naast het ademen. */
   wobble?: boolean;
   mood?: Mood;
-  /** Een hoed op het hoofd: afbeelding en plek (zie Racer.hatSpot). */
-  hat?: { image: string; alt: string; spot: NonNullable<Racer['hatSpot']> };
+  /**
+   * Wat de racer draagt (hoed, bril, sjaal), met de plek op de afbeelding
+   * (zie Racer.hatSpot) en de verhouding breedte/hoogte van de afbeelding.
+   */
+  wear?: { items: Worn[]; aspect: number };
+}
+
+export interface Worn {
+  image: string;
+  alt: string;
+  spot: WearSpot;
 }
 
 /** Zet wat de racer doet (een eventtype of status) om in een houding. */
@@ -30,25 +39,29 @@ export function moodFor(activity: string): Mood {
  * ergens naar, dan houdt hij zijn kopje schuin. Bij 'minder beweging' op de
  * telefoon staat dit allemaal uit (zie theme.css).
  */
-export function LivingRacer({ image, alt, className = '', wobble = false, mood = 'gewoon', hat }: Props) {
+export function LivingRacer({ image, alt, className = '', wobble = false, mood = 'gewoon', wear }: Props) {
+  const hat = wear && wear.items.length > 0 ? wear : undefined;
   const breathe = mood === 'slaapt' ? 'grr-breathe-slow' : 'grr-breathe';
   const sway = wobble && mood === 'gewoon' ? ' grr-wobble' : '';
   // Met hoed: afbeelding en hoed samen in een vak met precies de verhouding
   // van de afbeelding, zodat de hoed altijd op dezelfde plek op het hoofd zit.
   const picture = hat ? (
-    <span className={`living__fig ${breathe}`} style={{ width: `min(100cqw, calc(100cqh * ${hat.spot.aspect}))`, aspectRatio: String(hat.spot.aspect) }}>
+    <span className={`living__fig ${breathe}`} style={{ width: `min(100cqw, calc(100cqh * ${hat.aspect}))`, aspectRatio: String(hat.aspect) }}>
       <img className="living__img" src={img(image)} alt={alt} />
-      <img
-        className="living__hat"
-        src={img(hat.image)}
-        alt={hat.alt}
-        style={{
-          left: `${hat.spot.left}%`,
-          top: `${hat.spot.top}%`,
-          width: `${hat.spot.width}%`,
-          transform: hat.spot.rotate ? `rotate(${hat.spot.rotate}deg)` : undefined,
-        }}
-      />
+      {hat.items.map((w) => (
+        <img
+          key={w.image}
+          className="living__hat"
+          src={img(w.image)}
+          alt={w.alt}
+          style={{
+            left: `${w.spot.left}%`,
+            top: `${w.spot.top}%`,
+            width: `${w.spot.width}%`,
+            transform: w.spot.rotate ? `rotate(${w.spot.rotate}deg)` : undefined,
+          }}
+        />
+      ))}
     </span>
   ) : (
     <img className={`living__img ${breathe}`} src={img(image)} alt={alt} />

@@ -16,6 +16,7 @@ export function resultOf(race: Race): RaceResult {
     racerId: race.playerId,
     number: race.number,
     courseId: race.course.id,
+    days: race.course.days,
     endTime: race.endTime,
     position: me.position,
     km: me.km,

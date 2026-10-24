@@ -633,3 +633,8 @@
   pointer-events: none;
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
 }
+
+.nav__new {
+  background: var(--oranje);
+  color: var(--wit);
+}

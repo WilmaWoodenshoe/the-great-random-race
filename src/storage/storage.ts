@@ -35,6 +35,12 @@ export function parseSave(raw: unknown): SaveData {
     clockOffset: typeof data.clockOffset === 'number' ? data.clockOffset : 0,
     journalSeenAt: typeof data.journalSeenAt === 'number' ? data.journalSeenAt : 0,
     finishSeenRaceId: typeof data.finishSeenRaceId === 'string' ? data.finishSeenRaceId : null,
+    // Collectie (later toegevoegd; ontbreekt in oudere opslag).
+    openedDays: Array.isArray(data.openedDays) ? data.openedDays.filter((d) => typeof d === 'string') : undefined,
+    wearing: data.wearing && typeof data.wearing === 'object' ? data.wearing : undefined,
+    collectionSeen: Array.isArray(data.collectionSeen)
+      ? data.collectionSeen.filter((d) => typeof d === 'string')
+      : undefined,
   };
 }
 

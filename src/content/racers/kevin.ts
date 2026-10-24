@@ -10,6 +10,8 @@ const kevin: Racer = {
   tagline: 'Slaapt vooral.',
   image: 'racers/rups.webp',
   hatSpot: { left: 67, top: 0, width: 26, rotate: 8, aspect: 512 / 479 },
+  eyeSpot: { left: 72, top: 40, width: 25, rotate: 5 },
+  neckSpot: { left: 62, top: 52, width: 28 },
   facts: {
     favoriteFood: 'Bladeren',
     dislikes: 'Wekkers',

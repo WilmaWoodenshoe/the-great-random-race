@@ -3,6 +3,9 @@ import type { ActionId, Race } from '../models/Race';
 import { EMPTY_SAVE, type SaveData } from '../models/Save';
 import { decideChoice, doAction } from '../game/engine';
 import { archiveIfFinished, startRace } from '../game/session';
+import { markOpened, wear } from '../game/collection';
+import type { AccessorySlot } from '../models/Accessory';
+import { localDateKey } from '../utils/dates';
 import { createIndexedDbStorage, requestPersistentStorage, type GameStorage } from '../storage/storage';
 
 interface GameContextValue {
@@ -33,6 +36,10 @@ interface GameContextValue {
   setRace(race: Race | null): Promise<void>;
   /** Voor gedeelde races: keuzes en acties gaan via de server. */
   setRemote(remote: RemoteMoves | null): void;
+  /** Collectie: een accessoire aandoen (of met null de plek leeg maken). */
+  wearAccessory(slot: AccessorySlot, id: string | null): Promise<void>;
+  /** Collectie: onthoud dat de speler deze verdiende accessoires gezien heeft. */
+  markCollectionSeen(ids: string[]): Promise<void>;
 }
 
 /** Keuzes en acties in een gedeelde race: de server bewaart ze, en geeft de nieuwe race terug. */
@@ -99,6 +106,17 @@ export function GameProvider({ children, storage }: { children: ReactNode; stora
   }, []);
 
   const now = realNow + save.clockOffset;
+
+  // Onthoud op welke dagen de app open was (voor de Collectie).
+  const today = localDateKey(now);
+  useEffect(() => {
+    if (loading) return;
+    const next = markOpened(latest.current, today);
+    if (next !== latest.current) {
+      setSave(next);
+      void persist(next);
+    }
+  }, [loading, today, persist, setSave]);
 
   // Afgelopen races komen vanzelf in de geschiedenis.
   useEffect(() => {
@@ -181,6 +199,13 @@ export function GameProvider({ children, storage }: { children: ReactNode; stora
         await persist(data);
       },
       setRace: setRaceFromServer,
+      wearAccessory: (slot, id) => update((s) => wear(s, slot, id)),
+      markCollectionSeen: (ids) =>
+        update((s) => {
+          const seen = s.collectionSeen ?? [];
+          const extra = ids.filter((id) => !seen.includes(id));
+          return extra.length ? { ...s, collectionSeen: [...seen, ...extra] } : s;
+        }),
       setRemote: (r) => {
         remote.current = r;
       },

@@ -1,4 +1,5 @@
 import { nl } from '../content/nl';
+import type { Accessory } from '../models/Accessory';
 import type { EventType } from '../models/Event';
 import type { JournalEntry } from '../models/JournalEntry';
 import type { Race } from '../models/Race';
@@ -21,7 +22,7 @@ const variantFor = (race: Race, label: string) => createRng(deriveSeed(race.seed
  * Het journaal op moment `now`: alleen wat al gebeurd is, nieuwste bovenaan.
  * Events van een racer na zijn finish tellen niet meer mee.
  */
-export function journalAt(race: Race, now: number): JournalEntry[] {
+export function journalAt(race: Race, now: number, wearing: Accessory[] = []): JournalEntry[] {
   const until = Math.min(now, race.endTime);
   const entries: JournalEntry[] = [];
   if (now < race.startTime) return entries;
@@ -78,6 +79,11 @@ export function journalAt(race: Race, now: number): JournalEntry[] {
     // Met hoed op reageert het journaal er af en toe op.
     if (e.racerId && humans.includes(e.racerId) && e.variant % 2 === 0 && hasHat(race, e.time, e.racerId)) {
       text += ` ${pickText(t.hatRemarks, e.variant >> 1)}`;
+    }
+    // En soms op wat de racer van de speler uit de Collectie draagt.
+    if (e.racerId === race.playerId && wearing.length && e.variant % 3 === 1) {
+      const item = wearing[e.variant % wearing.length];
+      text += ` ${fill(pickText(t.wearRemarks, e.variant >> 2), { ...player, ding: item.withArticle })}`;
     }
     entries.push({
       id: e.id,

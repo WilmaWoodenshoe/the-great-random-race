@@ -11,6 +11,7 @@ import { useRaceView } from '../state/useRaceView';
 import { formatClock } from '../utils/dates';
 import { formatKm } from '../utils/format';
 import { img } from '../utils/images';
+import { newlyUnlocked } from '../game/collection';
 
 /** Klein plaatje bij "… is momenteel", passend bij wat de racer doet. */
 function statusIcon(activity: string): string {
@@ -47,6 +48,7 @@ export function Home() {
   const { race, player: me, me: standing, journal } = view;
   const t = nl.home;
   const latest = journal[0];
+  const fresh = newlyUnlocked(save, view.now);
   const change = view.positionChange;
 
   return (
@@ -69,7 +71,7 @@ export function Home() {
             alt={t.racerAlt(me.name, me.species)}
             wobble
             mood={moodFor(view.activity)}
-            hat={view.hat}
+            wear={view.wear}
             className="hero-card__img"
           />
           <div className="hero-card__info">
@@ -112,6 +114,18 @@ export function Home() {
           <PrimaryButton to="/race" arrow>
             {t.viewRace}
           </PrimaryButton>
+        )}
+
+        {fresh.length > 0 && (
+          <Link to="/collectie" className="card card--wit action-teaser grr-pop">
+            <span className="action-teaser__icon" aria-hidden="true">
+              <img src={img(fresh[0].image)} alt="" />
+            </span>
+            <span className="action-teaser__body">
+              <span className="action-teaser__title">{nl.collection.homeNew(fresh[0].name)}</span>
+            </span>
+            <span className="action-teaser__arrow" aria-hidden="true">→</span>
+          </Link>
         )}
 
         {view.canAct && (

@@ -85,7 +85,7 @@ export function Finish() {
           <LivingRacer
             image={won && player.id === 'gerard' ? 'racers/gerard-kroon.webp' : player.image}
             alt={won ? t.winnerAlt(player.name) : player.name}
-            hat={won ? undefined : view.hat}
+            wear={won && player.id === 'gerard' ? undefined : view.wear}
             mood={me.finishTime === null ? 'slaapt' : 'gewoon'}
             wobble
             className="finish__gerard"

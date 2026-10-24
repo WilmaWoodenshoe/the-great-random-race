@@ -78,7 +78,7 @@ export function Racer() {
           image={r.image}
           alt={t.inLandscape(r.name)}
           mood={moodFor(activityAt(race, r.id, now))}
-          hat={isPlayer ? view.hat : undefined}
+          wear={isPlayer ? view.wear : undefined}
           wobble
           className="racer__gerard"
         />
