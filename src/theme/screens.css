@@ -1685,3 +1685,43 @@ a.chip-btn {
 .race-card__foot .chip-btn {
   white-space: nowrap;
 }
+
+.route-pick {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.route-pick__item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px;
+  border: 3px solid transparent;
+  border-radius: 14px;
+  background: var(--tabblad);
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--inkt);
+}
+
+.route-pick__item img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  max-height: 150px;
+  object-fit: cover;
+  object-position: center 30%;
+  border-radius: 10px;
+}
+
+.route-pick__item--on {
+  border-color: #2b79d0;
+  background: #eaf3fc;
+}
+
+.race-card__route {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--groen);
+}

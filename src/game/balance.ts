@@ -32,9 +32,10 @@ export function runBalance(
   dailyAction: ActionId | null = null,
   lineup: string[] = CLASSIC_LINEUP,
   days = 7,
+  courseId = 'grote-bosrace',
 ): BalanceReport {
   const racers = lineup.map(getRacer);
-  const course = courseForDays(getCourse('grote-bosrace'), days);
+  const course = courseForDays(getCourse(courseId), days);
   const perRacer: BalanceReport['perRacer'] = {};
   const finishDays: Record<string, number[]> = {};
   const kmSum: Record<string, number> = {};

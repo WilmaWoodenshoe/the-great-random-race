@@ -1,7 +1,7 @@
 // Races starten en afsluiten, en de uitslagen bijhouden. Puur rekenwerk
 // op de opgeslagen gegevens (SaveData); de opslag zelf zit in src/storage.
 
-import { choices as allChoices, getCourse, racers as allRacers } from '../content';
+import { choices as allChoices, courses as allCourses, racers as allRacers } from '../content';
 import type { Race } from '../models/Race';
 import type { RaceResult, SaveData } from '../models/Save';
 import type { Racer } from '../models/Racer';
@@ -79,7 +79,8 @@ export function startRace(save: SaveData, now: number, racerId = defaultRacerId(
     now,
     seed,
     number,
-    course: getCourse('grote-bosrace'), // er is nog één route
+    // Alleen spelen (testversie): een willekeurige route, vast per seed.
+    course: allCourses[seed % allCourses.length],
     racers: pickLineup(racerId, seed),
     choices: allChoices,
     playerId: racerId,

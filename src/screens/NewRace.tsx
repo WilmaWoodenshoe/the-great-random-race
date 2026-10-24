@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { nl } from '../content/nl';
-import { getCourse, racers } from '../content';
+import { courses, getCourse, racers } from '../content';
+import { img } from '../utils/images';
 import { courseForDays } from '../game/course';
 import { formatKm } from '../utils/format';
 import { BackHeader } from '../components/BackHeader';
@@ -44,6 +45,7 @@ export function NewRace() {
   const [joining, setJoining] = useState(true);
   const [name, setName] = useState('');
   const [days, setDays] = useState(7);
+  const [courseId, setCourseId] = useState(courses[0].id);
   const [startChoice, setStartChoice] = useState<StartChoice>('tomorrow');
   const [custom, setCustom] = useState(() => toInput(tomorrowNine() + HOUR));
   const [busy, setBusy] = useState(false);
@@ -77,11 +79,11 @@ export function NewRace() {
     try {
       const created = await api.createRace({
         name,
-        courseId: 'grote-bosrace',
+        courseId,
         days,
         startTime: start,
         racerId: joining ? racer.id : null,
-        snapshot: contentSnapshot(),
+        snapshot: contentSnapshot(courseId),
       });
       if (!joining) {
         navigate('/races', { replace: true });
@@ -164,6 +166,24 @@ export function NewRace() {
           </label>
 
           <div className="field">
+            <span className="field__label">{t.route}</span>
+            <div className="route-pick">
+              {courses.map((c) => (
+                <button
+                  key={c.id}
+                  type="button"
+                  aria-pressed={courseId === c.id}
+                  className={`route-pick__item${courseId === c.id ? ' route-pick__item--on' : ''}`}
+                  onClick={() => setCourseId(c.id)}
+                >
+                  <img src={img(c.map.image)} alt="" />
+                  <span>{c.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="field">
             <span className="field__label">{t.length}</span>
             <div className="info__buttons">
               {DAY_OPTIONS.map((d) => (
@@ -174,7 +194,7 @@ export function NewRace() {
                   aria-pressed={days === d}
                   onClick={() => setDays(d)}
                 >
-                  {nl.races.days(d)} · {formatKm(courseForDays(getCourse('grote-bosrace'), d).lengthKm)}
+                  {nl.races.days(d)} · {formatKm(courseForDays(getCourse(courseId), d).lengthKm)}
                 </button>
               ))}
             </div>

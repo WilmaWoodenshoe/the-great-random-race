@@ -74,3 +74,13 @@ describe('balans met willekeurige tegenstanders (kies je racer)', () => {
     expect(asPlayer('steve', 50).finishes).toBe(0);
   });
 });
+
+describe('De Kasteelrace', () => {
+  it('is ongeveer even zwaar als De Grote Bosrace', () => {
+    const bos = runBalance(300, 1).perRacer.gerard;
+    const kasteel = runBalance(300, 1, null, undefined, 7, 'kasteelrace').perRacer.gerard;
+    expect(kasteel.finishes / 300).toBeGreaterThan(0.8);
+    expect(Math.abs(kasteel.medianFinishDay! - bos.medianFinishDay!)).toBeLessThan(0.3);
+    expect(Math.abs(kasteel.wins - bos.wins) / 300).toBeLessThan(0.12);
+  }, 60_000);
+});

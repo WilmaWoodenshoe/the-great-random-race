@@ -74,8 +74,7 @@ export const nl = {
     openJournal: 'Journaal openen',
     standings: 'Bekijk de tussenstand',
     finish: 'Finish',
-    mapAlt: (name: string, pos: number) =>
-      `Geïllustreerde kaart van De Grote Bosrace met ${name} op plek ${pos}`,
+    mapAlt: (course: string, name: string, pos: number) => `Geïllustreerde kaart van ${course} met ${name} op plek ${pos}`,
   },
   racer: {
     races: 'Races',
@@ -163,17 +162,18 @@ export const nl = {
   },
   /** Teksten die de race-engine gebruikt voor het journaal en de status. */
   engine: {
-    // Invulplekken: {naam}, {hij}/{Hij}, {zijn}/{Zijn}, {hem} en {plek}.
+    // Invulplekken: {naam}, {hij}/{Hij}, {zijn}/{Zijn}, {hem}, {plek}, en {route}/{finish}
+    // (naam van de route en het laatste deel, bijv. 'De Kasteelrace' en 'de Rozentuin').
     // Zo werken de teksten voor elke racer (Isabelle wordt 'zij' en 'haar').
     start: [
       'Het startschot klinkt. Zes racers vertrekken. Nou ja, vertrekken.',
-      'De Grote Bosrace is begonnen. De spanning is te snijden, maar heel langzaam.',
+      '{route} is begonnen. De spanning is te snijden, maar heel langzaam.',
       'En ze zijn weg! Nou ja, de meesten.',
       'Start. {naam} kijkt vastberaden voor zich uit. Dat is {zijn} snelste stand.',
     ],
     end: [
       'De race is voorbij. Wie er nog onderweg is, mag rustig verder. Er kijkt niemand meer.',
-      'De tijd is om. De Grote Bosrace zit erop.',
+      'De tijd is om. {route} zit erop.',
       'Het eindsignaal klinkt. Niet iedereen heeft het gehoord.',
       'Einde race. De commentatoren pakken hun spullen. Langzaam, uit respect.',
     ],
@@ -187,7 +187,7 @@ export const nl = {
       '{naam} is over de finish! Het publiek is uitzinnig. Het publiek is één mier.',
       'FINISH voor {naam}. Er wordt geapplaudisseerd, met kleine pootjes.',
       '{naam} heeft de finish gehaald. Historisch, volgens {naam}.',
-      '{naam} komt aan in de Kasteeltuin en is klaar. Helemaal klaar.',
+      '{naam} komt aan in {finish} en is klaar. Helemaal klaar.',
     ],
     /** Per eventtype minstens 4 varianten. */
     events: {
@@ -495,6 +495,7 @@ export const nl = {
     settings: 'Instellingen',
     name: 'Naam van de race (mag leeg)',
     namePlaceholder: 'Bijv. De Slakkenbeker',
+    route: 'Welke route?',
     length: 'Hoe lang duurt de race?',
     lengthHint: 'Langer = een langere route. De racers gaan even snel, maar moeten verder, en er gebeurt onderweg meer.',
     start: 'Wanneer begint de race?',

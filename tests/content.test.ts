@@ -96,7 +96,7 @@ describe('teksten met invulplekken', () => {
     const isabelle = getRacer('isabelle');
     expect(isabelle.pronoun).toBe('zij');
     for (const s of templates) {
-      const filled = fill(s, { ...who(isabelle), plek: 'de Kasteeltuin' });
+      const filled = fill(s, { ...who(isabelle), plek: 'de Kasteeltuin', route: 'De Kasteelrace', finish: 'de Rozentuin' });
       expect(filled, s).not.toMatch(/[{}]/);
     }
     expect(fill('{Hij} pakt {zijn} hoed. Het past {hem}.', who(isabelle))).toBe('Zij pakt haar hoed. Het past haar.');

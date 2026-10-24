@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { nl } from '../content/nl';
-import { racers } from '../content';
+import { courses, racers } from '../content';
 import { BackHeader } from '../components/BackHeader';
 import { BottomNav } from '../components/BottomNav';
 import { PrimaryButton } from '../components/PrimaryButton';
@@ -60,6 +60,7 @@ export function Races() {
         <div className="race-card__head">
           <div>
             <div className="race-card__name">{t.name(r.id, r.name)}</div>
+            <div className="race-card__route">{courses.find((c) => c.id === r.courseId)?.name ?? ''}</div>
             <div className="race-card__meta">
               {r.status === 'open' && `${t.startsAt(r.startTime)} · ${t.days(r.days)}`}
               {r.status === 'running' && t.dayOf(day, r.days)}

@@ -82,7 +82,7 @@ export function Lobby() {
         <section className="card card--wit account__card lobby__start">
           <div className="lobby__when">{race.startTime - now > MINUTE ? t.startsIn(untilText(race.startTime - now)) : t.startsSoon}</div>
           <div className="account__small">
-            {nl.races.startsAt(race.startTime)} · {t.duration(race.course.days)}
+            {race.course.name} · {nl.races.startsAt(race.startTime)} · {t.duration(race.course.days)}
           </div>
         </section>
 

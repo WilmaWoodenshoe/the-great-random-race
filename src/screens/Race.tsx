@@ -50,7 +50,7 @@ export function Race() {
 
       <main className="race">
         <div className="race__map">
-          <RaceMap course={course} alt={nl.race.mapAlt(player.name, me.position)} markers={markers} />
+          <RaceMap course={course} alt={nl.race.mapAlt(course.name, player.name, me.position)} markers={markers} />
         </div>
         <Link to="/tussenstand" className="race__progress card">
           <ProgressBar value={view.progress} height={14} label={course.name} />

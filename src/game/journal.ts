@@ -27,6 +27,9 @@ export function journalAt(race: Race, now: number): JournalEntry[] {
   if (now < race.startTime) return entries;
   const player = who(getRaceRacer(race, race.playerId));
   const humans = humansOf(race);
+  // Naam van de route en van de finishplek, voor start-, finish- en slotregels.
+  const segments = race.course.segments;
+  const route = { route: race.course.name, finish: segments[segments.length - 1]?.withArticle ?? '' };
   // De woorden voor de racer van wie een keuze of actie is.
   const ownerWords = (item: { racerId?: string }) => who(getRaceRacer(race, ownerOf(race, item)));
 
@@ -35,7 +38,7 @@ export function journalAt(race: Race, now: number): JournalEntry[] {
     time: race.startTime,
     kind: 'start',
     racerId: null,
-    text: fill(pickText(t.start, variantFor(race, 'start')), player),
+    text: fill(pickText(t.start, variantFor(race, 'start')), { ...player, ...route }),
   });
 
   const finishTimes = new Map<string, number | null>();
@@ -58,7 +61,7 @@ export function journalAt(race: Race, now: number): JournalEntry[] {
         time: m.finishTime,
         kind: 'finish',
         racerId: r.id,
-        text: fill(pickText(t.finish, variantFor(race, `finish:${r.id}`)), who(r)),
+        text: fill(pickText(t.finish, variantFor(race, `finish:${r.id}`)), { ...who(r), ...route }),
       });
     }
   }
@@ -121,7 +124,7 @@ export function journalAt(race: Race, now: number): JournalEntry[] {
   }
 
   if (now >= race.endTime) {
-    entries.push({ id: 'einde', time: race.endTime, kind: 'end', racerId: null, text: fill(pickText(t.end, variantFor(race, 'end')), player) });
+    entries.push({ id: 'einde', time: race.endTime, kind: 'end', racerId: null, text: fill(pickText(t.end, variantFor(race, 'end')), { ...player, ...route }) });
   }
 
   // Nieuwste bovenaan; bij gelijke tijd blijft de logische volgorde staan.
