@@ -84,3 +84,12 @@ describe('De Kasteelrace', () => {
     expect(Math.abs(kasteel.wins - bos.wins) / 300).toBeLessThan(0.12);
   }, 60_000);
 });
+
+describe('De Strandrace', () => {
+  it('is ongeveer even zwaar als De Grote Bosrace', () => {
+    const bos = runBalance(300, 1).perRacer.gerard;
+    const strand = runBalance(300, 1, null, undefined, 7, 'strandrace').perRacer.gerard;
+    expect(strand.finishes / 300).toBeGreaterThan(0.8);
+    expect(Math.abs(strand.medianFinishDay! - bos.medianFinishDay!)).toBeLessThan(0.3);
+  }, 60_000);
+});

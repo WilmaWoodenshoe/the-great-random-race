@@ -11,7 +11,7 @@ const bintje: Racer = {
   tagline: 'Niemand weet hoe hij beweegt.',
   image: 'racers/aardappel.webp',
   hatSpot: { left: 36, top: -22, width: 38, rotate: 8, aspect: 441 / 512 },
-  eyeSpot: { left: 52, top: 28, width: 34 },
+  eyeSpot: { left: 57, top: 27, width: 33 },
   neckSpot: { left: 22, top: 44, width: 60 },
   facts: {
     favoriteFood: 'Liever niet over praten',

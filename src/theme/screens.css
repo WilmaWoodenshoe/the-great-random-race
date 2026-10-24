@@ -1994,3 +1994,40 @@ a.chip-btn {
 .collection__line {
   min-height: 3em;
 }
+
+.inv__fit-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.inv__fit-label {
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.inv__fit-chips {
+  margin-top: 4px;
+}
+
+.inv__fitting {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.inv__fit-racer {
+  margin: 0;
+  padding: 28px 8px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.inv__fit-fig {
+  width: 100%;
+  height: 120px;
+}

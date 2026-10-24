@@ -1,4 +1,5 @@
 import type { Course } from '../models/Course';
+import { createRng, deriveSeed } from '../utils/random';
 
 export interface SegmentBounds {
   index: number;
@@ -35,4 +36,15 @@ export function segmentIndexAt(course: Course, km: number): number {
 export function courseForDays(course: Course, days: number): Course {
   if (days === course.days) return course;
   return { ...course, days, lengthKm: Math.round(((course.lengthKm * days) / course.days) * 10) / 10 };
+}
+
+/** Heeft deze race het paasei van de route? Vast per race (seed). */
+export function hasEasterEgg(race: { seed: number; course: Course }): boolean {
+  const egg = race.course.map.easterEgg;
+  return !!egg && createRng(deriveSeed(race.seed, 'paasei')).chance(egg.chance);
+}
+
+/** De kaartafbeelding van deze race (met paasei als het zo uitkomt). */
+export function mapImageOf(race: { seed: number; course: Course }): string {
+  return hasEasterEgg(race) ? race.course.map.easterEgg!.image : race.course.map.image;
 }

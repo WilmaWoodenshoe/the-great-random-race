@@ -38,6 +38,11 @@ export interface Course {
     height: number;
     /** Waar het finishlabel op de kaart staat. */
     finish: MapPoint;
+    /**
+     * Paasei: in sommige races (kans 0–1, vast per race) een andere kaart,
+     * met een eigen journaalregel (sleutel in nl.engine.easterEggs).
+     */
+    easterEgg?: { image: string; chance: number; journalKey: string };
   };
   segments: CourseSegment[];
 }

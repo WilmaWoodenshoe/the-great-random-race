@@ -4,6 +4,8 @@ import type { EventType } from '../models/Event';
 import type { JournalEntry } from '../models/JournalEntry';
 import type { Race } from '../models/Race';
 import { createRng, deriveSeed } from '../utils/random';
+import { DAY } from '../utils/dates';
+import { hasEasterEgg } from './course';
 import { fill, who } from '../utils/text';
 import { hasHat } from './actions';
 import { effectiveDecisions, humansOf, ownerOf } from './choices';
@@ -93,6 +95,24 @@ export function journalAt(race: Race, now: number, wearing: Accessory[] = []): J
       eventType: e.type as EventType,
       text,
     });
+  }
+
+  // Paasei van de route: één keer langs, in de eerste dagen.
+  const egg = race.course.map.easterEgg;
+  if (egg && hasEasterEgg(race)) {
+    const rng = createRng(deriveSeed(race.seed, 'paasei-tijd'));
+    const time = Math.round(race.startTime + rng.range(0.3, Math.min(3, race.course.days - 1)) * DAY);
+    const texts = t.easterEggs[egg.journalKey] ?? [];
+    if (time <= until && texts.length) {
+      entries.push({
+        id: 'paasei',
+        time,
+        kind: 'event',
+        racerId: null,
+        eventType: 'strange_noise',
+        text: fill(pickText(texts, rng.int(0, 99)), player),
+      });
+    }
   }
 
   for (const sc of race.choices) {

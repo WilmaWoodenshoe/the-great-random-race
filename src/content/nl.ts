@@ -319,6 +319,14 @@ export const nl = {
       finished: 'klaar. {Hij} is over de finish.',
       raceOver: 'aan het uitrusten. De race is voorbij.',
     } as Record<string, string>,
+    /** Paaseieren van routes (zie Course.map.easterEgg). */
+    easterEggs: {
+      kingOfSand: [
+        'In de verte scheurt nummer 84 over de duinen. The King of Sand. Niemand haalt hem in, ook {naam} niet.',
+        'Er vliegt ineens zand over het parcours. Nummer 84 kwam even langs. {naam} kijkt hem verbluft na.',
+        'Een motor brult over het duin. Nummer 84, The King of Sand. {naam} besluit dat dit niet meetelt.',
+      ],
+    } as Record<string, string[]>,
     /** Soms reageert het journaal op wat de racer uit de Collectie draagt. */
     wearRemarks: ['{Ding} blijft zitten.', 'Met {ding}, uiteraard.', '{Ding} staat {hem} goed.', 'Kenners letten vooral op {ding}.'],
     /** Soms reageert het journaal op de hoed van de speler. */
@@ -630,6 +638,11 @@ export const nl = {
       nothing: { name: 'Niets', effect: 'Geen effect; alleen een grappige regel.', trait: '' },
       rain: { name: 'Regen', effect: 'Voor iedereen: kans 45% per dag, 1–3 uur. Slakken 15% sneller, de rest op 80%.', trait: '' },
     } as Record<string, { name: string; effect: string; trait: string }>,
+    fitting: 'Pasruimte',
+    fittingIntro: 'Kies per plek een accessoire en zie hoe het bij elke racer staat.',
+    slots: { hoofd: 'Hoofd', ogen: 'Ogen', nek: 'Nek' } as Record<string, string>,
+    none: 'Niets',
+    easterEgg: (pct: number) => `Paasei: in ${pct}% van de races een andere kaart, met een eigen journaalregel.`,
     accessoryUsed: 'in gebruik',
     accessoryUnused: 'nog niet in gebruik',
   },

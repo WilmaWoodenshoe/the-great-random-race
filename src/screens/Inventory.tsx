@@ -1,4 +1,8 @@
+import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
+import { LivingRacer } from '../components/Gerard';
+import { wearOn } from '../game/collection';
+import type { AccessorySlot } from '../models/Accessory';
 import { nl } from '../content/nl';
 import { accessories, choices, courses, racers } from '../content';
 import { BackHeader } from '../components/BackHeader';
@@ -19,6 +23,7 @@ const t = nl.inventory;
 const gerard = who(racers.find((r) => r.id === 'gerard') ?? racers[0]);
 const sample = (s: string) => fill(s, { ...gerard, plek: 'de Walszaal', route: 'De Kasteelrace', finish: 'het Rozenhof' });
 const comma = (n: number) => n.toFixed(2).replace('.', ',');
+const SLOTS: AccessorySlot[] = ['hoofd', 'ogen', 'nek'];
 const TRAIT_COLORS = { curious: '#2E8AD8', stubborn: '#F2B71F', chaotic: '#F06A2A', lazy: '#7B4FC4' } as const;
 const COLORS = { groen: '#2e7d32', blauw: '#1e63b5', oranje: '#e0601a' } as const;
 const ACTION_ICONS: Record<string, string> = {
@@ -49,6 +54,8 @@ function effectText(effects: SpeedEffect[]): string {
 /** Inventaris (alleen voor de beheerder en in de testversie): alles wat in de race zit. */
 export function Inventory() {
   const { me } = useAccount();
+  // Pasruimte: per plek een accessoire (of niets), bij alle racers tegelijk.
+  const [fit, setFit] = useState<Partial<Record<AccessorySlot, string>>>({ hoofd: 'kroon', ogen: 'zonnebril' });
   if (!isTestVersion && !me?.isAdmin) return <Navigate to="/meer" replace />;
 
   const totalWeight = Object.values(BASE_WEIGHTS).reduce((a, b) => a + b, 0);
@@ -64,6 +71,45 @@ export function Inventory() {
         <p className="back-header__intro">{t.intro}</p>
       </BackHeader>
       <main className="screen__main inv">
+        <h2 className="more__h2">{t.fitting}</h2>
+        <p className="inv__intro">{t.fittingIntro}</p>
+        <div className="card card--wit inv__card">
+          {SLOTS.map((slot) => (
+            <div key={slot} className="inv__fit-row">
+              <span className="inv__fit-label">{t.slots[slot]}</span>
+              <div className="info__buttons inv__fit-chips">
+                {[null, ...accessories.filter((a) => a.slot === slot)].map((a) => {
+                  const on = (fit[slot] ?? null) === (a?.id ?? null);
+                  return (
+                    <button
+                      key={a?.id ?? 'niets'}
+                      type="button"
+                      aria-pressed={on}
+                      className={`chip-btn chip-btn--keuze${on ? ' chip-btn--on' : ''}`}
+                      onClick={() => setFit((f) => ({ ...f, [slot]: a?.id }))}
+                    >
+                      {a?.name ?? t.none}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="inv__fitting">
+          {racers.map((r) => (
+            <figure key={r.id} className="card card--wit inv__fit-racer">
+              <LivingRacer
+                image={r.image}
+                alt={r.name}
+                wear={wearOn(r, accessories.filter((a) => fit[a.slot] === a.id))}
+                className="inv__fit-fig"
+              />
+              <figcaption>{r.name}</figcaption>
+            </figure>
+          ))}
+        </div>
+
         <h2 className="more__h2">
           {t.racers} ({racers.length})
         </h2>
@@ -186,6 +232,7 @@ export function Inventory() {
                     formatKm(courseForDays(c, 21).lengthKm),
                   )}
                 </div>
+                {c.map.easterEgg && <div className="account__small">{t.easterEgg(Math.round(c.map.easterEgg.chance * 100))}</div>}
                 <ol className="inv__segments">
                   {c.segments.map((s) => (
                     <li key={s.id}>

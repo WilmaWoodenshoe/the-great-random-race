@@ -9,6 +9,7 @@ import type { ChoiceColor } from '../models/Choice';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { AppleIcon, CloseIcon, SitIcon, SkipIcon } from '../components/Icons';
 import { img } from '../utils/images';
+import { mapImageOf } from '../game/course';
 
 const ICONS: Record<ChoiceColor, JSX.Element> = {
   groen: <AppleIcon />,
@@ -39,7 +40,7 @@ export function Event() {
 
   return (
     <div className="screen event">
-      <img className="event__bg" src={img(course.map.image)} alt="" />
+      <img className="event__bg" src={img(view ? mapImageOf(view.race) : course.map.image)} alt="" />
       <div className="event__shade" />
 
       <section className="event__dialog grr-pop" role="dialog" aria-modal="true" aria-labelledby="event-kop">

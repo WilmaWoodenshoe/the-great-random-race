@@ -16,10 +16,12 @@ interface Props {
   course: Course;
   markers: MapMarker[];
   alt: string;
+  /** Andere kaartafbeelding (bijv. met paasei); standaard die van de route. */
+  image?: string;
 }
 
 /** Geïllustreerde kaart met bordjes, de finish en alle racers. */
-export function RaceMap({ course, markers, alt }: Props) {
+export function RaceMap({ course, markers, alt, image }: Props) {
   const { width, height } = course.map;
   const pos = (p: MapPoint) => ({ left: `${(p.x / width) * 100}%`, top: `${(p.y / height) * 100}%` });
   const finishIndex = course.segments.length;
@@ -36,7 +38,7 @@ export function RaceMap({ course, markers, alt }: Props) {
         width: `min(100cqw, calc(100cqh * ${width / height}))`,
       }}
     >
-      <img className="race-map__img" src={img(course.map.image)} alt={alt} />
+      <img className="race-map__img" src={img(image ?? course.map.image)} alt={alt} />
       {course.segments.slice(0, -1).map((s, i) => (
         <div key={s.id} className="race-map__sign" style={pos(s.sign)}>
           {i + 1}. {s.name}
