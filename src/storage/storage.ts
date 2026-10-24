@@ -4,6 +4,7 @@
 
 import { createStore, del, get, set, type UseStore } from 'idb-keyval';
 import { EMPTY_SAVE, type SaveData } from '../models/Save';
+import { upgradeRace } from './upgrade';
 
 export interface GameStorage {
   load(): Promise<SaveData>;
@@ -18,7 +19,14 @@ export function parseSave(raw: unknown): SaveData {
   if (!raw || typeof raw !== 'object') return { ...EMPTY_SAVE };
   const data = raw as Partial<SaveData>;
   if (data.version !== 1) return { ...EMPTY_SAVE };
-  const race = data.race && data.race.version === 1 ? data.race : null;
+  let race = data.race && data.race.version === 1 ? data.race : null;
+  if (race) {
+    try {
+      race = upgradeRace(race);
+    } catch {
+      race = null;
+    }
+  }
   return {
     version: 1,
     race,

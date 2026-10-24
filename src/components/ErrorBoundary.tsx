@@ -4,14 +4,15 @@ import { createIndexedDbStorage } from '../storage/storage';
 
 interface State {
   failed: boolean;
+  message?: string;
 }
 
 /** Vangt onverwachte fouten op, zodat de speler nooit naar een leeg scherm kijkt. */
 export class ErrorBoundary extends Component<{ children: ReactNode }, State> {
   state: State = { failed: false };
 
-  static getDerivedStateFromError(): State {
-    return { failed: true };
+  static getDerivedStateFromError(error: unknown): State {
+    return { failed: true, message: error instanceof Error ? error.message : String(error) };
   }
 
   componentDidCatch(error: unknown) {
@@ -41,6 +42,7 @@ export class ErrorBoundary extends Component<{ children: ReactNode }, State> {
         <button type="button" className="link-btn" onClick={this.reset}>
           {t.reset}
         </button>
+        {this.state.message && <small className="error__detail">{this.state.message}</small>}
       </div>
     );
   }

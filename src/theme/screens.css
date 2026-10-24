@@ -1210,3 +1210,10 @@ a.board__row {
   font-weight: 800;
   color: var(--inkt-zacht);
 }
+
+.error__detail {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--inkt-zacht);
+  word-break: break-word;
+}
