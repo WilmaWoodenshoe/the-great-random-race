@@ -21,7 +21,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['images/**/*'],
+      includeAssets: ['images/**/*', 'icons/*'],
       manifest: {
         name: 'The Great Random Race',
         short_name: 'Random Race',
@@ -33,7 +33,11 @@ export default defineConfig({
         orientation: 'portrait',
         background_color: '#FBF2E2',
         theme_color: '#FBF2E2',
-        icons: [],
+        icons: [
+          { src: 'icons/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+          { src: 'icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+          { src: 'icons/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+        ],
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,woff2,png,webp,svg}'],
