@@ -3,6 +3,7 @@ import { choices, getCourse, getRacer } from '../src/content';
 import { canDoAction, createRace, decideChoice, doAction, openChoice, racerMovement, standingsAt } from '../src/game/engine';
 import { journalAt } from '../src/game/journal';
 import { runBalance } from '../src/game/balance';
+import { courseForDays } from '../src/game/course';
 import { DAY, HOUR } from '../src/utils/dates';
 import { START } from './helpers';
 
@@ -13,7 +14,7 @@ const shared = (playerId: string, days = 7) =>
     now: START,
     seed: 99,
     number: 1,
-    course: { ...getCourse('grote-bosrace'), days },
+    course: courseForDays(getCourse('grote-bosrace'), days),
     racers: lineup,
     choices,
     playerId,
@@ -66,9 +67,11 @@ describe('gedeelde race met meerdere spelers', () => {
 });
 
 describe('raceduur 7, 14 of 21 dagen', () => {
-  it('een race van 21 dagen eindigt na 21 dagen', () => {
+  it('een race van 21 dagen eindigt na 21 dagen en is drie keer zo lang', () => {
     const race = shared('gerard', 21);
     expect(race.endTime - race.startTime).toBe(21 * DAY);
+    expect(race.course.lengthKm).toBeCloseTo(3 * getCourse('grote-bosrace').lengthKm, 1);
+    expect(courseForDays(getCourse('grote-bosrace'), 14).lengthKm).toBeCloseTo(85.4, 1);
   });
 
   it('in een langere race finisht Gerard naar verhouding op hetzelfde moment', () => {

@@ -2,6 +2,7 @@ import { choices, getCourse, getRacer } from '../content';
 import { DAY } from '../utils/dates';
 import type { ActionId } from '../models/Race';
 import { canDoAction, createRace, doAction, finalStandings } from './engine';
+import { courseForDays } from './course';
 
 export interface BalanceReport {
   races: number;
@@ -33,7 +34,7 @@ export function runBalance(
   days = 7,
 ): BalanceReport {
   const racers = lineup.map(getRacer);
-  const course = { ...getCourse('grote-bosrace'), days };
+  const course = courseForDays(getCourse('grote-bosrace'), days);
   const perRacer: BalanceReport['perRacer'] = {};
   const finishDays: Record<string, number[]> = {};
   const kmSum: Record<string, number> = {};

@@ -6,7 +6,7 @@ Besloten door de eigenaar (24 oktober 2026):
 - **Nieuwe accounts eerst goedkeuren.** De beheerder (de eigenaar) ziet onder *Meer → Beheer* wie er wacht, en kan goedkeuren, weigeren of later verwijderen. Het oudste account is automatisch beheerder.
 - **Gedeelde races.** Iedereen met een goedgekeurd account kan een race starten. Anderen doen mee via de **lijst met open races** (*Meer → Races*).
 - **Vast startmoment.** De maker kiest wanneer de race begint (over 1 uur, morgen 9:00, zelf kiezen, of nu meteen). Tot dan kan iedereen meedoen.
-- **Duur per race: 7, 14 of 21 dagen**, door de maker gekozen. De racers gaan bij een langere race naar verhouding langzamer, zodat ze ook dan rond het einde finishen.
+- **Duur per race: 7, 14 of 21 dagen**, door de maker gekozen. Een langere race heeft een langere route (42,7 / 85,4 / 128,1 km). De racers gaan even snel, dus je komt elke dag evenveel kilometers vooruit, en ze finishen ook dan rond het einde.
 - **Altijd 6 racers.** Lege plekken worden bij de start aangevuld met willekeurige computerracers. Elke racer kan maar één keer per race gekozen worden.
 
 ## Hoe het werkt

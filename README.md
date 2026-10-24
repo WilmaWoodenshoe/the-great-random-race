@@ -35,7 +35,7 @@ Website (later): thegreatrandomrace.nl
 | C | Account in de app (Meer → Account): bijnaam + passkey, inloggen op een andere telefoon, race automatisch bewaren | Klaar |
 | D | Spelersoverzicht, account verwijderen, privacyverklaring bijgewerkt (in v0.3 vervangen door de races-lijst) | Klaar |
 
-**v0.3 — samen racen** (plan: `docs/PLAN-v0.3.md`): eerst een account (goedgekeurd door de beheerder), dan meedoen aan gedeelde races uit de lijst (*Meer → Races*) of er zelf een starten, met een vast startmoment en een duur van 7, 14 of 21 dagen. Lege plekken worden aangevuld met computerracers. De beheerder keurt accounts goed onder *Meer → Beheer*. Klaar.
+**v0.3 — samen racen** (plan: `docs/PLAN-v0.3.md`): eerst een account (goedgekeurd door de beheerder), dan meedoen aan gedeelde races uit de lijst (*Meer → Races*) of er zelf een starten, met een vast startmoment en een duur van 7, 14 of 21 dagen (route van 42,7 / 85,4 / 128,1 km). Lege plekken worden aangevuld met computerracers. De beheerder keurt accounts goed onder *Meer → Beheer*. Klaar.
 
 Accounts en gedeelde races werken alleen op thegreatrandomrace.nl; in de testversie (GitHub Pages) speel je alleen, op de telefoon, met de tijdmachine.
 

@@ -496,7 +496,7 @@ export const nl = {
     name: 'Naam van de race (mag leeg)',
     namePlaceholder: 'Bijv. De Slakkenbeker',
     length: 'Hoe lang duurt de race?',
-    lengthHint: 'Langer = de racers gaan langzamer, en er gebeurt onderweg meer.',
+    lengthHint: 'Langer = een langere route. De racers gaan even snel, maar moeten verder, en er gebeurt onderweg meer.',
     start: 'Wanneer begint de race?',
     startHint: 'Tot de start kunnen anderen meedoen. Lege plekken worden bij de start aangevuld met computerracers.',
     inOneHour: 'Over 1 uur',

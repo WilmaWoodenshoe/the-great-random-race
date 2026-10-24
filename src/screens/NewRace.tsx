@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { nl } from '../content/nl';
-import { racers } from '../content';
+import { getCourse, racers } from '../content';
+import { courseForDays } from '../game/course';
+import { formatKm } from '../utils/format';
 import { BackHeader } from '../components/BackHeader';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { RacerGrid, RacerLine } from '../components/RacerGrid';
@@ -141,7 +143,7 @@ export function NewRace() {
                   aria-pressed={days === d}
                   onClick={() => setDays(d)}
                 >
-                  {nl.races.days(d)}
+                  {nl.races.days(d)} · {formatKm(courseForDays(getCourse('grote-bosrace'), d).lengthKm)}
                 </button>
               ))}
             </div>

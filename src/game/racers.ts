@@ -8,8 +8,9 @@ import { personalityModifier } from './personality';
 export const BASE_KMH = 0.318;
 
 /**
- * Alles is afgesteld op een race van 7 dagen. Duurt een race langer
- * (14 of 21 dagen), dan gaan alle racers naar verhouding langzamer.
+ * Alles is afgesteld op een race van 7 dagen. Een langere race heeft een
+ * langere route (zie courseForDays) en meer events; elke sprong (kortere
+ * weg, verkeerde afslag) telt dan naar verhouding minder zwaar.
  */
 export const REFERENCE_DAYS = 7;
 

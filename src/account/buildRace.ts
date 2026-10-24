@@ -5,6 +5,7 @@
 import { choices as allChoices, getCourse, racers as allRacers } from '../content';
 import { createRace, decideChoice, doAction } from '../game/engine';
 import { fillLineup } from '../game/session';
+import { courseForDays } from '../game/course';
 import type { ActionId, Race } from '../models/Race';
 import { upgradeRace } from '../storage/upgrade';
 import type { RaceDetail, RaceSnapshot } from './api';
@@ -22,7 +23,7 @@ export function buildRace(detail: RaceDetail, viewerUserId: number | null): Race
     now: detail.startTime,
     seed: detail.seed,
     number: detail.id,
-    course: { ...snapshot.course, days: detail.days },
+    course: courseForDays(snapshot.course, detail.days),
     racers: fillLineup(humans, detail.seed, snapshot.racers),
     choices: snapshot.choices,
     playerId: viewer,
