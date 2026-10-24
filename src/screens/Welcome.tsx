@@ -1,9 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { nl } from '../content/nl';
-import { useGame } from '../state/GameProvider';
-import { canStartRace } from '../game/session';
-import { playerRacer } from '../content';
+import { getRacer } from '../content';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { PhoneDownload } from '../components/Icons';
 import { LivingRacer } from '../components/Gerard';
@@ -12,25 +8,10 @@ import { img } from '../utils/images';
 /** Eerste start (Welcome.html). */
 export function Welcome() {
   const t = nl.welcome;
-  const { startNewRace, save, now } = useGame();
-  const navigate = useNavigate();
-  const [busy, setBusy] = useState(false);
   // Staat de app al op het beginscherm, dan is de installatietip overbodig.
   const installed =
     window.matchMedia('(display-mode: standalone)').matches ||
     (navigator as Navigator & { standalone?: boolean }).standalone === true;
-
-  const start = async () => {
-    if (busy) return;
-    setBusy(true);
-    try {
-      // Loopt er al een race, dan gewoon daarheen.
-      if (canStartRace(save, now)) await startNewRace();
-      navigate('/home', { replace: true });
-    } finally {
-      setBusy(false);
-    }
-  };
 
   return (
     <div className="screen welcome">
@@ -41,7 +22,7 @@ export function Welcome() {
 
       <main className="welcome__main">
         <div className="welcome__hero">
-          <LivingRacer image={playerRacer.image} alt={t.gerardAlt} wobble className="welcome__gerard" />
+          <LivingRacer image={getRacer('gerard').image} alt={t.gerardAlt} wobble className="welcome__gerard" />
         </div>
         <div className="welcome__intro">
           <h1 className="kop kop--36">{t.title}</h1>
@@ -61,8 +42,8 @@ export function Welcome() {
       </main>
 
       <div className="screen__footer">
-        <PrimaryButton onClick={start} arrow={!busy}>
-          {busy ? t.starting : t.start}
+        <PrimaryButton to="/kies" arrow>
+          {t.start}
         </PrimaryButton>
       </div>
     </div>

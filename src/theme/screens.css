@@ -1217,3 +1217,82 @@ a.board__row {
   color: var(--inkt-zacht);
   word-break: break-word;
 }
+
+/* ---------- Kies je racer (KiesRacer.html) ---------- */
+
+.pick {
+  padding: 0 14px;
+}
+
+.pick__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: 116px;
+  gap: 10px;
+}
+
+.pick__tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 4px;
+  border-radius: var(--ronding-klein);
+  border: 3px solid transparent;
+  background: #f3ead8;
+  box-shadow: var(--schaduw-klein);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+
+.pick__tile:active {
+  transform: scale(0.97);
+}
+
+.pick__tile--on {
+  background: #eaf3fc;
+  border-color: #2b79d0;
+}
+
+/* Een losse racer op de laatste rij komt in het midden. */
+.pick__tile:last-child:nth-child(3n + 1) {
+  grid-column: 2;
+}
+
+.pick__img {
+  width: 92px;
+  max-width: 100%;
+  height: 82px;
+  object-fit: contain;
+}
+
+.pick__tile--on .pick__img {
+  animation: grr-breathe 3.2s ease-in-out infinite;
+}
+
+.pick__name {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--inkt);
+}
+
+.pick__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+.pick__line {
+  min-height: 2.8em;
+  text-align: center;
+  font-size: 14px;
+  color: var(--inkt-zacht);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pick__tile--on .pick__img {
+    animation: none;
+  }
+}

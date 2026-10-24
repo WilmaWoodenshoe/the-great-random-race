@@ -23,7 +23,7 @@ export function actionPhases(race: Race, now: number): SpeedPhase[] {
     });
 }
 
-/** Draagt Gerard op dit moment een hoed? (rest van de race) */
+/** Draagt de racer van de speler op dit moment een hoed? (rest van de race) */
 export function hasHat(race: Race, now: number): boolean {
   return race.actions.some((a) => a.actionId === 'hoed' && a.time <= now);
 }

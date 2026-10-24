@@ -7,6 +7,7 @@ const turbo: Racer = {
   speed: 0.85,
   traits: { curious: 30, stubborn: 90, chaotic: 15, lazy: 50 },
   title: 'The Relentless',
+  tagline: 'Laat zich door niets afleiden.',
   image: 'racers/schildpad.webp',
   facts: {
     favoriteFood: 'Paardenbloemen',

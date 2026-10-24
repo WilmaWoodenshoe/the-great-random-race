@@ -12,7 +12,8 @@ interface GameContextValue {
   race: Race | null;
   /** De tijd volgens de app (echte tijd + eventueel vooruitgespoeld). */
   now: number;
-  startNewRace(): Promise<void>;
+  /** Start een nieuwe race met deze racer. */
+  startNewRace(racerId: string): Promise<void>;
   decide(scheduledId: string, optionId: string): Promise<void>;
   act(actionId: ActionId): Promise<void>;
   /** Onthoud dat de speler de uitslag van deze race heeft gezien. */
@@ -120,8 +121,8 @@ export function GameProvider({ children, storage }: { children: ReactNode; stora
       save,
       race: save.race,
       now,
-      startNewRace: async () => {
-        await update((s, at) => startRace(s, at));
+      startNewRace: async (racerId) => {
+        await update((s, at) => startRace(s, at, racerId));
         void requestPersistentStorage();
       },
       decide: (scheduledId, optionId) =>

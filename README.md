@@ -26,7 +26,14 @@ Website (later): thegreatrandomrace.nl
 | 10 | Balanstest, tests en afwerking | Klaar |
 | 11 | PWA afmaken (icoon, offline, installeren) en online op thegreatrandomrace.nl | Klaar, op het slotje (HTTPS) na |
 
-Alle schermen werken met de echte race (fase 1–9). Nog te doen: de app afmaken als installeerbare app en echt online zetten op thegreatrandomrace.nl (fase 11).
+**v0.2** (plan: `docs/PLAN-v0.2.md`):
+
+| Fase | Wat | Status |
+|---|---|---|
+| A | Kies je racer (10 racers), 5 willekeurige tegenstanders, teksten voor elke racer | Klaar |
+| B | Server met accounts (passkey) | Nog te doen |
+| C | Inloggen in de app, race bewaren per account | Nog te doen |
+| D | Overzicht wie met welke racer speelt, privacy, account verwijderen | Nog te doen |
 
 **Testen zonder een week te wachten:** onder *Meer → Testversie: tijdmachine* kun je de klok van de app een uur of een dag vooruit zetten, en alles wissen. Dit staat alleen in de testversie (GitHub Pages), niet op thegreatrandomrace.nl.
 
@@ -35,7 +42,8 @@ Alle schermen werken met de echte race (fase 1–9). Nog te doen: de app afmaken
 - Bij de start liggen starttijd, eindtijd (+ 7 dagen) en een *seed* (startgetal voor het toeval) vast. Daarmee wordt meteen het hele eventschema berekend: wie wanneer een bloem vindt, een dutje doet of verdwaalt.
 - De positie van elke racer wordt op elk moment uitgerekend uit dat schema. De app hoeft dus niet open te staan, en de race is altijd hetzelfde, hoe vaak je ook kijkt.
 - Keuzes van de speler en de dagelijkse actie tellen pas mee vanaf het moment dat ze gemaakt zijn. Wat al gebeurd is, verandert nooit.
-- De balanstest (`tests/balance.test.ts`) speelt 1.000 races en controleert de doelen uit de briefing. Uitkomst bij de huidige instellingen: Gerard wint ± 25%, finisht meestal halverwege dag 7; Mr. M (de eend) wint ± 70%; Charles (het oude konijn) haalt in ± 22% van de races de finish en wint soms; Turbo haalt in ± 55% van de races de finish, Kevin in ± 9%, Steve nooit.
+- De balanstest (`tests/balance.test.ts`) speelt 1.000 races met de vaste opstelling van v0.1 (Gerard, Mr. M, Turbo, Kevin, Steve, Charles) en controleert de doelen uit de briefing. Uitkomst bij de huidige instellingen: Gerard wint ± 25%, finisht meestal halverwege dag 7; Mr. M (de eend) wint ± 70%; Charles (het oude konijn) haalt in ± 22% van de races de finish en wint soms; Turbo haalt in ± 55% van de races de finish, Kevin in ± 9%, Steve nooit.
+- Met willekeurige tegenstanders (Kies je racer) wint de speler met Mr. M ± 16%, met Gerard ± 11%, met Philippe ± 9%, met Roger ± 5%, met Isabelle ± 3%; Bintje, Charles, Turbo en Kevin winnen zelden, Steve nooit. De racer van de speler beleeft meer (meer events en keuzes) en is daardoor iets trager dan dezelfde racer als tegenstander.
 - Een tweede balanstest speelt 1.000 races waarin de speler elke dag Gerard voert: hij wint dan iets vaker, maar minder dan 10 procentpunt. De actie helpt, maar beslist de race niet.
 - Afstellen gebeurt in `src/game/racers.ts` (`BASE_KMH`), `src/game/events.ts` (kansen per event) en `src/game/personality.ts` (wat de eigenschappen doen).
 
@@ -62,7 +70,9 @@ const ducky: Racer = {
   speed: 1.3, // ten opzichte van Gerard (1,00)
   traits: { curious: 60, stubborn: 30, chaotic: 90, lazy: 30 }, // elk 0–100
   title: 'Chaotic Excellence', // bijnaam, mag Engels
+  tagline: 'Snel, maar weet zelden waarheen.', // zinnetje bij 'Kies je racer'
   image: 'racers/eend.webp', // in public/images/
+  // pronoun: 'zij', // alleen als de racer een zij is (zoals Isabelle); standaard 'hij'
   facts: {
     favoriteFood: 'Broodkruimels',
     dislikes: 'Rechte lijnen',
@@ -73,6 +83,8 @@ const ducky: Racer = {
 
 export default ducky;
 ```
+
+Een nieuwe racer verschijnt vanzelf bij **Kies je racer** en kan als tegenstander meedoen. Elke race heeft 6 racers: de racer van de speler plus 5 willekeurige tegenstanders. Controleer na het toevoegen met de balanstest (`npm test`) of de snelheid redelijk is.
 
 **Hoed:** een racer kan alleen een hoed dragen als in zijn bestand `hatSpot` staat: waar de hoed zit, in procenten van de afbeelding. Gerard draagt hem op zijn huisje: `hatSpot: { left: 27, top: -8, width: 26, rotate: -8, aspect: 720 / 519 }` (`rotate` = scheve stand in graden, `aspect` = breedte ÷ hoogte van zijn afbeelding in pixels).
 
@@ -130,29 +142,42 @@ export default groteBosrace;
 
 ### Keuze-event — `src/content/choices/<naam>.ts`
 
+De speler kan met elke racer spelen. Schrijf de teksten daarom met **invulplekken** in plaats van een vaste naam:
+
+| Invulplek | Wordt bij Gerard | Wordt bij Isabelle |
+|---|---|---|
+| `{naam}` | Gerard | Isabelle |
+| `{hij}` / `{Hij}` | hij / Hij | zij / Zij |
+| `{zijn}` / `{Zijn}` | zijn / Zijn | haar / Haar |
+| `{hem}` | hem | haar |
+
+Met een hoofdletter (`{Hij}`) komt het woord ook met een hoofdletter, voor het begin van een zin. Dezelfde invulplekken werken in de journaalteksten in `src/content/nl.ts`.
+
+Gaat een event over een andere racer (zoals "Kevin slaapt"), zet dan `aboutRacer: 'kevin'` erbij. Dan komt het event alleen voor als Kevin meedoet en de speler niet zelf met Kevin speelt.
+
 ```ts
 import type { Choice } from '../../models/Choice';
 
 const aardbei: Choice = {
   id: 'aardbei',
-  heading: 'Gerard heeft iets gevonden!',
+  heading: '{naam} heeft iets gevonden!',
   title: 'Een gigantische aardbei',
-  text: 'Gerard heeft nog nooit zo’n grote aardbei gezien. Wat moet hij doen?',
-  announce: 'Gerard heeft een gigantische aardbei gevonden.', // journaalregel
+  text: '{naam} heeft nog nooit zo’n grote aardbei gezien. Wat moet {hij} doen?',
+  announce: '{naam} heeft een gigantische aardbei gevonden.', // journaalregel
   image: 'ui/event-aardbei.png',
-  imageAlt: 'Gerard naast een gigantische aardbei',
+  imageAlt: 'Een gigantische aardbei',
   options: [
     {
       id: 'eten',
       label: 'Eet hem',
       color: 'groen', // 'groen', 'blauw' of 'oranje'
-      prefers: ['curious', 'lazy'], // kiest Gerard zelf vaker als hij zo is
+      prefers: ['curious', 'lazy'], // kiest de racer zelf vaker als hij zo is
       // effecten na elkaar: eerst 60 min stilstaan, dan 3 uur 15% sneller
       effects: [
         { minutes: 60, speed: 0 },
         { minutes: 180, speed: 1.15 },
       ],
-      journal: ['Gerard heeft de aardbei gegeten. …', '…', '…', '…'], // minstens 4
+      journal: ['{naam} heeft de aardbei gegeten. …', '…', '…', '…'], // minstens 4
     },
     // nog 1 of 2 opties
   ],

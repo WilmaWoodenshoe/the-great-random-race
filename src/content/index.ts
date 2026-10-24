@@ -33,5 +33,5 @@ export const getRacer = (id: string) => byId(racers, id, 'racer');
 export const getCourse = (id: string) => byId(courses, id, 'route');
 export const getChoice = (id: string) => byId(choices, id, 'keuze-event');
 
-/** De racer van de speler (in v0.1: Gerard). */
-export const playerRacer: Racer = racers.find((r) => r.playable) ?? getRacer('gerard');
+/** De racer die bij 'Kies je racer' als eerste klaarstaat (Gerard). */
+export const defaultRacer: Racer = racers.find((r) => r.playable) ?? getRacer('gerard');

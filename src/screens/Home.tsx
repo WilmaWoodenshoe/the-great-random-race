@@ -11,7 +11,7 @@ import { formatClock } from '../utils/dates';
 import { formatKm } from '../utils/format';
 import { img } from '../utils/images';
 
-/** Klein plaatje bij "Gerard is momenteel…", passend bij wat hij doet. */
+/** Klein plaatje bij "… is momenteel", passend bij wat de racer doet. */
 function statusIcon(activity: string): string {
   switch (activity) {
     case 'flower':
@@ -85,8 +85,8 @@ export function Home() {
           <Link to="/event" className="event-teaser grr-pop">
             <span className="badge event-teaser__badge">{t.eventBadge}</span>
             <span className="event-teaser__body">
-              <span className="event-teaser__title">{view.openChoice.choice.heading}</span>
-              <span className="event-teaser__text">{t.eventDeadline(formatClock(view.openChoice.deadline))}</span>
+              <span className="event-teaser__title">{view.say(view.openChoice.choice.heading)}</span>
+              <span className="event-teaser__text">{view.say(t.eventDeadline(formatClock(view.openChoice.deadline)))}</span>
             </span>
             <span className="event-teaser__cta">{t.eventCta}</span>
           </Link>
@@ -117,7 +117,7 @@ export function Home() {
             </span>
             <span className="action-teaser__body">
               <span className="action-teaser__title">{nl.action.title}</span>
-              <span className="action-teaser__text">{t.actionOpen}</span>
+              <span className="action-teaser__text">{view.say(t.actionOpen)}</span>
             </span>
             <span className="action-teaser__arrow" aria-hidden="true">→</span>
           </Link>

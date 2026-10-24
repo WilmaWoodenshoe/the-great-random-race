@@ -5,6 +5,7 @@ import { canDoAction, daysLeft, getRaceRacer, isFinished, openChoice, standingsA
 import { journalAt } from '../game/journal';
 import { activityAt, statusText } from '../game/status';
 import { HOUR, DAY } from '../utils/dates';
+import { fill, who } from '../utils/text';
 import { useGame } from './GameProvider';
 
 /**
@@ -24,10 +25,13 @@ export function useRaceView() {
     const compareAt = Math.max(now - DAY, race.startTime + HOUR);
     const before = now > compareAt ? standingsAt(race, compareAt).find((s) => s.racerId === race.playerId)! : me;
 
+    const words = who(player);
     return {
       race,
       now,
       player,
+      /** Vul {naam}, {hij}, {zijn} en {hem} in met de racer van de speler. */
+      say: (template: string) => fill(template, words),
       standings,
       me,
       /** Positief = plekken gestegen. */
@@ -42,7 +46,7 @@ export function useRaceView() {
       /** Mag de speler vandaag nog een actie doen? */
       canAct: canDoAction(race, now),
       todaysAction: todaysAction(race, now),
-      /** De hoed voor Gerard, als hij die heeft gekregen (en een hoed past). */
+      /** De hoed voor de racer van de speler, als die er een kreeg (en een hoed past). */
       hat:
         hasHat(race, now) && player.hatSpot
           ? { image: 'accessories/hoed.png', alt: nl.action.hatAlt, spot: player.hatSpot }

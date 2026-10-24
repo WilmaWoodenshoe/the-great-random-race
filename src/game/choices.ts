@@ -7,13 +7,13 @@ import { createRng, deriveSeed, type Rng } from '../utils/random';
 
 // Keuze-events (briefing hoofdstuk 11): maximaal één per dag, op een
 // vooraf berekend moment. De speler heeft 12 uur om te kiezen; anders
-// kiest Gerard zelf, passend bij zijn persoonlijkheid.
+// kiest de racer zelf, passend bij zijn persoonlijkheid.
 
 export const CHOICE_WINDOW = 12 * HOUR;
 /** Kans dat er op een dag een keuze-event is. */
 export const CHOICE_CHANCE_PER_DAY = 0.7;
 
-/** Wat Gerard zelf kiest: opties die bij zijn eigenschappen passen, wegen zwaarder. */
+/** Wat de racer zelf kiest: opties die bij zijn eigenschappen passen, wegen zwaarder. */
 export function autoChoose(choice: Choice, racer: Racer, rng: Rng): string {
   return rng.weighted(
     choice.options.map((o) => ({
@@ -29,7 +29,10 @@ export function scheduleChoices(
   player: Racer,
   startTime: number,
   endTime: number,
+  racerIds: string[] = [],
 ): ScheduledChoice[] {
+  // Een event over een andere racer alleen als die meedoet en niet de speler is.
+  available = available.filter((c) => !c.aboutRacer || (c.aboutRacer !== player.id && racerIds.includes(c.aboutRacer)));
   if (available.length === 0) return [];
   const rng = createRng(deriveSeed(seed, 'choices'));
   // Elke keuze eerst één keer, in willekeurige volgorde.
@@ -64,7 +67,7 @@ export function scheduleChoices(
 
 /**
  * De keuzes die op moment `now` gemaakt zijn: door de speler, of door
- * Gerard zelf als de 12 uur om zijn.
+ * de racer zelf als de 12 uur om zijn.
  */
 export function effectiveDecisions(race: Race, now: number): (Decision & { auto: boolean })[] {
   const result: (Decision & { auto: boolean })[] = [];

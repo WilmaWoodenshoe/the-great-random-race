@@ -1,7 +1,8 @@
 import { nl } from '../content/nl';
 import type { Race } from '../models/Race';
 import { openChoice } from './choices';
-import { racerMovement } from './engine';
+import { getRaceRacer, racerMovement } from './engine';
+import { fill, who } from '../utils/text';
 
 /** Wat doet een racer nu? Geeft een sleutel uit nl.engine.status. */
 export function activityAt(race: Race, racerId: string, now: number): string {
@@ -24,8 +25,8 @@ export function activityAt(race: Race, racerId: string, now: number): string {
   return current ?? 'racing';
 }
 
-/** De tekst achter "Gerard is momenteel…". */
+/** De tekst achter "{naam} is momenteel…". */
 export function statusText(race: Race, racerId: string, now: number): string {
   const key = activityAt(race, racerId, now);
-  return nl.engine.status[key] ?? nl.engine.status.racing;
+  return fill(nl.engine.status[key] ?? nl.engine.status.racing, who(getRaceRacer(race, racerId)));
 }

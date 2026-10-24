@@ -7,6 +7,7 @@ const ducky: Racer = {
   speed: 1.3,
   traits: { curious: 60, stubborn: 30, chaotic: 90, lazy: 30 },
   title: 'Chaotic Excellence',
+  tagline: 'Snel, maar weet zelden waarheen.',
   image: 'racers/eend.webp',
   facts: {
     favoriteFood: 'Broodkruimels',

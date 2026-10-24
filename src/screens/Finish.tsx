@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { nl } from '../content/nl';
 import { Confetti } from '../components/Confetti';
@@ -14,10 +14,9 @@ import { img } from '../utils/images';
 
 /** Uitslag met confetti (Finish.html): dramatisch, met statistieken die niemand vroeg. */
 export function Finish() {
-  const { loading, startNewRace, markFinishSeen } = useGame();
+  const { loading, markFinishSeen } = useGame();
   const view = useRaceView();
   const navigate = useNavigate();
-  const [busy, setBusy] = useState(false);
 
   const raceId = view?.finished ? view.race.id : null;
   useEffect(() => {
@@ -38,7 +37,7 @@ export function Finish() {
         <div className="badge badge--finish">{t.badge}</div>
         <h1 className="kop kop--36">{t.notOver}</h1>
         <p>{t.notOverText(nl.common.daysLeft(view.daysLeft))}</p>
-        <PrimaryButton to="/home">{t.toHome}</PrimaryButton>
+        <PrimaryButton to="/home">{view.say(t.toHome)}</PrimaryButton>
       </div>
     );
   }
@@ -47,7 +46,7 @@ export function Finish() {
   const me = standings.find((s) => s.racerId === race.playerId)!;
   const won = me.position === 1;
   const podium = me.position <= 3;
-  // De eerste drie, en Gerard erbij als hij daar niet tussen staat.
+  // De eerste drie, en de racer van de speler erbij als die er niet tussen staat.
   const rows = standings.filter((s) => s.position <= 3 || s.racerId === race.playerId);
   const stats = finishStats(race);
 
@@ -56,24 +55,16 @@ export function Finish() {
     : me.finishTime !== null
       ? t.place(player.name, me.position)
       : t.placeNotFinished(player.name, me.position);
-  const line = won
-    ? t.winnerLine
-    : podium
-      ? t.podiumLine
-      : me.finishTime !== null
-        ? t.finishedLine
-        : t.notFinishedLine(formatKm(me.km));
+  const line = view.say(
+    won
+      ? t.winnerLine
+      : podium
+        ? t.podiumLine
+        : me.finishTime !== null
+          ? t.finishedLine
+          : t.notFinishedLine(formatKm(me.km)),
+  );
 
-  const newRace = async () => {
-    if (busy) return;
-    setBusy(true);
-    try {
-      await startNewRace();
-      navigate('/home', { replace: true });
-    } finally {
-      setBusy(false);
-    }
-  };
 
   return (
     <div className="screen finish">
@@ -91,7 +82,7 @@ export function Finish() {
         <div className="finish__hero">
           <img className="finish__bg" src={img('backgrounds/bg-landschap.webp')} alt="" />
           <LivingRacer
-            image={won ? 'racers/gerard-kroon.webp' : player.image}
+            image={won && player.id === 'gerard' ? 'racers/gerard-kroon.webp' : player.image}
             alt={won ? t.winnerAlt(player.name) : player.name}
             hat={won ? undefined : view.hat}
             mood={me.finishTime === null ? 'slaapt' : 'gewoon'}
@@ -137,8 +128,8 @@ export function Finish() {
       </main>
 
       <div className="screen__footer">
-        <PrimaryButton onClick={newRace} arrow={!busy}>
-          {busy ? nl.welcome.starting : t.newRace}
+        <PrimaryButton onClick={() => navigate('/kies')} arrow>
+          {t.newRace}
         </PrimaryButton>
       </div>
     </div>

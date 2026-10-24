@@ -7,6 +7,7 @@ import {
   decideChoice,
   doAction,
   finalStandings,
+  getRaceRacer,
   openChoice,
   racerMovement,
   standingsAt,
@@ -19,6 +20,7 @@ import { activityAt, statusText } from '../src/game/status';
 import { finishStats } from '../src/game/stats';
 import { DAY, HOUR, MINUTE } from '../src/utils/dates';
 import { START, makeRace } from './helpers';
+import { fill, who } from '../src/utils/text';
 
 describe('race aanmaken', () => {
   it('legt start, einde (start + 7 dagen) en seed vast', () => {
@@ -106,7 +108,7 @@ describe('keuze-events', () => {
     expect(() => decideChoice(race, sc.id, sc.choice.options[0].id, sc.deadline)).toThrow();
     const entry = journalAt(race, sc.deadline).find((e) => e.id === `${sc.id}-gekozen`);
     const auto = sc.choice.options.find((o) => o.id === sc.autoOptionId)!;
-    expect(auto.journal).toContain(entry!.text);
+    expect(auto.journal.map((s) => fill(s, who(getRaceRacer(race, race.playerId))))).toContain(entry!.text);
   });
 
   it('tijdens een open keuze is Gerard aan het nadenken', () => {

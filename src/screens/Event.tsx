@@ -1,6 +1,7 @@
 import { Navigate, useNavigate } from 'react-router-dom';
 import { nl } from '../content/nl';
-import { getChoice, getCourse } from '../content';
+import { getChoice, getCourse, getRacer } from '../content';
+import { fill, who } from '../utils/text';
 import { useGame } from '../state/GameProvider';
 import { useRaceView } from '../state/useRaceView';
 import { isTestVersion } from '../utils/env';
@@ -27,6 +28,7 @@ export function Event() {
   const open = view?.openChoice ?? null;
   const choice = open?.choice ?? getChoice('aardbei');
   const course = view?.race.course ?? getCourse('grote-bosrace');
+  const say = (s: string) => fill(s, who(view?.player ?? getRacer('gerard')));
   const close = () => navigate('/home');
   // Zonder open keuze alleen in de testversie een voorbeeld tonen.
   if (!open && !isTestVersion) return <Navigate to="/home" replace />;
@@ -46,15 +48,15 @@ export function Event() {
           <CloseIcon />
         </button>
         <h1 id="event-kop" className="kop kop--32 event__heading">
-          {choice.heading}
+          {say(choice.heading)}
         </h1>
-        <img className="event__img" src={img(choice.image)} alt={choice.imageAlt} />
-        <h2 className="kop kop--26">{choice.title}</h2>
-        <p className="event__text">{choice.text}</p>
+        <img className="event__img" src={img(choice.image)} alt={say(choice.imageAlt)} />
+        <h2 className="kop kop--26">{say(choice.title)}</h2>
+        <p className="event__text">{say(choice.text)}</p>
         <div className="event__options">
           {choice.options.map((o) => (
             <PrimaryButton key={o.id} color={o.color} size="keuze" icon={ICONS[o.color]} onClick={() => pick(o.id)}>
-              {o.label}
+              {say(o.label)}
             </PrimaryButton>
           ))}
         </div>

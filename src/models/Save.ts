@@ -3,6 +3,8 @@ import type { Race } from './Race';
 /** Uitslag van een afgelopen race, voor het racerprofiel (races, overwinningen, beste positie). */
 export interface RaceResult {
   raceId: string;
+  /** Met welke racer de speler meedeed (ontbreekt bij oude uitslagen: Gerard). */
+  racerId?: string;
   number: number;
   courseId: string;
   endTime: number;

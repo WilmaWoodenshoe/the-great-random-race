@@ -4,6 +4,7 @@ import { GameProvider } from './state/GameProvider';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { Start } from './screens/Start';
 import { Welcome } from './screens/Welcome';
+import { PickRacer } from './screens/PickRacer';
 import { Home } from './screens/Home';
 import { Race } from './screens/Race';
 import { Racer } from './screens/Racer';
@@ -39,6 +40,9 @@ export function App() {
             <Route path="/welkom" element={<Welcome />} />
             <Route path="/home" element={<Home />} />
             <Route path="/race" element={<Race />} />
+            <Route path="/kies" element={<PickRacer />} />
+            <Route path="/mijn-racer" element={<Racer />} />
+            {/* Oud adres uit v0.1, voor wie het nog als bladwijzer heeft. */}
             <Route path="/gerard" element={<Racer />} />
             <Route path="/racer/:id" element={<Racer />} />
             <Route path="/tussenstand" element={<Leaderboard />} />

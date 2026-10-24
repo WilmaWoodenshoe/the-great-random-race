@@ -28,9 +28,9 @@ export function Action() {
   const t = nl.action;
   const done = view.todaysAction;
   const selected = done?.actionId ?? picked;
-  // Geen actie mogelijk en ook niet al gedaan: race voorbij of Gerard al binnen.
+  // Geen actie mogelijk en ook niet al gedaan: race voorbij of de racer al binnen.
   const closed = !view.canAct && !done;
-  const closedText = view.finished ? t.raceOver : t.finished;
+  const closedText = view.say(view.finished ? t.raceOver : t.finished);
 
   const confirm = async () => {
     if (busy || !view.canAct) return;
@@ -45,7 +45,7 @@ export function Action() {
   return (
     <div className="screen">
       <BackHeader title={t.title}>
-        <p className="back-header__intro">{t.intro}</p>
+        <p className="back-header__intro">{view.say(t.intro)}</p>
       </BackHeader>
 
       <main className="screen__main action">
@@ -65,8 +65,8 @@ export function Action() {
                 {a.icon}
               </span>
               <span className="action__text">
-                <span className="action__title">{t.options[a.id].title}</span>
-                <span className="action__effect">{t.options[a.id].effect}</span>
+                <span className="action__title">{view.say(t.options[a.id].title)}</span>
+                <span className="action__effect">{view.say(t.options[a.id].effect)}</span>
               </span>
             </button>
           );
@@ -74,7 +74,7 @@ export function Action() {
 
         {done && (
           <div className="action__done grr-slide-in" role="status">
-            <b>{t.done}</b> {nl.engine.actions[done.actionId][done.variant % nl.engine.actions[done.actionId].length]}
+            <b>{t.done}</b> {view.say(nl.engine.actions[done.actionId][done.variant % nl.engine.actions[done.actionId].length])}
           </div>
         )}
         {closed && (
@@ -90,7 +90,7 @@ export function Action() {
         ) : (
           <PrimaryButton onClick={confirm}>{busy ? nl.welcome.starting : t.confirm}</PrimaryButton>
         )}
-        <div className="action__note">{t.footer}</div>
+        <div className="action__note">{view.say(t.footer)}</div>
       </div>
     </div>
   );

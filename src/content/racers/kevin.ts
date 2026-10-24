@@ -7,6 +7,7 @@ const kevin: Racer = {
   speed: 1.0,
   traits: { curious: 70, stubborn: 20, chaotic: 60, lazy: 80 },
   title: 'Professional Napper',
+  tagline: 'Slaapt vooral.',
   image: 'racers/rups.webp',
   facts: {
     favoriteFood: 'Bladeren',

@@ -1,13 +1,14 @@
 import type { Choice } from '../../models/Choice';
 
+// Invulplekken: {naam}, {hij}/{Hij}, {zijn}/{Zijn}, {hem}. Zie de README.
 const aardbei: Choice = {
   id: 'aardbei',
-  heading: 'Gerard heeft iets gevonden!',
+  heading: '{naam} heeft iets gevonden!',
   title: 'Een gigantische aardbei',
-  text: 'Gerard heeft nog nooit zo’n grote aardbei gezien. Wat moet hij doen?',
-  announce: 'Gerard heeft een gigantische aardbei gevonden. Hij kijkt ernaar. De aardbei kijkt niet terug.',
+  text: '{naam} heeft nog nooit zo’n grote aardbei gezien. Wat moet {hij} doen?',
+  announce: '{naam} heeft een gigantische aardbei gevonden. {Hij} kijkt ernaar. De aardbei kijkt niet terug.',
   image: 'ui/event-aardbei.png',
-  imageAlt: 'Gerard naast een gigantische aardbei',
+  imageAlt: 'Een gigantische aardbei',
   options: [
     {
       id: 'eten',
@@ -19,10 +20,10 @@ const aardbei: Choice = {
         { minutes: 180, speed: 1.15 },
       ],
       journal: [
-        'Gerard heeft de aardbei gegeten. Het duurde een uur. Hij heeft er geen spijt van.',
-        'Gerard at de aardbei. Kenners noemen het een verantwoorde investering.',
-        'De aardbei is op. Gerard is voller en, verrassend genoeg, sneller.',
-        'Gerard heeft de aardbei verorberd. Er bleef niets over behalve tevredenheid.',
+        '{naam} heeft de aardbei gegeten. Het duurde een uur. {Hij} heeft er geen spijt van.',
+        '{naam} at de aardbei. Kenners noemen het een verantwoorde investering.',
+        'De aardbei is op. {naam} is voller en, verrassend genoeg, sneller.',
+        '{naam} heeft de aardbei verorberd. Er bleef niets over behalve tevredenheid.',
       ],
     },
     {
@@ -32,10 +33,10 @@ const aardbei: Choice = {
       prefers: ['stubborn'],
       effects: [],
       journal: [
-        'Gerard negeerde de aardbei. De aardbei negeerde Gerard ook.',
-        'Gerard liep door. Hij keek niet om. Nou ja, één keer.',
-        'Gerard liet de aardbei liggen. Een moedige keuze, volgens niemand.',
-        'De aardbei blijft achter. Gerard denkt er nog steeds aan.',
+        '{naam} negeerde de aardbei. De aardbei negeerde {naam} ook.',
+        '{naam} ging door. {Hij} keek niet om. Nou ja, één keer.',
+        '{naam} liet de aardbei liggen. Een moedige keuze, volgens niemand.',
+        'De aardbei blijft achter. {naam} denkt er nog steeds aan.',
       ],
     },
     {
@@ -45,10 +46,10 @@ const aardbei: Choice = {
       prefers: ['chaotic'],
       effects: [{ minutes: 30, speed: 0 }],
       journal: [
-        'Gerard is op de aardbei gaan zitten. Niemand weet waarom. Gerard ook niet.',
-        'Gerard zit op de aardbei. Hij lijkt het een prima plek te vinden.',
-        'Gerard heeft een half uur op een aardbei gezeten. Het was plakkerig.',
-        'Gerard nam plaats op de aardbei. Commentatoren zijn sprakeloos.',
+        '{naam} is op de aardbei gaan zitten. Niemand weet waarom. {naam} ook niet.',
+        '{naam} zit op de aardbei. {Hij} lijkt het een prima plek te vinden.',
+        '{naam} heeft een half uur op een aardbei gezeten. Het was plakkerig.',
+        '{naam} nam plaats op de aardbei. Commentatoren zijn sprakeloos.',
       ],
     },
   ],

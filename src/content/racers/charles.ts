@@ -9,6 +9,7 @@ const charles: Racer = {
   speed: 1.05,
   traits: { curious: 40, stubborn: 35, chaotic: 80, lazy: 85 },
   title: 'The Retired Champion',
+  tagline: 'Was ooit kampioen. Nu vooral moe.',
   image: 'racers/konijn.webp',
   facts: {
     favoriteFood: 'Wortels, zoals vroeger',

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { pickLineup } from '../src/game/session';
 import { runBalance } from '../src/game/balance';
 
 // Kalibratie (briefing hoofdstuk 10), gemeten over 1.000 gesimuleerde races.
@@ -42,5 +43,34 @@ describe('balans over 1.000 races', () => {
     expect(pct(p.kevin.finishes)).toBeGreaterThan(0);
     expect(pct(p.kevin.finishes)).toBeLessThan(0.15);
     expect(p.steve.finishes).toBe(0);
+  });
+});
+
+describe('balans met willekeurige tegenstanders (kies je racer)', () => {
+  // Elke racer als speler, steeds met vijf willekeurige tegenstanders.
+  const asPlayer = (id: string, count: number) => {
+    let wins = 0;
+    let finishes = 0;
+    for (let i = 0; i < count; i++) {
+      const seed = 5000 + i * 13;
+      const rep = runBalance(1, seed, null, pickLineup(id, seed).map((r) => r.id));
+      wins += rep.perRacer[id].wins;
+      finishes += rep.perRacer[id].finishes;
+    }
+    return { wins: wins / count, finishes: finishes / count };
+  };
+
+  it('Gerard, Mr. M en Philippe maken echt kans op de winst', () => {
+    for (const id of ['gerard', 'ducky', 'philippe']) {
+      const r = asPlayer(id, 200);
+      expect(r.wins, id).toBeGreaterThan(0.03);
+      expect(r.wins, id).toBeLessThan(0.4);
+    }
+  });
+
+  it('Roger en Gerard halen bijna altijd de finish; Steve nooit', () => {
+    expect(asPlayer('roger', 100).finishes).toBeGreaterThan(0.9);
+    expect(asPlayer('gerard', 100).finishes).toBeGreaterThan(0.9);
+    expect(asPlayer('steve', 50).finishes).toBe(0);
   });
 });

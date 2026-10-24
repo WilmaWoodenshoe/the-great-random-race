@@ -18,9 +18,13 @@ export interface Racer {
   traits: Traits;
   /** Engelse bijnaam, bijv. 'The Determined'. */
   title: string;
+  /** Korte zin bij 'Kies je racer', bijv. 'Langzaam, maar met overtuiging.' */
+  tagline?: string;
   /** Afbeelding, relatief aan public/images/. */
   image: string;
-  /** True voor de racer van de speler. In v0.1 alleen Gerard. */
+  /** Voornaamwoord in de teksten: 'hij' (standaard) of 'zij'. */
+  pronoun?: 'hij' | 'zij';
+  /** De racer die als eerste geselecteerd staat bij 'Kies je racer'. */
   playable?: boolean;
   /**
    * Waar een hoed past, in procenten van de afbeelding (links, boven,

@@ -15,6 +15,7 @@ import { useRaceView } from '../state/useRaceView';
 import { formatClock } from '../utils/dates';
 import { formatKm } from '../utils/format';
 import { img } from '../utils/images';
+import { fill, who } from '../utils/text';
 
 /**
  * Racerprofiel (Racer.html). Zonder id: de racer van de speler (Gerard),
@@ -40,7 +41,7 @@ export function Racer() {
 
   const stats: { label: string; value: ReactNode }[] = isPlayer
     ? (() => {
-        const c = careerStats(save, now);
+        const c = careerStats(save, now, r.id);
         return [
           { label: t.races, value: c.races },
           { label: t.wins, value: c.wins },
@@ -108,7 +109,7 @@ export function Racer() {
                   {f.label}
                 </div>
                 <div className="racer__fact">
-                  {isPlayer && <img src={img(f.image)} alt="" />}
+                  {r.id === 'gerard' && <img src={img(f.image)} alt="" />}
                   {f.value}
                 </div>
               </div>
@@ -118,7 +119,7 @@ export function Racer() {
         <section className="racer__recent">
           <h2 className="racer__h2">{t.recent}</h2>
           {recent.length === 0 ? (
-            <p className="racer__empty">{t.nothingYet(r.name)}</p>
+            <p className="racer__empty">{fill(t.nothingYet, who(r))}</p>
           ) : (
             <ol className="journal__list">
               {recent.map((e) => {

@@ -3,7 +3,7 @@ import type { Course } from './Course';
 import type { RaceEvent } from './Event';
 import type { Racer } from './Racer';
 
-/** Keuze-event dat op een vast moment aan Gerard wordt voorgelegd. */
+/** Keuze-event dat op een vast moment aan de racer van de speler wordt voorgelegd. */
 export interface ScheduledChoice {
   id: string;
   /** Kopie van het keuze-event zoals het was bij het aanmaken van de race. */
@@ -11,7 +11,7 @@ export interface ScheduledChoice {
   time: number;
   /** Tot dit moment mag de speler kiezen (12 uur na `time`). */
   deadline: number;
-  /** Wat Gerard zelf kiest als de speler niets doet (vooraf berekend). */
+  /** Wat de racer zelf kiest als de speler niets doet (vooraf berekend). */
   autoOptionId: string;
   /** Welke journaaltekst bij de gekozen optie hoort. */
   variant: number;

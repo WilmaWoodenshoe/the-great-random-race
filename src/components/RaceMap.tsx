@@ -49,7 +49,7 @@ export function RaceMap({ course, markers, alt }: Props) {
         m.isPlayer ? (
           <Link
             key={m.racerId}
-            to="/gerard"
+            to="/mijn-racer"
             className="race-map__marker race-map__marker--player"
             style={pos(m.point)}
             aria-label={nl.racer.open(m.label)}

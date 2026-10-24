@@ -7,6 +7,7 @@ const steve: Racer = {
   speed: 0.15,
   traits: { curious: 5, stubborn: 100, chaotic: 1, lazy: 100 },
   title: 'Still Going',
+  tagline: 'Still going.',
   image: 'racers/steen.webp',
   facts: {
     favoriteFood: 'Onbekend',

@@ -63,7 +63,7 @@ export function Leaderboard() {
             return (
               <li key={s.racerId}>
                 <Link
-                  to={isMe ? '/gerard' : `/racer/${s.racerId}`}
+                  to={isMe ? '/mijn-racer' : `/racer/${s.racerId}`}
                   className={`board__row${isMe ? ' board__row--me' : ''}`}
                   aria-label={nl.racer.open(racer.name)}
                 >

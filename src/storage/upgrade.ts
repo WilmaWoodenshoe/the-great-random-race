@@ -26,13 +26,28 @@ export function upgradeRace(race: Race): Race {
     const now = allRacers.find((x) => x.id === r.id);
     if (!now) return r;
     // Uiterlijk en teksten van nu; snelheid en eigenschappen van toen.
-    return { ...r, name: now.name, title: now.title, image: now.image, facts: now.facts, hatSpot: now.hatSpot };
+    return {
+      ...r,
+      name: now.name,
+      title: now.title,
+      tagline: now.tagline,
+      pronoun: now.pronoun,
+      image: now.image,
+      facts: now.facts,
+      hatSpot: now.hatSpot,
+    };
   });
 
+  // Teksten van keuze-events zijn ook uiterlijk; de effecten blijven die van toen.
   const choices = race.choices.map((sc) => {
     const now = allChoices.find((c) => c.id === sc.choice.id);
-    if (!now || sc.choice.announce) return sc;
-    return { ...sc, choice: { ...sc.choice, announce: now.announce } };
+    if (!now) return sc;
+    const options = sc.choice.options.map((o) => {
+      const nowOption = now.options.find((x) => x.id === o.id);
+      return nowOption ? { ...o, label: nowOption.label, journal: nowOption.journal } : o;
+    });
+    const { heading, title, text, announce, image, imageAlt } = now;
+    return { ...sc, choice: { ...sc.choice, heading, title, text, announce, image, imageAlt, options } };
   });
 
   return { ...race, course: upgradedCourse, racers, choices };

@@ -1,14 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { accessories, choices, courses, playerRacer, racers } from '../src/content';
+import { accessories, choices, courses, defaultRacer, getRacer, racers } from '../src/content';
+import { nl } from '../src/content/nl';
+import { fill, who } from '../src/utils/text';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const imageExists = (path: string) => existsSync(resolve(process.cwd(), 'public/images', path));
 
 describe('racers', () => {
-  it('er doen 6 racers mee, met Gerard als speler', () => {
-    expect(racers).toHaveLength(6);
-    expect(playerRacer.id).toBe('gerard');
+  it('er zijn 10 racers, met Gerard als standaardkeuze', () => {
+    expect(racers).toHaveLength(10);
+    expect(defaultRacer.id).toBe('gerard');
     expect(racers.filter((r) => r.playable)).toHaveLength(1);
   });
 
@@ -20,6 +22,7 @@ describe('racers', () => {
         expect(v).toBeLessThanOrEqual(100);
       }
       expect(imageExists(r.image), r.image).toBe(true);
+      expect(r.tagline, r.id).toBeTruthy();
     }
   });
 
@@ -67,5 +70,33 @@ describe('keuze-events', () => {
 describe('accessoires', () => {
   it('hebben een bestaande afbeelding', () => {
     for (const a of accessories) expect(imageExists(a.image), a.image).toBe(true);
+  });
+});
+
+describe('teksten met invulplekken', () => {
+  // Alle teksten waarin de racer van de speler voorkomt.
+  const templates: string[] = [
+    ...Object.values(nl.engine.events).flat(),
+    ...nl.engine.start,
+    ...nl.engine.end,
+    ...nl.engine.segment,
+    ...nl.engine.finish,
+    ...Object.values(nl.engine.actions).flat(),
+    ...Object.values(nl.engine.status),
+    ...choices.flatMap((c) => [c.heading, c.title, c.text, c.announce, c.imageAlt, ...c.options.flatMap((o) => [o.label, ...o.journal])]),
+  ];
+
+  it('noemen Gerard nergens vast bij naam', () => {
+    for (const s of templates) expect(s, s).not.toMatch(/Gerard/);
+  });
+
+  it('worden volledig ingevuld, ook voor een racer die zij is', () => {
+    const isabelle = getRacer('isabelle');
+    expect(isabelle.pronoun).toBe('zij');
+    for (const s of templates) {
+      const filled = fill(s, { ...who(isabelle), plek: 'de Kasteeltuin' });
+      expect(filled, s).not.toMatch(/[{}]/);
+    }
+    expect(fill('{Hij} pakt {zijn} hoed. Het past {hem}.', who(isabelle))).toBe('Zij pakt haar hoed. Het past haar.');
   });
 });

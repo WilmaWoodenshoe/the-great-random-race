@@ -15,7 +15,7 @@ describe('opslag in IndexedDB', () => {
 
   it('bewaart een race en geeft hem precies zo terug', async () => {
     const storage = createIndexedDbStorage('test-bewaren');
-    const save = startRace(EMPTY_SAVE, START, 1234);
+    const save = startRace(EMPTY_SAVE, START, 'gerard', 1234);
     await storage.save(save);
 
     // Alsof de app dicht ging en later weer open: een nieuwe verbinding.
@@ -27,7 +27,7 @@ describe('opslag in IndexedDB', () => {
 
   it('kan alles wissen', async () => {
     const storage = createIndexedDbStorage('test-wissen');
-    await storage.save(startRace(EMPTY_SAVE, START, 1));
+    await storage.save(startRace(EMPTY_SAVE, START, 'gerard', 1));
     await storage.clear();
     expect((await storage.load()).race).toBeNull();
   });
@@ -43,7 +43,7 @@ describe('opslag controleren', () => {
 
   it('opslag in het geheugen werkt hetzelfde', async () => {
     const storage = createMemoryStorage();
-    const save = startRace(EMPTY_SAVE, START, 5);
+    const save = startRace(EMPTY_SAVE, START, 'gerard', 5);
     await storage.save(save);
     expect(await storage.load()).toEqual(save);
   });

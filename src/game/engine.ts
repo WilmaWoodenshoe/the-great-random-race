@@ -59,7 +59,7 @@ export function createRace(input: CreateRaceInput): Race {
     course,
     racers,
     events,
-    choices: scheduleChoices(seed, input.choices, player, startTime, endTime),
+    choices: scheduleChoices(seed, input.choices, player, startTime, endTime, racers.map((r) => r.id)),
     decisions: [],
     actions: [],
   };

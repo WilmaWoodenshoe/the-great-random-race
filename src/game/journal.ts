@@ -3,6 +3,7 @@ import type { EventType } from '../models/Event';
 import type { JournalEntry } from '../models/JournalEntry';
 import type { Race } from '../models/Race';
 import { createRng, deriveSeed } from '../utils/random';
+import { fill, who } from '../utils/text';
 import { hasHat } from './actions';
 import { effectiveDecisions } from './choices';
 import { getRaceRacer, racerMovement } from './engine';
@@ -24,13 +25,14 @@ export function journalAt(race: Race, now: number): JournalEntry[] {
   const until = Math.min(now, race.endTime);
   const entries: JournalEntry[] = [];
   if (now < race.startTime) return entries;
+  const player = who(getRaceRacer(race, race.playerId));
 
   entries.push({
     id: 'start',
     time: race.startTime,
     kind: 'start',
     racerId: null,
-    text: pickText(t.start, variantFor(race, 'start')),
+    text: fill(pickText(t.start, variantFor(race, 'start')), player),
   });
 
   const finishTimes = new Map<string, number | null>();
@@ -44,7 +46,7 @@ export function journalAt(race: Race, now: number): JournalEntry[] {
         time: a.time,
         kind: 'segment',
         racerId: r.id,
-        text: pickText(t.segment, variantFor(race, `seg:${r.id}:${a.index}`))(r.name, segment.withArticle),
+        text: fill(pickText(t.segment, variantFor(race, `seg:${r.id}:${a.index}`)), { ...who(r), plek: segment.withArticle }),
       });
     }
     if (m.finishTime !== null) {
@@ -53,7 +55,7 @@ export function journalAt(race: Race, now: number): JournalEntry[] {
         time: m.finishTime,
         kind: 'finish',
         racerId: r.id,
-        text: pickText(t.finish, variantFor(race, `finish:${r.id}`))(r.name),
+        text: fill(pickText(t.finish, variantFor(race, `finish:${r.id}`)), who(r)),
       });
     }
   }
@@ -64,10 +66,9 @@ export function journalAt(race: Race, now: number): JournalEntry[] {
       const finished = finishTimes.get(e.racerId);
       if (finished != null && e.time >= finished) continue;
     }
-    const name = e.racerId ? getRaceRacer(race, e.racerId).name : '';
+    const racer = e.racerId ? who(getRaceRacer(race, e.racerId)) : {};
     const key = (e.textKey ?? e.type) as EventTextKey;
-    const texts = t.events[key] as readonly ((n: string) => string)[];
-    let text = pickText(texts, e.variant)(name);
+    let text = fill(pickText(t.events[key], e.variant), racer);
     // Met hoed op reageert het journaal er af en toe op.
     if (e.racerId === race.playerId && e.variant % 2 === 0 && hasHat(race, e.time)) {
       text += ` ${pickText(t.hatRemarks, e.variant >> 1)}`;
@@ -84,7 +85,7 @@ export function journalAt(race: Race, now: number): JournalEntry[] {
 
   for (const sc of race.choices) {
     if (sc.time > until) continue;
-    entries.push({ id: `${sc.id}-gevonden`, time: sc.time, kind: 'choice', racerId: race.playerId, text: sc.choice.announce });
+    entries.push({ id: `${sc.id}-gevonden`, time: sc.time, kind: 'choice', racerId: race.playerId, text: fill(sc.choice.announce, player) });
   }
   for (const d of effectiveDecisions(race, until)) {
     const sc = race.choices.find((c) => c.id === d.scheduledId)!;
@@ -95,7 +96,7 @@ export function journalAt(race: Race, now: number): JournalEntry[] {
       time: d.time,
       kind: 'decision',
       racerId: race.playerId,
-      text: pickText(option.journal, sc.variant),
+      text: fill(pickText(option.journal, sc.variant), player),
     });
   }
 
@@ -106,12 +107,12 @@ export function journalAt(race: Race, now: number): JournalEntry[] {
       time: a.time,
       kind: 'action',
       racerId: race.playerId,
-      text: pickText(t.actions[a.actionId], a.variant),
+      text: fill(pickText(t.actions[a.actionId], a.variant), player),
     });
   }
 
   if (now >= race.endTime) {
-    entries.push({ id: 'einde', time: race.endTime, kind: 'end', racerId: null, text: pickText(t.end, variantFor(race, 'end')) });
+    entries.push({ id: 'einde', time: race.endTime, kind: 'end', racerId: null, text: fill(pickText(t.end, variantFor(race, 'end')), player) });
   }
 
   // Nieuwste bovenaan; bij gelijke tijd blijft de logische volgorde staan.

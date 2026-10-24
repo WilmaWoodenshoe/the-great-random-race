@@ -75,7 +75,7 @@ export function Journal() {
       </BackHeader>
 
       <main className="screen__main journal">
-        {days.length === 0 && <p className="journal__empty">{t.empty}</p>}
+        {days.length === 0 && <p className="journal__empty">{view.say(t.empty)}</p>}
         {days.map((d) => (
           <section key={d.key} className="journal__day">
             <h2 className="journal__day-label">{d.label}</h2>
