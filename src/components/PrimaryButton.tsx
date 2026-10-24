@@ -14,9 +14,11 @@ interface Props {
   size?: 'groot' | 'keuze';
   arrow?: boolean;
   icon?: ReactNode;
+  /** Knop in een formulier: 'submit' verstuurt het formulier. */
+  type?: 'button' | 'submit';
 }
 
-export function PrimaryButton({ children, to, onClick, color = 'groen', size = 'groot', arrow, icon }: Props) {
+export function PrimaryButton({ children, to, onClick, color = 'groen', size = 'groot', arrow, icon, type = 'button' }: Props) {
   const className = `btn btn--${color} btn--${size}`;
   const content = (
     <>
@@ -33,7 +35,7 @@ export function PrimaryButton({ children, to, onClick, color = 'groen', size = '
     );
   }
   return (
-    <button type="button" className={className} onClick={onClick}>
+    <button type={type} className={className} onClick={onClick}>
       {content}
     </button>
   );

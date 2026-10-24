@@ -5,7 +5,7 @@
 # - Per account een kopie van het spel, zodat je op een nieuwe telefoon
 #   verder kunt.
 # - Per account een korte samenvatting (racer, plek, km) voor het
-#   spelersoverzicht.
+#   spelersoverzicht, dat iedereen mag zien.
 #
 # Draait achter nginx op https://thegreatrandomrace.nl/api. Starten:
 #   uvicorn app.main:create_app --factory --host 127.0.0.1 --port 8100
@@ -45,6 +45,8 @@ CHALLENGE_SECONDS = 300
 # Een opgeslagen spel is normaal een paar tientallen kB.
 MAX_SAVE_BYTES = 512 * 1024
 NICKNAME_MIN, NICKNAME_MAX = 2, 20
+# Het overzicht toont de spelers die het laatst actief waren.
+MAX_PLAYERS_LISTED = 200
 # Letters (ook met accenten), cijfers, spatie, - _ . '
 NICKNAME_RE = re.compile(r"^[\w .'\-]+$")
 
@@ -98,6 +100,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     register_limit = RateLimiter(20, 600)
     login_limit = RateLimiter(60, 600)
     save_limit = RateLimiter(240, 3600)
+    players_limit = RateLimiter(120, 600)
 
     @asynccontextmanager
     async def lifespan(_app: FastAPI):
@@ -282,6 +285,32 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         db.execute("DELETE FROM users WHERE id = ?", (user_id,))
         response.delete_cookie(SESSION_COOKIE, path="/api")
         return {"ok": True}
+
+    # ----- Spelersoverzicht (voor iedereen) -----
+
+    @app.get("/api/players")
+    def players(request: Request):
+        limit(players_limit, client_ip(request))
+        rows = db.all(
+            "SELECT u.nickname, p.racer_id, p.race_number, p.position, p.racers_count, p.km, p.finished, p.updated_at "
+            "FROM players p JOIN users u ON u.id = p.user_id ORDER BY p.updated_at DESC LIMIT ?",
+            (MAX_PLAYERS_LISTED,),
+        )
+        return {
+            "players": [
+                {
+                    "nickname": r["nickname"],
+                    "racerId": r["racer_id"],
+                    "raceNumber": r["race_number"],
+                    "position": r["position"],
+                    "racersCount": r["racers_count"],
+                    "km": r["km"],
+                    "finished": bool(r["finished"]),
+                    "updatedAt": r["updated_at"],
+                }
+                for r in rows
+            ]
+        }
 
     # ----- Spel bewaren -----
 

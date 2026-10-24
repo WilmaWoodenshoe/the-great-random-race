@@ -13,6 +13,9 @@ const testVersion = process.env.VITE_TESTVERSIE === '1';
 
 export default defineConfig({
   base,
+  // Lokaal testen met de server (map server/) op poort 8100.
+  server: { proxy: { '/api': 'http://127.0.0.1:8100' } },
+  preview: { proxy: { '/api': 'http://127.0.0.1:8100' } },
   build: {
     minify: testVersion ? false : 'esbuild',
     sourcemap: testVersion,
@@ -42,7 +45,7 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,woff2,png,webp,svg}'],
         // De privacypagina is een losse pagina, geen scherm van de app.
-        navigateFallbackDenylist: [/^\/privacy/, /\/privacy\//],
+        navigateFallbackDenylist: [/^\/privacy/, /\/privacy\//, /^\/api\//],
       },
     }),
   ],

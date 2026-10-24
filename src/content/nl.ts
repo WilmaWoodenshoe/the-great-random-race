@@ -396,7 +396,8 @@ export const nl = {
     welcomeHint: 'Het welkomstscherm.',
     event: 'Keuze-event',
     eventHint: 'De pop-up met de gigantische aardbei.',
-    privacy: 'Deze app verzamelt niets. Geen cookies, geen tracking. Alles blijft op je telefoon.',
+    privacy: 'Geen tracking, geen advertenties. Zonder account blijft alles op je telefoon.',
+    accountSection: 'Spelers en account',
     privacyLink: 'Lees de privacyverklaring',
     yourRace: 'Jouw race',
     noRace: 'Er loopt nog geen race.',
@@ -417,6 +418,59 @@ export const nl = {
     hours: (n: number) => (n === 1 ? '1 uur' : `${n} uur`),
     dateTime: (time: number) =>
       new Date(time).toLocaleString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }),
+  },
+  account: {
+    title: 'Account',
+    menuHint: 'Je race bewaren en op een andere telefoon verder spelen.',
+    menuHintIn: (nick: string) => `Ingelogd als ${nick}.`,
+    intro:
+      'Met een account wordt je race ook bewaard op de server. Dan kun je op een andere telefoon verder, en zien andere spelers met welke racer je meedoet.',
+    newTitle: 'Nieuw account',
+    nicknameLabel: 'Kies een bijnaam',
+    nicknamePlaceholder: 'Bijv. SlakkenFan',
+    nicknameHint: 'Iedereen kan je bijnaam zien. Gebruik je echte naam alleen als je dat wilt.',
+    create: 'Account maken',
+    haveTitle: 'Al een account?',
+    login: 'Inloggen met je passkey',
+    busy: 'Even geduld…',
+    passkeyExplain:
+      'Een passkey is een digitale sleutel op je telefoon. Je ontgrendelt hem met je vingerafdruk, gezicht of pincode. Er is geen wachtwoord en geen e-mailadres nodig.',
+    loggedInAs: 'Ingelogd als',
+    savedAt: (time: string) => `Je race is bewaard in je account (laatst om ${time}).`,
+    notSavedYet: 'Je race wordt bewaard in je account.',
+    logout: 'Uitloggen',
+    logoutNote: 'Na uitloggen blijft je race op deze telefoon staan.',
+    delete: 'Account verwijderen',
+    deleteConfirm:
+      'Weet je het zeker? Je account, je bijnaam en de kopie van je race op de server worden gewist. Je race op deze telefoon blijft staan.',
+    deleted: 'Je account is verwijderd.',
+    unavailable: 'Accounts werken alleen op thegreatrandomrace.nl, in een browser die passkeys kent.',
+    unavailableTest: 'In de testversie staan accounts uit. Probeer het op thegreatrandomrace.nl.',
+    offline: 'Geen verbinding met de server. Probeer het later opnieuw.',
+    checking: 'Even kijken…',
+    welcomeLogin: 'Al een account? Inloggen',
+    chooseRemote: (remoteRaces: number, localRaces: number) =>
+      `In je account staat een ander spel (${remoteRaces === 1 ? '1 race' : `${remoteRaces} races`}) dan op deze telefoon (${localRaces === 1 ? '1 race' : `${localRaces} races`}).\n\nOK = het spel uit je account gebruiken (dat op deze telefoon wordt vervangen).\nAnnuleren = het spel van deze telefoon in je account zetten.`,
+  },
+  players: {
+    title: 'Spelers',
+    menuHint: 'Wie speelt met welke racer?',
+    intro: 'Wie speelt met welke racer, en hoe gaat het?',
+    loading: 'Even kijken wie er meedoen…',
+    empty: 'Nog niemand heeft een account. Wees de eerste!',
+    error: 'Het overzicht kon niet geladen worden. Probeer het later opnieuw.',
+    popular: 'Gekozen racers',
+    count: (n: number) => (n === 1 ? '1 speler' : `${n} spelers`),
+    you: 'jij',
+    race: (name: string, n: number) => `${name} · Race #${n}`,
+    position: (pos: number, of: number) => `#${pos} van ${of}`,
+    finished: (pos: number) => `binnen als ${pos}e`,
+    updated: (time: number) => {
+      const d = new Date(time);
+      const today = new Date().toDateString() === d.toDateString();
+      return `bijgewerkt ${today ? d.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' }) : d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}`;
+    },
+    makeAccount: 'Doe ook mee: maak een account',
   },
   error: {
     title: 'Oeps.',

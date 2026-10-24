@@ -169,3 +169,19 @@ def test_account_verwijderen_wist_alles(client):
 def test_te_veel_pogingen_worden_afgeremd(client):
     codes = [client.post("/api/register/start", json={"nickname": f"Speler{i}"}, headers=HEADERS).status_code for i in range(25)]
     assert 429 in codes
+
+
+def test_spelersoverzicht_voor_iedereen(client):
+    register(client, "Wilma")
+    client.put("/api/save", json={"save": SAVE, "summary": SUMMARY}, headers=HEADERS)
+    client.post("/api/logout", headers=HEADERS)
+    register(client, "Piet")  # Piet heeft nog geen race: staat er niet in
+    client.cookies.clear()
+    res = client.get("/api/players")
+    assert res.status_code == 200
+    players = res.json()["players"]
+    assert [p["nickname"] for p in players] == ["Wilma"]
+    assert players[0]["racerId"] == "isabelle"
+    assert players[0]["position"] == 2
+    # Geen geheime dingen in het overzicht.
+    assert set(players[0]) == {"nickname", "racerId", "raceNumber", "position", "racersCount", "km", "finished", "updatedAt"}

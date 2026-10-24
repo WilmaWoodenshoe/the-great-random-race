@@ -31,9 +31,11 @@ Website (later): thegreatrandomrace.nl
 | Fase | Wat | Status |
 |---|---|---|
 | A | Kies je racer (10 racers), 5 willekeurige tegenstanders, teksten voor elke racer | Klaar |
-| B | Server met accounts (passkey), map `server/` (Python + FastAPI + SQLite, met tests) | Gebouwd; op de server zetten na het slotje (deploy/UITLEG.md, stap 8) |
-| C | Inloggen in de app, race bewaren per account | Nog te doen |
-| D | Overzicht wie met welke racer speelt, privacy, account verwijderen | Nog te doen |
+| B | Server met accounts (passkey), map `server/` (Python + FastAPI + SQLite, met tests) | Klaar, draait op de server |
+| C | Account in de app (Meer → Account): bijnaam + passkey, inloggen op een andere telefoon, race automatisch bewaren | Klaar |
+| D | Spelersoverzicht (Meer → Spelers), account verwijderen, privacyverklaring bijgewerkt | Klaar |
+
+Accounts werken alleen op thegreatrandomrace.nl; in de testversie (GitHub Pages) staan ze uit. De stand in het spelersoverzicht wordt bijgewerkt telkens als een speler de app opent of iets doet.
 
 **Testen zonder een week te wachten:** onder *Meer → Testversie: tijdmachine* kun je de klok van de app een uur of een dag vooruit zetten, en alles wissen. Dit staat alleen in de testversie (GitHub Pages), niet op thegreatrandomrace.nl.
 

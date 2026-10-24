@@ -7,6 +7,7 @@ import { isFinished } from '../game/engine';
 import { useGame } from '../state/GameProvider';
 import { DAY, HOUR } from '../utils/dates';
 import { isTestVersion } from '../utils/env';
+import { accountsEnabled, useAccount } from '../account/AccountProvider';
 
 interface Item {
   to: string;
@@ -45,6 +46,7 @@ export function More() {
   const t = nl.more;
   const { race, save, now, setClockOffset, resetAll } = useGame();
   const career = careerStats(save, now);
+  const account = useAccount();
 
   const reset = async () => {
     if (window.confirm(t.resetConfirm)) await resetAll();
@@ -64,6 +66,22 @@ export function More() {
             { to: '/actie', title: t.action, hint: t.actionHint },
           ]}
         />
+
+        {accountsEnabled && account.status !== 'unavailable' && (
+          <>
+            <h2 className="more__h2">{t.accountSection}</h2>
+            <MenuList
+              items={[
+                { to: '/spelers', title: nl.players.title, hint: nl.players.menuHint },
+                {
+                  to: '/account',
+                  title: nl.account.title,
+                  hint: account.me ? nl.account.menuHintIn(account.me.nickname) : nl.account.menuHint,
+                },
+              ]}
+            />
+          </>
+        )}
 
         <h2 className="more__h2">{t.yourRace}</h2>
         <div className="card card--wit info">

@@ -24,6 +24,8 @@ interface GameContextValue {
   setClockOffset(ms: number): Promise<void>;
   /** Testversie: alles wissen. */
   resetAll(): Promise<void>;
+  /** Het hele spel vervangen, bijv. door de kopie uit je account. */
+  replaceSave(data: SaveData): Promise<void>;
 }
 
 const GameContext = createContext<GameContextValue | null>(null);
@@ -139,8 +141,13 @@ export function GameProvider({ children, storage }: { children: ReactNode; stora
         }
         setSave({ ...EMPTY_SAVE });
       },
+      replaceSave: async (data) => {
+        setSave(data);
+        setRealNow(Date.now());
+        await persist(data);
+      },
     }),
-    [loading, save, now, update, store, setSave],
+    [loading, save, now, update, store, setSave, persist],
   );
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

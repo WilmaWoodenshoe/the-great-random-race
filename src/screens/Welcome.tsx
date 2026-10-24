@@ -1,5 +1,7 @@
 import { nl } from '../content/nl';
+import { Link } from 'react-router-dom';
 import { getRacer } from '../content';
+import { accountsEnabled } from '../account/AccountProvider';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { PhoneDownload } from '../components/Icons';
 import { LivingRacer } from '../components/Gerard';
@@ -45,6 +47,11 @@ export function Welcome() {
         <PrimaryButton to="/kies" arrow>
           {t.start}
         </PrimaryButton>
+        {accountsEnabled && (
+          <Link to="/account" className="welcome__login">
+            {nl.account.welcomeLogin}
+          </Link>
+        )}
       </div>
     </div>
   );

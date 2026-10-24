@@ -1,0 +1,225 @@
+// Account (bijnaam + passkey) en het bewaren van je spel op de server.
+// Alleen op thegreatrandomrace.nl; in de testversie staat dit uit.
+//
+// Bewaren gaat zo:
+// - na elke wijziging in je spel stuurt de app (na een tel) een kopie naar de server;
+// - opent de app op een andere telefoon, dan haalt hij de nieuwste kopie op;
+// - lukt versturen niet (geen internet), dan probeert de app het later opnieuw.
+
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { nl } from '../content/nl';
+import type { SaveData } from '../models/Save';
+import { useGame } from '../state/GameProvider';
+import { parseSave } from '../storage/storage';
+import { isTestVersion } from '../utils/env';
+import { api, ApiError, type Me } from './api';
+import { summaryOf } from './summary';
+
+export type AccountStatus = 'unavailable' | 'checking' | 'offline' | 'out' | 'in';
+
+interface AccountContextValue {
+  status: AccountStatus;
+  me: Me | null;
+  /** Wanneer het spel voor het laatst op de server is bewaard (ms). */
+  lastSaved: number | null;
+  register(nickname: string): Promise<void>;
+  login(): Promise<void>;
+  logout(): Promise<void>;
+  deleteAccount(): Promise<void>;
+}
+
+/** Accounts werken alleen op de echte site, en alleen als de browser passkeys kent. */
+export const accountsEnabled: boolean =
+  !isTestVersion && typeof window !== 'undefined' && typeof window.PublicKeyCredential === 'function';
+
+const META_KEY = 'grr-account-sync';
+/** Bij terugkomen in de app hoogstens eens per minuut bij de server kijken. */
+const PULL_EVERY_MS = 60_000;
+const UPLOAD_DELAY_MS = 1500;
+
+interface SyncMeta {
+  /** Tijdstempel (seconden) van de server bij de laatste geslaagde uitwisseling. */
+  syncedAt: number | null;
+  /** Er is iets veranderd dat nog niet op de server staat. */
+  dirty: boolean;
+}
+
+function readMeta(): SyncMeta {
+  try {
+    const raw = JSON.parse(localStorage.getItem(META_KEY) ?? 'null');
+    if (raw && typeof raw === 'object') return { syncedAt: raw.syncedAt ?? null, dirty: !!raw.dirty };
+  } catch {
+    // Geen opslag beschikbaar: dan beginnen we gewoon leeg.
+  }
+  return { syncedAt: null, dirty: false };
+}
+
+function writeMeta(meta: SyncMeta): void {
+  try {
+    localStorage.setItem(META_KEY, JSON.stringify(meta));
+  } catch {
+    // Niet erg: dan wordt er bij de volgende start opnieuw vergeleken.
+  }
+}
+
+const isEmpty = (s: SaveData) => !s.race && s.history.length === 0;
+
+const AccountContext = createContext<AccountContextValue | null>(null);
+
+export function AccountProvider({ children }: { children: ReactNode }) {
+  const { loading, save, replaceSave } = useGame();
+  const [status, setStatus] = useState<AccountStatus>(accountsEnabled ? 'checking' : 'unavailable');
+  const [me, setMe] = useState<Me | null>(null);
+  const [lastSaved, setLastSaved] = useState<number | null>(() => {
+    const at = readMeta().syncedAt;
+    return at ? at * 1000 : null;
+  });
+
+  const latestSave = useRef(save);
+  latestSave.current = save;
+  // Wat er van de server kwam of er al naartoe ging: dat hoeft niet (nog eens) verstuurd.
+  const inSync = useRef<SaveData | null>(null);
+  const lastPull = useRef(0);
+
+  const setMeta = useCallback((meta: SyncMeta) => {
+    writeMeta(meta);
+    if (meta.syncedAt) setLastSaved(meta.syncedAt * 1000);
+  }, []);
+
+  const signedOut = useCallback(() => {
+    setMe(null);
+    setStatus('out');
+    writeMeta({ syncedAt: null, dirty: false });
+    setLastSaved(null);
+  }, []);
+
+  const upload = useCallback(
+    async (data: SaveData) => {
+      writeMeta({ ...readMeta(), dirty: true });
+      try {
+        const res = await api.putSave(data, summaryOf(data, Date.now() + data.clockOffset));
+        inSync.current = data;
+        setMeta({ syncedAt: res.updatedAt, dirty: false });
+      } catch (err) {
+        if (err instanceof ApiError && err.status === 401) signedOut();
+        else console.warn('Bewaren op de server lukte niet; later opnieuw', err);
+      }
+    },
+    [setMeta, signedOut],
+  );
+
+  const adopt = useCallback(
+    async (data: SaveData, updatedAt: number) => {
+      inSync.current = data;
+      await replaceSave(data);
+      setMeta({ syncedAt: updatedAt, dirty: false });
+    },
+    [replaceSave, setMeta],
+  );
+
+  /**
+   * Vergelijk met de server. `justLoggedIn`: net ingelogd op deze telefoon;
+   * staan er dan op beide plekken verschillende spellen, dan kiest de speler.
+   */
+  const syncWithServer = useCallback(
+    async (justLoggedIn: boolean) => {
+      lastPull.current = Date.now();
+      const local = latestSave.current;
+      const meta = readMeta();
+      const server = await api.getSave();
+      if (!server.save || server.updatedAt === null) return upload(local);
+      const remote = parseSave(server.save);
+
+      if (justLoggedIn) {
+        if (isEmpty(local)) return adopt(remote, server.updatedAt);
+        if (isEmpty(remote)) return upload(local);
+        if (local.race?.id === remote.race?.id && local.raceCounter === remote.raceCounter) {
+          return adopt(remote, server.updatedAt);
+        }
+        const useRemote = window.confirm(nl.account.chooseRemote(remote.raceCounter, local.raceCounter));
+        return useRemote ? adopt(remote, server.updatedAt) : upload(local);
+      }
+
+      if (meta.dirty) return upload(local);
+      if (server.updatedAt > (meta.syncedAt ?? 0)) return adopt(remote, server.updatedAt);
+      // Niets nieuws: wel even de stand verversen voor het spelersoverzicht.
+      if (local.race) return upload(local);
+    },
+    [adopt, upload],
+  );
+
+  const check = useCallback(async () => {
+    try {
+      const who = await api.me();
+      setMe(who);
+      setStatus('in');
+      await syncWithServer(false);
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 401) signedOut();
+      else if (err instanceof ApiError && err.status === 404) setStatus('unavailable');
+      else setStatus((s) => (s === 'in' ? s : 'offline'));
+    }
+  }, [signedOut, syncWithServer]);
+
+  // Bij het opstarten: ben ik ingelogd? Dan meteen vergelijken met de server.
+  useEffect(() => {
+    if (!accountsEnabled || loading) return;
+    void check();
+  }, [loading]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Terug in de app: kijken of er op een andere telefoon iets veranderd is.
+  useEffect(() => {
+    if (!accountsEnabled) return;
+    const onVisible = () => {
+      if (document.visibilityState !== 'visible' || Date.now() - lastPull.current < PULL_EVERY_MS) return;
+      if (status === 'in' || status === 'offline') void check();
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => document.removeEventListener('visibilitychange', onVisible);
+  }, [status, check]);
+
+  // Na elke wijziging in het spel: na een tel een kopie naar de server.
+  useEffect(() => {
+    if (status !== 'in' || loading || save === inSync.current) return;
+    writeMeta({ ...readMeta(), dirty: true });
+    const id = window.setTimeout(() => void upload(save), UPLOAD_DELAY_MS);
+    return () => window.clearTimeout(id);
+  }, [save, status, loading, upload]);
+
+  const value = useMemo<AccountContextValue>(
+    () => ({
+      status,
+      me,
+      lastSaved,
+      register: async (nickname) => {
+        const who = await api.register(nickname);
+        setMe(who);
+        setStatus('in');
+        await upload(latestSave.current);
+      },
+      login: async () => {
+        const who = await api.login();
+        setMe(who);
+        setStatus('in');
+        await syncWithServer(true);
+      },
+      logout: async () => {
+        await api.logout().catch(() => undefined);
+        signedOut();
+      },
+      deleteAccount: async () => {
+        await api.deleteAccount();
+        signedOut();
+      },
+    }),
+    [status, me, lastSaved, upload, syncWithServer, signedOut],
+  );
+
+  return <AccountContext.Provider value={value}>{children}</AccountContext.Provider>;
+}
+
+export function useAccount(): AccountContextValue {
+  const ctx = useContext(AccountContext);
+  if (!ctx) throw new Error('useAccount moet binnen <AccountProvider> gebruikt worden');
+  return ctx;
+}

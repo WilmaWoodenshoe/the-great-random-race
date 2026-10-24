@@ -1296,3 +1296,210 @@ a.board__row {
     animation: none;
   }
 }
+
+/* ---------- Account ---------- */
+
+.account {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-bottom: 30px;
+}
+
+.account__intro {
+  font-size: 15px;
+  color: var(--inkt-zacht);
+  text-align: center;
+}
+
+.account__card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+.account__h2 {
+  font-family: var(--font-kop);
+  font-weight: 800;
+  font-size: 24px;
+}
+
+.account__who {
+  font-size: 18px;
+}
+
+.account__small {
+  font-size: 13px;
+  color: var(--grijs);
+}
+
+.account__note {
+  text-align: center;
+  color: var(--inkt-zacht);
+}
+
+.account__error {
+  padding: 10px 14px;
+  border-radius: var(--ronding-klein);
+  background: #fde7e1;
+  color: #8a2414;
+  font-size: 14px;
+}
+
+.account__delete {
+  align-self: center;
+  color: var(--rood);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field__label {
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.field__input {
+  font: inherit;
+  font-size: 17px;
+  padding: 12px 14px;
+  border: 2px solid var(--rand-warm);
+  border-radius: 14px;
+  background: var(--wit);
+  color: var(--inkt);
+}
+
+.field__input:focus {
+  outline: none;
+  border-color: var(--blauw);
+}
+
+.welcome__login {
+  display: block;
+  width: fit-content;
+  margin: 12px auto 0;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 251, 243, 0.9);
+  text-align: center;
+  font-weight: 800;
+  color: var(--navy);
+}
+
+/* ---------- Spelers ---------- */
+
+.players {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-bottom: 30px;
+}
+
+.players__tally {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding: 12px 10px;
+}
+
+.players__tally-item {
+  flex: 0 0 76px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.players__tally-item img {
+  width: 52px;
+  height: 46px;
+  object-fit: contain;
+}
+
+.players__tally-name {
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.players__tally-count {
+  font-size: 12px;
+  color: var(--grijs);
+}
+
+.players__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.players__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+}
+
+.players__row--me {
+  border: 2px solid var(--blauw);
+}
+
+.players__img {
+  width: 54px;
+  height: 50px;
+  object-fit: contain;
+  flex: none;
+}
+
+.players__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.players__nick {
+  font-weight: 800;
+  font-size: 16px;
+  overflow-wrap: anywhere;
+}
+
+.players__you {
+  font-weight: 600;
+  color: var(--blauw);
+}
+
+.players__line {
+  font-size: 14px;
+  color: var(--inkt-zacht);
+}
+
+.players__small {
+  font-size: 12px;
+  color: var(--grijs);
+}
+
+.players__score {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 13px;
+  color: var(--inkt-zacht);
+  white-space: nowrap;
+}
+
+.players__score b {
+  font-family: var(--font-kop);
+  font-size: 20px;
+  color: var(--inkt);
+}
+
+.players__join {
+  text-align: center;
+  font-weight: 800;
+  color: var(--navy);
+}
