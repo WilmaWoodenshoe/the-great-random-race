@@ -8,7 +8,7 @@ import { fill, who } from '../utils/text';
 export function activityAt(race: Race, racerId: string, now: number): string {
   if (now >= race.endTime) return 'raceOver';
   if (racerMovement(race, racerId, now).finishTime !== null) return 'finished';
-  if (racerId === race.playerId && openChoice(race, now)) return 'choice';
+  if (openChoice(race, now, racerId)) return 'choice';
 
   let current: string | null = null;
   let since = -Infinity;

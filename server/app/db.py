@@ -8,7 +8,9 @@ CREATE TABLE IF NOT EXISTS users (
     handle       BLOB NOT NULL UNIQUE,      -- willekeurige code voor de passkey
     nickname     TEXT NOT NULL,             -- bijnaam zoals getypt
     nickname_key TEXT NOT NULL UNIQUE,      -- bijnaam in kleine letters, voor 'bestaat al'
-    created_at   INTEGER NOT NULL
+    created_at   INTEGER NOT NULL,
+    status       TEXT NOT NULL DEFAULT 'pending',  -- 'pending' (wacht op goedkeuring) of 'approved'
+    is_admin     INTEGER NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS credentials (
@@ -42,18 +44,62 @@ CREATE TABLE IF NOT EXISTS saves (
     updated_at   INTEGER NOT NULL
 );
 
--- Wat iedereen mag zien: met welke racer iemand speelt en hoe het gaat.
-CREATE TABLE IF NOT EXISTS players (
-    user_id      INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
-    racer_id     TEXT NOT NULL,
-    race_number  INTEGER NOT NULL,
-    position     INTEGER NOT NULL,
-    racers_count INTEGER NOT NULL,
-    km           REAL NOT NULL,
-    finished     INTEGER NOT NULL,
-    updated_at   INTEGER NOT NULL
+-- Gedeelde races. Tijden in milliseconden (zoals in de app).
+CREATE TABLE IF NOT EXISTS races (
+    id           INTEGER PRIMARY KEY,       -- ook het racenummer
+    name         TEXT NOT NULL,
+    course_id    TEXT NOT NULL,
+    days         INTEGER NOT NULL,
+    start_time   INTEGER NOT NULL,
+    seed         INTEGER NOT NULL,
+    snapshot     TEXT NOT NULL,             -- racers, route en keuze-events bij het aanmaken
+    created_by   INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    created_at   INTEGER NOT NULL
 );
+
+-- Wie met welke racer meedoet. Wordt een account verwijderd tijdens de
+-- race, dan rijdt de racer verder als computerracer (user_id leeg).
+CREATE TABLE IF NOT EXISTS participants (
+    race_id      INTEGER NOT NULL REFERENCES races(id) ON DELETE CASCADE,
+    user_id      INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    racer_id     TEXT NOT NULL,
+    nickname     TEXT NOT NULL,
+    joined_at    INTEGER NOT NULL,
+    PRIMARY KEY (race_id, racer_id)
+);
+CREATE UNIQUE INDEX IF NOT EXISTS participants_user ON participants(race_id, user_id);
+
+-- Keuzes en dagelijkse acties van spelers in een gedeelde race.
+CREATE TABLE IF NOT EXISTS moves (
+    id           INTEGER PRIMARY KEY,
+    race_id      INTEGER NOT NULL REFERENCES races(id) ON DELETE CASCADE,
+    racer_id     TEXT NOT NULL,
+    kind         TEXT NOT NULL,             -- 'decision' of 'action'
+    key          TEXT NOT NULL,             -- keuze-event (decision) of dag (action)
+    value        TEXT NOT NULL,             -- gekozen optie of actie
+    time         INTEGER NOT NULL,
+    UNIQUE (race_id, racer_id, kind, key)
+);
+
+-- Oud (v0.2): het spelersoverzicht staat nu bij de races.
+DROP TABLE IF EXISTS players;
 """
+
+
+def migrate(conn) -> None:
+    """Oudere databases bijwerken."""
+    columns = {row[1] for row in conn.execute("PRAGMA table_info(users)")}
+    if "status" not in columns:
+        conn.execute("ALTER TABLE users ADD COLUMN status TEXT NOT NULL DEFAULT 'pending'")
+        # Wie er al was, is al goedgekeurd.
+        conn.execute("UPDATE users SET status = 'approved'")
+    if "is_admin" not in columns:
+        conn.execute("ALTER TABLE users ADD COLUMN is_admin INTEGER NOT NULL DEFAULT 0")
+    # Nog geen beheerder? Dan wordt het oudste account beheerder (dat van de eigenaar).
+    if not conn.execute("SELECT 1 FROM users WHERE is_admin = 1").fetchone():
+        conn.execute(
+            "UPDATE users SET is_admin = 1, status = 'approved' WHERE id = (SELECT id FROM users ORDER BY created_at, id LIMIT 1)"
+        )
 
 
 class Database:
@@ -67,7 +113,11 @@ class Database:
             self.conn.execute("PRAGMA foreign_keys = ON")
             if path != ":memory:":
                 self.conn.execute("PRAGMA journal_mode = WAL")
+            # Eerst de kolommen bijwerken, dan pas de nieuwe tabellen en indexen.
+            if self.conn.execute("SELECT 1 FROM sqlite_master WHERE name = 'users'").fetchone():
+                migrate(self.conn)
             self.conn.executescript(SCHEMA)
+            migrate(self.conn)
 
     def execute(self, sql: str, params: tuple = ()) -> sqlite3.Cursor:
         with self.lock:

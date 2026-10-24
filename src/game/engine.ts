@@ -14,10 +14,10 @@ import type { Racer } from '../models/Racer';
 import { DAY, localDateKey } from '../utils/dates';
 import { createRng, deriveSeed } from '../utils/random';
 import { actionPhases } from './actions';
-import { decisionPhases, effectiveDecisions, openChoice } from './choices';
+import { decisionPhases, effectiveDecisions, humansOf, openChoice, ownerOf } from './choices';
 import { generateRacerEvents, generateRain } from './events';
 import { simulate, type Movement } from './movement';
-import { snapshotRacer } from './racers';
+import { daysScale, snapshotRacer } from './racers';
 import { scheduleChoices } from './choices';
 
 export interface CreateRaceInput {
@@ -29,6 +29,12 @@ export interface CreateRaceInput {
   choices: Choice[];
   /** De racer van de speler; standaard de racer met `playable`. */
   playerId?: string;
+  /**
+   * Gedeelde race: alle racers die door mensen bestuurd worden. Zij krijgen
+   * elk eigen keuze-events. De race is dan voor iedereen precies dezelfde,
+   * welke racer ook `playerId` is.
+   */
+  humanIds?: string[];
 }
 
 /** Maak een nieuwe race. Alles wat toeval is, wordt nu met de seed vastgelegd. */
@@ -37,14 +43,24 @@ export function createRace(input: CreateRaceInput): Race {
   const course = structuredClone(input.course);
   const racers = input.racers.map(snapshotRacer);
   const player = racers.find((r) => r.id === input.playerId) ?? racers.find((r) => r.playable) ?? racers[0];
+  const humans = input.humanIds?.length ? input.humanIds : [player.id];
   const startTime = now;
   const endTime = startTime + course.days * DAY;
+  const racerIds = racers.map((r) => r.id);
+  // Eén speler: zoals altijd. Meerdere: per speler een eigen reeks keuzes.
+  const choices = humans
+    .flatMap((h) =>
+      humans.length === 1
+        ? scheduleChoices(seed, input.choices, getById(racers, h), startTime, endTime, racerIds)
+        : scheduleChoices(seed, input.choices, getById(racers, h), startTime, endTime, racerIds, `choices:${h}`, `keuze-${h}`),
+    )
+    .sort((a, b) => a.time - b.time);
 
   const rain = generateRain(seed, racers, startTime, endTime);
   const events = [
     ...rain,
     ...racers.flatMap((racer) =>
-      generateRacerEvents({ seed, course, racer, isPlayer: racer.id === player.id, startTime, endTime, rain }),
+      generateRacerEvents({ seed, course, racer, isPlayer: humans.includes(racer.id), startTime, endTime, rain }),
     ),
   ].sort((a, b) => a.time - b.time);
 
@@ -56,13 +72,20 @@ export function createRace(input: CreateRaceInput): Race {
     startTime,
     endTime,
     playerId: player.id,
+    ...(input.humanIds?.length ? { humans } : {}),
     course,
     racers,
     events,
-    choices: scheduleChoices(seed, input.choices, player, startTime, endTime, racers.map((r) => r.id)),
+    choices,
     decisions: [],
     actions: [],
   };
+}
+
+function getById(racers: Racer[], id: string): Racer {
+  const r = racers.find((x) => x.id === id);
+  if (!r) throw new Error(`Racer ${id} rijdt niet mee`);
+  return r;
 }
 
 export function getRaceRacer(race: Race, racerId: string): Racer {
@@ -81,7 +104,9 @@ function phasesFor(race: Race, racerId: string, now: number): SpeedPhase[] {
     if (e.racerId === racerId) phases.push(...e.phases);
     else if (e.racerId === null) phases.push(...(e.phasesByRacer?.[racerId] ?? []));
   }
-  if (racerId === race.playerId) phases.push(...decisionPhases(race, now), ...actionPhases(race, now));
+  if (humansOf(race).includes(racerId)) {
+    phases.push(...decisionPhases(race, now, racerId), ...actionPhases(race, now, racerId));
+  }
   return phases;
 }
 
@@ -94,9 +119,10 @@ export function racerMovement(race: Race, racerId: string, now: number): Movemen
       racer: getRaceRacer(race, racerId),
       startTime: race.startTime,
       phases: phasesFor(race, racerId, t),
+      // Sprongen zijn een stukje van de route; in een langere race zijn er meer, dus kleinere.
       jumps: race.events
         .filter((e) => e.racerId === racerId && e.jumpKm)
-        .map((e) => ({ time: e.time, km: e.jumpKm! })),
+        .map((e) => ({ time: e.time, km: e.jumpKm! * daysScale(race.course.days) })),
     },
     t,
   );
@@ -133,7 +159,7 @@ export function isFinished(race: Race, now: number): boolean {
   return now >= race.endTime;
 }
 
-/** Eindstand: precies 7 dagen na de start. */
+/** Eindstand: precies op het einde van de race. */
 export function finalStandings(race: Race): Standing[] {
   return standingsAt(race, race.endTime);
 }
@@ -147,12 +173,18 @@ export function daysLeft(race: Race, now: number): number {
 
 export { openChoice, effectiveDecisions };
 
-/** De speler kiest een optie. Alleen mogelijk zolang het keuze-event openstaat. */
-export function decideChoice(race: Race, scheduledId: string, optionId: string, now: number): Race {
-  const open = openChoice(race, now);
+/** Een speler kiest een optie. Alleen mogelijk zolang het keuze-event openstaat. */
+export function decideChoice(
+  race: Race,
+  scheduledId: string,
+  optionId: string,
+  now: number,
+  racerId: string = race.playerId,
+): Race {
+  const open = openChoice(race, now, racerId);
   if (!open || open.id !== scheduledId) throw new Error('Dit keuze-event staat niet (meer) open');
   if (!open.choice.options.some((o) => o.id === optionId)) throw new Error(`Onbekende optie: ${optionId}`);
-  return { ...race, decisions: [...race.decisions, { scheduledId, optionId, time: now }] };
+  return { ...race, decisions: [...race.decisions, { racerId, scheduledId, optionId, time: now }] };
 }
 
 export function scheduledChoice(race: Race, id: string): ScheduledChoice | undefined {
@@ -161,24 +193,24 @@ export function scheduledChoice(race: Race, id: string): ScheduledChoice | undef
 
 // ---------- Dagelijkse actie ----------
 
-/** Mag de speler vandaag (lokale kalenderdag) nog een actie doen? */
-export function canDoAction(race: Race, now: number): boolean {
+/** Mag deze speler vandaag (lokale kalenderdag) nog een actie doen? */
+export function canDoAction(race: Race, now: number, racerId: string = race.playerId): boolean {
   if (now < race.startTime || now >= race.endTime) return false;
-  if (racerMovement(race, race.playerId, now).finishTime !== null) return false;
-  const today = localDateKey(now);
-  return !race.actions.some((a) => a.day === today);
+  if (racerMovement(race, racerId, now).finishTime !== null) return false;
+  return todaysAction(race, now, racerId) === null;
 }
 
 /** De actie van vandaag uitvoeren. */
-export function doAction(race: Race, actionId: ActionId, now: number): Race {
-  if (!canDoAction(race, now)) throw new Error('Vandaag is er al een actie gedaan');
+export function doAction(race: Race, actionId: ActionId, now: number, racerId: string = race.playerId): Race {
+  if (!canDoAction(race, now, racerId)) throw new Error('Vandaag is er al een actie gedaan');
   const day = localDateKey(now);
-  const variant = createRng(deriveSeed(race.seed, `action:${day}`)).int(0, 99);
-  return { ...race, actions: [...race.actions, { actionId, time: now, day, variant }] };
+  const label = humansOf(race).length > 1 ? `action:${racerId}:${day}` : `action:${day}`;
+  const variant = createRng(deriveSeed(race.seed, label)).int(0, 99);
+  return { ...race, actions: [...race.actions, { racerId, actionId, time: now, day, variant }] };
 }
 
-/** De actie van vandaag, als die al gedaan is. */
-export function todaysAction(race: Race, now: number) {
+/** De actie van vandaag van deze speler, als die al gedaan is. */
+export function todaysAction(race: Race, now: number, racerId: string = race.playerId) {
   const today = localDateKey(now);
-  return race.actions.find((a) => a.day === today) ?? null;
+  return race.actions.find((a) => a.day === today && ownerOf(race, a) === racerId) ?? null;
 }

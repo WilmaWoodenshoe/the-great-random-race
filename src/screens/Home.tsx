@@ -38,6 +38,8 @@ export function Home() {
   const view = useRaceView();
   if (loading) return <div className="screen" aria-busy="true" />;
   if (!view) return <Navigate to="/" replace />;
+  // Gedeelde race die nog niet begonnen is: naar de wachtruimte.
+  if (view.race.serverId && view.now < view.race.startTime) return <Navigate to="/wachtruimte" replace />;
   // Net afgelopen en de uitslag nog niet gezien: meteen naar de finish.
   if (view.finished && save.finishSeenRaceId !== view.race.id) return <Navigate to="/finish" replace />;
 

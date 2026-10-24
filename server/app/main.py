@@ -4,8 +4,8 @@
 #   Geen wachtwoord, geen e-mailadres.
 # - Per account een kopie van het spel, zodat je op een nieuwe telefoon
 #   verder kunt.
-# - Per account een korte samenvatting (racer, plek, km) voor het
-#   spelersoverzicht, dat iedereen mag zien.
+# - Nieuwe accounts wachten op goedkeuring door de beheerder (de eigenaar).
+# - Gedeelde races: aanmaken, meedoen, keuzes en acties (zie races.py).
 #
 # Draait achter nginx op https://thegreatrandomrace.nl/api. Starten:
 #   uvicorn app.main:create_app --factory --host 127.0.0.1 --port 8100
@@ -20,7 +20,7 @@ from typing import Any
 
 from fastapi import Depends, FastAPI, HTTPException, Request, Response
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from webauthn import (
     generate_authentication_options,
     generate_registration_options,
@@ -38,6 +38,7 @@ from webauthn.helpers.structs import (
 
 from .config import Settings, load_settings
 from .db import Database
+from .races import register_race_routes
 from .security import SESSION_COOKIE, SESSION_SECONDS, RateLimiter, cleanup, create_session, end_session, session_user
 
 # Een keuze-uitdaging (het 'raadsel' voor de passkey) is 5 minuten geldig.
@@ -45,8 +46,6 @@ CHALLENGE_SECONDS = 300
 # Een opgeslagen spel is normaal een paar tientallen kB.
 MAX_SAVE_BYTES = 512 * 1024
 NICKNAME_MIN, NICKNAME_MAX = 2, 20
-# Het overzicht toont de spelers die het laatst actief waren.
-MAX_PLAYERS_LISTED = 200
 # Letters (ook met accenten), cijfers, spatie, - _ . '
 NICKNAME_RE = re.compile(r"^[\w .'\-]+$")
 
@@ -75,20 +74,9 @@ class Finish(BaseModel):
     credential: dict[str, Any]
 
 
-class Summary(BaseModel):
-    """Wat iedereen in het spelersoverzicht mag zien."""
-
-    racerId: str = Field(pattern=r"^[a-z0-9-]{1,40}$")
-    raceNumber: int = Field(ge=1, le=100_000)
-    position: int = Field(ge=1, le=100)
-    racersCount: int = Field(ge=1, le=100)
-    km: float = Field(ge=0, le=10_000)
-    finished: bool
-
-
 class SaveIn(BaseModel):
+    # Je eigen spelgegevens (uitslagen, wat je al gezien hebt); de gedeelde races staan apart.
     save: dict[str, Any]
-    summary: Summary | None = None
 
 
 # ---------- De app ----------
@@ -100,7 +88,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     register_limit = RateLimiter(20, 600)
     login_limit = RateLimiter(60, 600)
     save_limit = RateLimiter(240, 3600)
-    players_limit = RateLimiter(120, 600)
+    read_limit = RateLimiter(300, 600)
 
     @asynccontextmanager
     async def lifespan(_app: FastAPI):
@@ -164,8 +152,42 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         return row
 
     def me_json(user_id: int) -> dict:
-        row = db.one("SELECT nickname, created_at FROM users WHERE id = ?", (user_id,))
-        return {"nickname": row["nickname"], "createdAt": row["created_at"]}
+        row = db.one("SELECT nickname, created_at, status, is_admin FROM users WHERE id = ?", (user_id,))
+        return {
+            "id": user_id,
+            "nickname": row["nickname"],
+            "createdAt": row["created_at"],
+            "status": row["status"],
+            "isAdmin": bool(row["is_admin"]),
+        }
+
+    def approved_user(user_id: int = Depends(current_user)) -> int:
+        row = db.one("SELECT status FROM users WHERE id = ?", (user_id,))
+        if not row or row["status"] != "approved":
+            raise HTTPException(403, "Je account wacht nog op goedkeuring.")
+        return user_id
+
+    def admin_user(user_id: int = Depends(current_user)) -> int:
+        row = db.one("SELECT is_admin FROM users WHERE id = ?", (user_id,))
+        if not row or not row["is_admin"]:
+            raise HTTPException(403, "Alleen voor de beheerder.")
+        return user_id
+
+    def delete_user(user_id: int) -> None:
+        """Account weg. In races die nog niet begonnen zijn, verdwijnt de racer;
+        in lopende races rijdt hij verder als computerracer."""
+        now_ms = int(time.time() * 1000)
+        with db.transaction():
+            db.execute(
+                "DELETE FROM participants WHERE user_id = ? AND race_id IN (SELECT id FROM races WHERE start_time > ?)",
+                (user_id, now_ms),
+            )
+            db.execute("UPDATE participants SET nickname = '' WHERE user_id = ?", (user_id,))
+            db.execute("DELETE FROM users WHERE id = ?", (user_id,))
+            # Lege races die nog niet begonnen zijn, hebben geen zin meer.
+            db.execute(
+                "DELETE FROM races WHERE start_time > ? AND id NOT IN (SELECT race_id FROM participants)", (now_ms,)
+            )
 
     @app.get("/api/health")
     def health():
@@ -214,9 +236,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 raise HTTPException(409, "Deze bijnaam is net door iemand anders gekozen. Kies een andere.")
             if db.one("SELECT 1 FROM credentials WHERE id = ?", (verified.credential_id,)):
                 raise HTTPException(409, "Deze passkey is al in gebruik.")
+            # Het allereerste account is van de eigenaar: beheerder en meteen goedgekeurd.
+            first = db.one("SELECT 1 FROM users WHERE is_admin = 1") is None
             cur = db.execute(
-                "INSERT INTO users (handle, nickname, nickname_key, created_at) VALUES (?, ?, ?, ?)",
-                (flow["user_handle"], nick, nickname_key(nick), now),
+                "INSERT INTO users (handle, nickname, nickname_key, created_at, status, is_admin) VALUES (?, ?, ?, ?, ?, ?)",
+                (flow["user_handle"], nick, nickname_key(nick), now, "approved" if first else "pending", int(first)),
             )
             user_id = cur.lastrowid
             db.execute(
@@ -281,36 +305,52 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     @app.delete("/api/me")
     def delete_me(response: Response, user_id: int = Depends(current_user)):
-        # Alles van dit account gaat weg: passkeys, sessies, spel en samenvatting.
-        db.execute("DELETE FROM users WHERE id = ?", (user_id,))
+        # Alles van dit account gaat weg: passkeys, sessies en spel.
+        delete_user(user_id)
         response.delete_cookie(SESSION_COOKIE, path="/api")
         return {"ok": True}
 
-    # ----- Spelersoverzicht (voor iedereen) -----
+    # ----- Beheer (alleen de beheerder) -----
 
-    @app.get("/api/players")
-    def players(request: Request):
-        limit(players_limit, client_ip(request))
+    @app.get("/api/admin/users")
+    def admin_users(_admin: int = Depends(admin_user)):
         rows = db.all(
-            "SELECT u.nickname, p.racer_id, p.race_number, p.position, p.racers_count, p.km, p.finished, p.updated_at "
-            "FROM players p JOIN users u ON u.id = p.user_id ORDER BY p.updated_at DESC LIMIT ?",
-            (MAX_PLAYERS_LISTED,),
+            "SELECT u.id, u.nickname, u.status, u.is_admin, u.created_at, "
+            "(SELECT MAX(last_used_at) FROM credentials c WHERE c.user_id = u.id) AS last_login "
+            "FROM users u ORDER BY (u.status = 'pending') DESC, u.created_at DESC"
         )
         return {
-            "players": [
+            "users": [
                 {
+                    "id": r["id"],
                     "nickname": r["nickname"],
-                    "racerId": r["racer_id"],
-                    "raceNumber": r["race_number"],
-                    "position": r["position"],
-                    "racersCount": r["racers_count"],
-                    "km": r["km"],
-                    "finished": bool(r["finished"]),
-                    "updatedAt": r["updated_at"],
+                    "status": r["status"],
+                    "isAdmin": bool(r["is_admin"]),
+                    "createdAt": r["created_at"],
+                    "lastLogin": r["last_login"],
                 }
                 for r in rows
             ]
         }
+
+    @app.post("/api/admin/users/{target}/approve")
+    def admin_approve(target: int, _admin: int = Depends(admin_user)):
+        cur = db.execute("UPDATE users SET status = 'approved' WHERE id = ?", (target,))
+        if cur.rowcount == 0:
+            raise HTTPException(404, "Dit account bestaat niet (meer).")
+        return {"ok": True}
+
+    @app.delete("/api/admin/users/{target}")
+    def admin_delete(target: int, admin: int = Depends(admin_user)):
+        row = db.one("SELECT is_admin FROM users WHERE id = ?", (target,))
+        if not row:
+            raise HTTPException(404, "Dit account bestaat niet (meer).")
+        if target == admin or row["is_admin"]:
+            raise HTTPException(400, "Een beheerder kan hier niet verwijderd worden.")
+        delete_user(target)
+        return {"ok": True}
+
+    register_race_routes(app, db, approved_user, current_user, admin_user, lambda r: limit(read_limit, client_ip(r)))
 
     # ----- Spel bewaren -----
 
@@ -339,16 +379,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 "ON CONFLICT(user_id) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at",
                 (user_id, data, now),
             )
-            s = body.summary
-            if s:
-                db.execute(
-                    "INSERT INTO players (user_id, racer_id, race_number, position, racers_count, km, finished, updated_at) "
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(user_id) DO UPDATE SET "
-                    "racer_id = excluded.racer_id, race_number = excluded.race_number, position = excluded.position, "
-                    "racers_count = excluded.racers_count, km = excluded.km, finished = excluded.finished, "
-                    "updated_at = excluded.updated_at",
-                    (user_id, s.racerId, s.raceNumber, s.position, s.racersCount, s.km, int(s.finished), now),
-                )
         return {"updatedAt": now}
 
     return app

@@ -1390,47 +1390,59 @@ a.board__row {
   color: var(--navy);
 }
 
-/* ---------- Spelers ---------- */
-
-.players {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding-bottom: 30px;
-}
-
-.players__tally {
-  display: flex;
-  gap: 4px;
-  overflow-x: auto;
-  padding: 12px 10px;
-}
-
-.players__tally-item {
-  flex: 0 0 76px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.players__join {
   text-align: center;
-}
-
-.players__tally-item img {
-  width: 52px;
-  height: 46px;
-  object-fit: contain;
-}
-
-.players__tally-name {
   font-weight: 800;
-  font-size: 13px;
+  color: var(--navy);
 }
 
-.players__tally-count {
-  font-size: 12px;
-  color: var(--grijs);
+.pick__tile--taken {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
-.players__list {
+.pick__by {
+  font-size: 11px;
+  color: var(--inkt-zacht);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+a.chip-btn {
+  display: inline-block;
+  text-decoration: none;
+}
+
+.chip-btn--keuze {
+  background: var(--tabblad);
+  color: var(--inkt);
+}
+
+.chip-btn--keuze.chip-btn--on {
+  background: var(--navy);
+  color: var(--wit);
+}
+
+.chip-btn--groen {
+  background: var(--groen);
+}
+
+.chip-btn--rood {
+  background: var(--rood);
+}
+
+/* ---------- Races ---------- */
+
+.races {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 20px;
+}
+
+.races__list {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -1439,67 +1451,171 @@ a.board__row {
   gap: 10px;
 }
 
-.players__row {
+.race-card {
+  padding: 14px;
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.players__row--me {
+.race-card--mine {
   border: 2px solid var(--blauw);
 }
 
-.players__img {
-  width: 54px;
-  height: 50px;
-  object-fit: contain;
-  flex: none;
+.race-card__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
 }
 
-.players__main {
-  flex: 1;
-  min-width: 0;
-}
-
-.players__nick {
+.race-card__name {
+  font-family: var(--font-kop);
   font-weight: 800;
-  font-size: 16px;
-  overflow-wrap: anywhere;
+  font-size: 22px;
+  line-height: 1.1;
 }
 
-.players__you {
-  font-weight: 600;
-  color: var(--blauw);
-}
-
-.players__line {
+.race-card__meta {
   font-size: 14px;
   color: var(--inkt-zacht);
 }
 
-.players__small {
+.race-card__by {
   font-size: 12px;
   color: var(--grijs);
 }
 
-.players__score {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  font-size: 13px;
-  color: var(--inkt-zacht);
+.race-card__badge {
+  align-self: flex-start;
   white-space: nowrap;
 }
 
-.players__score b {
-  font-family: var(--font-kop);
-  font-size: 20px;
-  color: var(--inkt);
+.race-card__players {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
 }
 
-.players__join {
+.race-card__players li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
+  min-width: 0;
+}
+
+.race-card__players img {
+  width: 44px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.race-card__racer {
+  font-size: 13px;
   font-weight: 800;
+}
+
+.race-card__nick {
+  font-size: 12px;
+  color: var(--grijs);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.race-card__foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: var(--inkt-zacht);
+}
+
+.new-race__racer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.new-race__racer .link-btn {
+  margin-top: 4px;
   color: var(--navy);
+}
+
+/* ---------- Wachtruimte ---------- */
+
+.lobby__when {
+  font-family: var(--font-kop);
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1.15;
+}
+
+.lobby__list {
+  list-style: none;
+  margin: 0;
+  padding: 6px 14px;
+}
+
+.lobby__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--lijn-zacht);
+}
+
+.lobby__row:last-child {
+  border-bottom: 0;
+}
+
+.lobby__row img {
+  width: 48px;
+  height: 44px;
+  object-fit: contain;
+}
+
+/* ---------- Beheer ---------- */
+
+.admin__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+}
+
+.admin__who {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.admin__buttons {
+  display: flex;
+  gap: 6px;
+  flex: none;
+}
+
+.board__owner {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--grijs);
+}
+
+.pick__tile--taken .pick__img {
+  height: 62px;
 }

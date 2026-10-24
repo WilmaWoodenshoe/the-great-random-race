@@ -3,7 +3,7 @@ import type { SpeedPhase } from '../models/Event';
 import type { Racer } from '../models/Racer';
 import { HOUR } from '../utils/dates';
 import { segmentBounds } from './course';
-import { baseKmh } from './racers';
+import { baseKmh, daysScale } from './racers';
 import { terrainMultiplier } from './terrain';
 
 /** Alles wat nodig is om de beweging van één racer uit te rekenen. */
@@ -38,7 +38,7 @@ export function simulate(input: MovementInput, until: number): Movement {
   const { course, racer, startTime } = input;
   const length = course.lengthKm;
   const bounds = segmentBounds(course);
-  const base = baseKmh(racer);
+  const base = baseKmh(racer) * daysScale(course.days);
 
   const phases = input.phases.filter((p) => p.start < until && p.end > startTime);
   const jumps = input.jumps.filter((j) => j.time >= startTime && j.time <= until).sort((a, b) => a.time - b.time);

@@ -1,11 +1,21 @@
 import { Navigate } from 'react-router-dom';
 import { useGame } from '../state/GameProvider';
+import { accountsEnabled, useAccount } from '../account/AccountProvider';
 import { Welcome } from './Welcome';
 
-/** Eerste scherm: loopt er al een race, dan meteen naar Home; anders het welkom. */
+/**
+ * Eerste scherm. Loopt er al een race, dan meteen naar Home. Op de echte
+ * site heb je eerst een (goedgekeurd) account nodig; daarna kies je een
+ * race in de lijst.
+ */
 export function Start() {
   const { loading, race } = useGame();
-  if (loading) return <div className="screen" aria-busy="true" />;
-  if (race) return <Navigate to="/home" replace />;
-  return <Welcome />;
+  const { status, me } = useAccount();
+  if (loading || (accountsEnabled && status === 'checking')) return <div className="screen" aria-busy="true" />;
+  if (!accountsEnabled || status === 'unavailable') return race ? <Navigate to="/home" replace /> : <Welcome />;
+  // Geen verbinding: dan in elk geval de bewaarde race laten zien.
+  if (status === 'offline') return race?.serverId ? <Navigate to="/home" replace /> : <Welcome />;
+  if (!me) return <Welcome />;
+  if (me.status !== 'approved') return <Navigate to="/account" replace />;
+  return <Navigate to={race?.serverId ? '/home' : '/races'} replace />;
 }

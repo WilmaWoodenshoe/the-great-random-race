@@ -26,6 +26,19 @@ interface GameContextValue {
   resetAll(): Promise<void>;
   /** Het hele spel vervangen, bijv. door de kopie uit je account. */
   replaceSave(data: SaveData): Promise<void>;
+  /**
+   * De race vervangen door de nieuwste versie van de server (gedeelde race).
+   * Een afgelopen vorige race gaat eerst naar de geschiedenis.
+   */
+  setRace(race: Race | null): Promise<void>;
+  /** Voor gedeelde races: keuzes en acties gaan via de server. */
+  setRemote(remote: RemoteMoves | null): void;
+}
+
+/** Keuzes en acties in een gedeelde race: de server bewaart ze, en geeft de nieuwe race terug. */
+export interface RemoteMoves {
+  decide(race: Race, scheduledId: string, optionId: string): Promise<Race>;
+  act(race: Race, actionId: ActionId): Promise<Race>;
 }
 
 const GameContext = createContext<GameContextValue | null>(null);
@@ -40,6 +53,7 @@ export function GameProvider({ children, storage }: { children: ReactNode; stora
   const [realNow, setRealNow] = useState(() => Date.now());
   // Altijd de nieuwste stand, ook als er snel na elkaar iets verandert.
   const latest = useRef<SaveData>(EMPTY_SAVE);
+  const remote = useRef<RemoteMoves | null>(null);
   const setSave = useCallback((data: SaveData) => {
     latest.current = data;
     setSaveState(data);
@@ -117,6 +131,19 @@ export function GameProvider({ children, storage }: { children: ReactNode; stora
     [persist, setSave],
   );
 
+  const setRaceFromServer = useCallback(
+    async (race: Race | null) => {
+      let current = latest.current;
+      // Een andere race dan de vorige: die vorige eerst in de geschiedenis (als hij klaar is).
+      if (current.race && current.race.id !== race?.id) current = archiveIfFinished(current, Date.now() + current.clockOffset);
+      const next = { ...current, race, raceCounter: Math.max(current.raceCounter, race?.number ?? 0) };
+      setSave(next);
+      setRealNow(Date.now());
+      await persist(next);
+    },
+    [persist, setSave],
+  );
+
   const value = useMemo<GameContextValue>(
     () => ({
       loading,
@@ -127,9 +154,16 @@ export function GameProvider({ children, storage }: { children: ReactNode; stora
         await update((s, at) => startRace(s, at, racerId));
         void requestPersistentStorage();
       },
-      decide: (scheduledId, optionId) =>
-        update((s, at) => ({ ...s, race: s.race && decideChoice(s.race, scheduledId, optionId, at) })),
-      act: (actionId) => update((s, at) => ({ ...s, race: s.race && doAction(s.race, actionId, at) })),
+      decide: async (scheduledId, optionId) => {
+        const race = latest.current.race;
+        if (race?.serverId && remote.current) return setRaceFromServer(await remote.current.decide(race, scheduledId, optionId));
+        await update((s, at) => ({ ...s, race: s.race && decideChoice(s.race, scheduledId, optionId, at) }));
+      },
+      act: async (actionId) => {
+        const race = latest.current.race;
+        if (race?.serverId && remote.current) return setRaceFromServer(await remote.current.act(race, actionId));
+        await update((s, at) => ({ ...s, race: s.race && doAction(s.race, actionId, at) }));
+      },
       markFinishSeen: (raceId) => update((s) => (s.finishSeenRaceId === raceId ? s : { ...s, finishSeenRaceId: raceId })),
       markJournalSeen: (time) => update((s) => (time <= s.journalSeenAt ? s : { ...s, journalSeenAt: time })),
       setClockOffset: (ms) => update((s) => ({ ...s, clockOffset: ms })),
@@ -146,8 +180,12 @@ export function GameProvider({ children, storage }: { children: ReactNode; stora
         setRealNow(Date.now());
         await persist(data);
       },
+      setRace: setRaceFromServer,
+      setRemote: (r) => {
+        remote.current = r;
+      },
     }),
-    [loading, save, now, update, store, setSave, persist],
+    [loading, save, now, update, store, setSave, persist, setRaceFromServer],
   );
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { HashRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { HashRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { GameProvider } from './state/GameProvider';
 import { AccountProvider } from './account/AccountProvider';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -16,7 +16,11 @@ import { Event } from './screens/Event';
 import { Finish } from './screens/Finish';
 import { More } from './screens/More';
 import { Account } from './screens/Account';
-import { Players } from './screens/Players';
+import { Races } from './screens/Races';
+import { NewRace } from './screens/NewRace';
+import { JoinRace } from './screens/JoinRace';
+import { Lobby } from './screens/Lobby';
+import { Admin } from './screens/Admin';
 import { NotFound } from './screens/NotFound';
 
 /** Bij elk nieuw scherm bovenaan beginnen. */
@@ -56,7 +60,12 @@ export function App() {
               <Route path="/finish" element={<Finish />} />
               <Route path="/meer" element={<More />} />
               <Route path="/account" element={<Account />} />
-              <Route path="/spelers" element={<Players />} />
+              <Route path="/races" element={<Races />} />
+              <Route path="/races/nieuw" element={<NewRace />} />
+              <Route path="/races/:id/meedoen" element={<JoinRace />} />
+              <Route path="/wachtruimte" element={<Lobby />} />
+              <Route path="/beheer" element={<Admin />} />
+              <Route path="/spelers" element={<Navigate to="/races" replace />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </HashRouter>

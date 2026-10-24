@@ -2,18 +2,79 @@
 import { startAuthentication, startRegistration } from '@simplewebauthn/browser';
 import type { SaveData } from '../models/Save';
 
+import type { Choice } from '../models/Choice';
+import type { Course } from '../models/Course';
+import type { Racer } from '../models/Racer';
+
 export interface Me {
+  id: number;
   nickname: string;
   createdAt: number;
+  /** 'pending' = wacht op goedkeuring door de beheerder. */
+  status: 'pending' | 'approved';
+  isAdmin: boolean;
 }
 
-export interface Summary {
+export interface Participant {
   racerId: string;
-  raceNumber: number;
-  position: number;
-  racersCount: number;
-  km: number;
-  finished: boolean;
+  /** Leeg als het account inmiddels verwijderd is. */
+  nickname: string;
+  userId: number | null;
+  joinedAt: number;
+}
+
+/** Een gedeelde race zoals in de lijst. */
+export interface RaceSummary {
+  id: number;
+  name: string;
+  courseId: string;
+  days: number;
+  startTime: number;
+  endTime: number;
+  status: 'open' | 'running' | 'finished';
+  createdBy: string | null;
+  participants: Participant[];
+}
+
+/** Racers, route en keuze-events zoals bij het aanmaken van de race. */
+export interface RaceSnapshot {
+  course: Course;
+  racers: Racer[];
+  choices: Choice[];
+}
+
+export interface Move {
+  racerId: string;
+  kind: 'decision' | 'action';
+  key: string;
+  value: string;
+  time: number;
+}
+
+/** Alles om een gedeelde race op de telefoon na te rekenen. */
+export interface RaceDetail extends RaceSummary {
+  seed: number;
+  snapshot: RaceSnapshot;
+  moves: Move[];
+  now: number;
+}
+
+export interface NewRace {
+  name: string;
+  courseId: string;
+  days: number;
+  startTime: number;
+  racerId: string;
+  snapshot: RaceSnapshot;
+}
+
+export interface AdminUser {
+  id: number;
+  nickname: string;
+  status: 'pending' | 'approved';
+  isAdmin: boolean;
+  createdAt: number;
+  lastLogin: number | null;
 }
 
 /** Een fout van de server, met een Nederlandse uitleg erbij. */
@@ -46,12 +107,6 @@ async function call<T>(method: string, path: string, body?: unknown): Promise<T>
   return data as T;
 }
 
-export interface Player extends Summary {
-  nickname: string;
-  /** Laatst bijgewerkt (seconden). */
-  updatedAt: number;
-}
-
 interface Flow {
   flowId: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -78,11 +133,24 @@ export const api = {
   logout: () => call<{ ok: true }>('POST', '/logout'),
   deleteAccount: () => call<{ ok: true }>('DELETE', '/me'),
 
-  players: () => call<{ players: Player[] }>('GET', '/players'),
-
   getSave: () => call<{ save: unknown; updatedAt: number | null }>('GET', '/save'),
-  putSave: (save: SaveData, summary: Summary | null) =>
-    call<{ updatedAt: number }>('PUT', '/save', { save, summary }),
+  putSave: (save: SaveData) => call<{ updatedAt: number }>('PUT', '/save', { save }),
+
+  // Gedeelde races
+  races: () => call<{ races: RaceSummary[]; now: number }>('GET', '/races'),
+  race: (id: number) => call<RaceDetail>('GET', `/races/${id}`),
+  myRace: () => call<{ raceId: number | null }>('GET', '/my-race'),
+  createRace: (race: NewRace) => call<RaceSummary>('POST', '/races', race),
+  joinRace: (id: number, racerId: string) => call<RaceSummary>('POST', `/races/${id}/join`, { racerId }),
+  leaveRace: (id: number) => call<{ ok: true }>('POST', `/races/${id}/leave`),
+  cancelRace: (id: number) => call<{ ok: true }>('DELETE', `/races/${id}`),
+  move: (id: number, kind: 'decision' | 'action', value: string, key = '') =>
+    call<{ time: number; key: string }>('POST', `/races/${id}/moves`, { kind, key, value }),
+
+  // Beheer
+  adminUsers: () => call<{ users: AdminUser[] }>('GET', '/admin/users'),
+  approveUser: (id: number) => call<{ ok: true }>('POST', `/admin/users/${id}/approve`),
+  deleteUser: (id: number) => call<{ ok: true }>('DELETE', `/admin/users/${id}`),
 };
 
 /** Is de passkey-vraag door de speler weggetikt? Dan geen foutmelding tonen. */

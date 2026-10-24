@@ -140,12 +140,6 @@ def test_zonder_inloggen_geen_spel(client):
     assert client.put("/api/save", json={"save": SAVE}, headers=HEADERS).status_code == 401
 
 
-def test_rare_samenvatting_wordt_geweigerd(client):
-    register(client)
-    bad = {**SUMMARY, "racerId": "<b>hoi</b>"}
-    assert client.put("/api/save", json={"save": SAVE, "summary": bad}, headers=HEADERS).status_code == 422
-
-
 def test_te_groot_spel_wordt_geweigerd(client):
     register(client)
     big = {"x": "a" * (600 * 1024)}
@@ -158,7 +152,7 @@ def test_account_verwijderen_wist_alles(client):
     assert client.delete("/api/me", headers=HEADERS).status_code == 200
     assert client.get("/api/me").status_code == 401
     db = client.app.state.db
-    for table in ["users", "credentials", "sessions", "saves", "players"]:
+    for table in ["users", "credentials", "sessions", "saves"]:
         assert db.one(f"SELECT COUNT(*) AS n FROM {table}")["n"] == 0, table
     # De bijnaam is weer vrij, en de oude passkey werkt niet meer.
     assert login(client, auth).status_code == 400
@@ -169,19 +163,3 @@ def test_account_verwijderen_wist_alles(client):
 def test_te_veel_pogingen_worden_afgeremd(client):
     codes = [client.post("/api/register/start", json={"nickname": f"Speler{i}"}, headers=HEADERS).status_code for i in range(25)]
     assert 429 in codes
-
-
-def test_spelersoverzicht_voor_iedereen(client):
-    register(client, "Wilma")
-    client.put("/api/save", json={"save": SAVE, "summary": SUMMARY}, headers=HEADERS)
-    client.post("/api/logout", headers=HEADERS)
-    register(client, "Piet")  # Piet heeft nog geen race: staat er niet in
-    client.cookies.clear()
-    res = client.get("/api/players")
-    assert res.status_code == 200
-    players = res.json()["players"]
-    assert [p["nickname"] for p in players] == ["Wilma"]
-    assert players[0]["racerId"] == "isabelle"
-    assert players[0]["position"] == 2
-    # Geen geheime dingen in het overzicht.
-    assert set(players[0]) == {"nickname", "racerId", "raceNumber", "position", "racersCount", "km", "finished", "updatedAt"}

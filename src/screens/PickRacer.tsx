@@ -4,12 +4,13 @@ import { nl } from '../content/nl';
 import { racers } from '../content';
 import { BackHeader } from '../components/BackHeader';
 import { PrimaryButton } from '../components/PrimaryButton';
+import { RacerGrid, RacerLine } from '../components/RacerGrid';
 import { isFinished } from '../game/engine';
 import { defaultRacerId } from '../game/session';
 import { useGame } from '../state/GameProvider';
-import { img } from '../utils/images';
+import { accountsEnabled } from '../account/AccountProvider';
 
-/** Kies je racer (KiesRacer.html): daarna begint de race meteen. */
+/** Kies je racer (KiesRacer.html) voor een race alleen op deze telefoon (testversie). */
 export function PickRacer() {
   const t = nl.pick;
   const { loading, save, race, now, startNewRace } = useGame();
@@ -18,6 +19,8 @@ export function PickRacer() {
   const [busy, setBusy] = useState(false);
 
   if (loading) return <div className="screen" aria-busy="true" />;
+  // Op de echte site speel je in gedeelde races.
+  if (accountsEnabled) return <Navigate to="/races" replace />;
   // Er loopt al een race: eerst die uitkijken.
   if (race && !isFinished(race, now)) return <Navigate to="/home" replace />;
 
@@ -40,31 +43,11 @@ export function PickRacer() {
       <BackHeader title={t.title} fallback={race ? '/finish' : '/'} />
 
       <main className="screen__main pick">
-        <div className="pick__grid" role="group" aria-label={t.listLabel}>
-          {racers.map((r) => {
-            const on = r.id === selected.id;
-            return (
-              <button
-                key={r.id}
-                type="button"
-                aria-pressed={on}
-                className={`pick__tile${on ? ' pick__tile--on' : ''}`}
-                onClick={() => setPicked(r.id)}
-              >
-                <img src={img(r.image)} alt="" className="pick__img" />
-                <span className="pick__name">{r.name}</span>
-              </button>
-            );
-          })}
-        </div>
+        <RacerGrid racers={racers} selectedId={selected.id} onSelect={setPicked} />
       </main>
 
       <div className="screen__footer pick__footer">
-        <p className="pick__line" aria-live="polite">
-          <b>{selected.name}</b> · {selected.title}
-          <br />
-          {t.line(selected.species, selected.tagline ?? '')}
-        </p>
+        <RacerLine racer={selected} />
         <PrimaryButton onClick={start} arrow={!busy}>
           {busy ? t.starting : t.confirm}
         </PrimaryButton>

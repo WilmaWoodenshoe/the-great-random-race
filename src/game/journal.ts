@@ -5,7 +5,7 @@ import type { Race } from '../models/Race';
 import { createRng, deriveSeed } from '../utils/random';
 import { fill, who } from '../utils/text';
 import { hasHat } from './actions';
-import { effectiveDecisions } from './choices';
+import { effectiveDecisions, humansOf, ownerOf } from './choices';
 import { getRaceRacer, racerMovement } from './engine';
 
 const t = nl.engine;
@@ -26,6 +26,9 @@ export function journalAt(race: Race, now: number): JournalEntry[] {
   const entries: JournalEntry[] = [];
   if (now < race.startTime) return entries;
   const player = who(getRaceRacer(race, race.playerId));
+  const humans = humansOf(race);
+  // De woorden voor de racer van wie een keuze of actie is.
+  const ownerWords = (item: { racerId?: string }) => who(getRaceRacer(race, ownerOf(race, item)));
 
   entries.push({
     id: 'start',
@@ -70,7 +73,7 @@ export function journalAt(race: Race, now: number): JournalEntry[] {
     const key = (e.textKey ?? e.type) as EventTextKey;
     let text = fill(pickText(t.events[key], e.variant), racer);
     // Met hoed op reageert het journaal er af en toe op.
-    if (e.racerId === race.playerId && e.variant % 2 === 0 && hasHat(race, e.time)) {
+    if (e.racerId && humans.includes(e.racerId) && e.variant % 2 === 0 && hasHat(race, e.time, e.racerId)) {
       text += ` ${pickText(t.hatRemarks, e.variant >> 1)}`;
     }
     entries.push({
@@ -85,7 +88,13 @@ export function journalAt(race: Race, now: number): JournalEntry[] {
 
   for (const sc of race.choices) {
     if (sc.time > until) continue;
-    entries.push({ id: `${sc.id}-gevonden`, time: sc.time, kind: 'choice', racerId: race.playerId, text: fill(sc.choice.announce, player) });
+    entries.push({
+      id: `${sc.id}-gevonden`,
+      time: sc.time,
+      kind: 'choice',
+      racerId: ownerOf(race, sc),
+      text: fill(sc.choice.announce, ownerWords(sc)),
+    });
   }
   for (const d of effectiveDecisions(race, until)) {
     const sc = race.choices.find((c) => c.id === d.scheduledId)!;
@@ -95,19 +104,19 @@ export function journalAt(race: Race, now: number): JournalEntry[] {
       id: `${sc.id}-gekozen`,
       time: d.time,
       kind: 'decision',
-      racerId: race.playerId,
-      text: fill(pickText(option.journal, sc.variant), player),
+      racerId: ownerOf(race, sc),
+      text: fill(pickText(option.journal, sc.variant), ownerWords(sc)),
     });
   }
 
   for (const a of race.actions) {
     if (a.time > until) continue;
     entries.push({
-      id: `actie-${a.day}`,
+      id: `actie-${ownerOf(race, a)}-${a.day}`,
       time: a.time,
       kind: 'action',
-      racerId: race.playerId,
-      text: fill(pickText(t.actions[a.actionId], a.variant), player),
+      racerId: ownerOf(race, a),
+      text: fill(pickText(t.actions[a.actionId], a.variant), ownerWords(a)),
     });
   }
 

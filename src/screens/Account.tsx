@@ -5,11 +5,13 @@ import { PrimaryButton } from '../components/PrimaryButton';
 import { accountsEnabled, useAccount } from '../account/AccountProvider';
 import { ApiError, isCancelled } from '../account/api';
 import { isTestVersion } from '../utils/env';
+import { useGame } from '../state/GameProvider';
 
 /** Account: aanmaken, inloggen met een passkey, uitloggen en verwijderen. */
 export function Account() {
   const t = nl.account;
-  const { status, me, lastSaved, register, login, logout, deleteAccount } = useAccount();
+  const { status, me, lastSaved, register, login, logout, deleteAccount, refresh } = useAccount();
+  const { race } = useGame();
   const [nickname, setNickname] = useState('');
   const [busy, setBusy] = useState<'create' | 'login' | 'other' | null>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -48,6 +50,19 @@ export function Account() {
   } else if (status === 'in' && me) {
     body = (
       <>
+        {me.status !== 'approved' ? (
+          <section className="card card--wit account__card">
+            <h2 className="account__h2">{t.pendingTitle}</h2>
+            <p>{t.pending}</p>
+            <PrimaryButton color="blauw" onClick={() => run('other', refresh)}>
+              {busy === 'other' ? t.busy : t.pendingCheck}
+            </PrimaryButton>
+          </section>
+        ) : (
+          <PrimaryButton to={race?.serverId ? '/home' : '/races'} arrow>
+            {race?.serverId ? nl.finish.toHome.replace('{naam}', race.racers.find((r) => r.id === race.playerId)?.name ?? '') : t.toRaces}
+          </PrimaryButton>
+        )}
         <section className="card card--wit account__card">
           <div className="account__who">
             {t.loggedInAs} <b>{me.nickname}</b>

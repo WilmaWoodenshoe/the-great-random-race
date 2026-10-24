@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { api } from '../account/api';
 import { nl } from '../content/nl';
 import { BottomNav } from '../components/BottomNav';
 import { ChevronRight } from '../components/Icons';
@@ -47,6 +49,15 @@ export function More() {
   const { race, save, now, setClockOffset, resetAll } = useGame();
   const career = careerStats(save, now);
   const account = useAccount();
+  // Voor de beheerder: hoeveel accounts wachten er op goedkeuring?
+  const [pending, setPending] = useState(0);
+  useEffect(() => {
+    if (!account.me?.isAdmin) return;
+    api
+      .adminUsers()
+      .then((res) => setPending(res.users.filter((u) => u.status === 'pending').length))
+      .catch(() => undefined);
+  }, [account.me]);
 
   const reset = async () => {
     if (window.confirm(t.resetConfirm)) await resetAll();
@@ -72,12 +83,13 @@ export function More() {
             <h2 className="more__h2">{t.accountSection}</h2>
             <MenuList
               items={[
-                { to: '/spelers', title: nl.players.title, hint: nl.players.menuHint },
+                { to: '/races', title: nl.races.title, hint: nl.races.menuHint },
                 {
                   to: '/account',
                   title: nl.account.title,
                   hint: account.me ? nl.account.menuHintIn(account.me.nickname) : nl.account.menuHint,
                 },
+                ...(account.me?.isAdmin ? [{ to: '/beheer', title: nl.admin.title, hint: nl.admin.menuHint(pending) }] : []),
               ]}
             />
           </>

@@ -7,6 +7,16 @@ import { personalityModifier } from './personality';
  */
 export const BASE_KMH = 0.318;
 
+/**
+ * Alles is afgesteld op een race van 7 dagen. Duurt een race langer
+ * (14 of 21 dagen), dan gaan alle racers naar verhouding langzamer.
+ */
+export const REFERENCE_DAYS = 7;
+
+export function daysScale(days: number): number {
+  return days > 0 ? REFERENCE_DAYS / days : 1;
+}
+
 /** Basissnelheid van deze racer in km per uur, inclusief persoonlijkheid. */
 export function baseKmh(racer: Racer): number {
   return BASE_KMH * racer.speed * personalityModifier(racer.traits);

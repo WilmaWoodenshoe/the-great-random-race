@@ -1,19 +1,24 @@
-// Account (bijnaam + passkey) en het bewaren van je spel op de server.
-// Alleen op thegreatrandomrace.nl; in de testversie staat dit uit.
+// Account (bijnaam + passkey), gedeelde races en het bewaren van je spel
+// op de server. Alleen op thegreatrandomrace.nl; in de testversie staat
+// dit uit en speel je alleen, op de telefoon.
 //
-// Bewaren gaat zo:
+// Gedeelde race: de server bewaart wie meedoet en de keuzes en acties; de
+// app rekent de race na (buildRace) en ververst die regelmatig.
+//
+// Je eigen spelgegevens (uitslagen, wat je al gezien hebt) bewaren gaat zo:
 // - na elke wijziging in je spel stuurt de app (na een tel) een kopie naar de server;
 // - opent de app op een andere telefoon, dan haalt hij de nieuwste kopie op;
 // - lukt versturen niet (geen internet), dan probeert de app het later opnieuw.
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { nl } from '../content/nl';
+import type { Race } from '../models/Race';
 import type { SaveData } from '../models/Save';
 import { useGame } from '../state/GameProvider';
 import { parseSave } from '../storage/storage';
 import { isTestVersion } from '../utils/env';
 import { api, ApiError, type Me } from './api';
-import { summaryOf } from './summary';
+import { buildRace } from './buildRace';
 
 export type AccountStatus = 'unavailable' | 'checking' | 'offline' | 'out' | 'in';
 
@@ -26,7 +31,14 @@ interface AccountContextValue {
   login(): Promise<void>;
   logout(): Promise<void>;
   deleteAccount(): Promise<void>;
+  /** Opnieuw kijken bij de server (bijv. of je al goedgekeurd bent). */
+  refresh(): Promise<void>;
+  /** Je gedeelde race opnieuw ophalen (na aanmaken, meedoen of afmelden). */
+  reloadRace(): Promise<void>;
 }
+
+/** Mag dit account races maken en meedoen? */
+export const isApproved = (me: Me | null) => me?.status === 'approved';
 
 /** Accounts werken alleen op de echte site, en alleen als de browser passkeys kent. */
 export const accountsEnabled: boolean =
@@ -35,6 +47,8 @@ export const accountsEnabled: boolean =
 const META_KEY = 'grr-account-sync';
 /** Bij terugkomen in de app hoogstens eens per minuut bij de server kijken. */
 const PULL_EVERY_MS = 60_000;
+/** Zolang de app open is: zo vaak de gedeelde race verversen (zetten van anderen). */
+const RACE_REFRESH_MS = 2 * 60_000;
 const UPLOAD_DELAY_MS = 1500;
 
 interface SyncMeta {
@@ -67,7 +81,7 @@ const isEmpty = (s: SaveData) => !s.race && s.history.length === 0;
 const AccountContext = createContext<AccountContextValue | null>(null);
 
 export function AccountProvider({ children }: { children: ReactNode }) {
-  const { loading, save, replaceSave } = useGame();
+  const { loading, save, replaceSave, setRace, setRemote } = useGame();
   const [status, setStatus] = useState<AccountStatus>(accountsEnabled ? 'checking' : 'unavailable');
   const [me, setMe] = useState<Me | null>(null);
   const [lastSaved, setLastSaved] = useState<number | null>(() => {
@@ -97,7 +111,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
     async (data: SaveData) => {
       writeMeta({ ...readMeta(), dirty: true });
       try {
-        const res = await api.putSave(data, summaryOf(data, Date.now() + data.clockOffset));
+        const res = await api.putSave(data);
         inSync.current = data;
         setMeta({ syncedAt: res.updatedAt, dirty: false });
       } catch (err) {
@@ -142,24 +156,66 @@ export function AccountProvider({ children }: { children: ReactNode }) {
 
       if (meta.dirty) return upload(local);
       if (server.updatedAt > (meta.syncedAt ?? 0)) return adopt(remote, server.updatedAt);
-      // Niets nieuws: wel even de stand verversen voor het spelersoverzicht.
-      if (local.race) return upload(local);
     },
     [adopt, upload],
   );
 
+  const meRef = useRef<Me | null>(null);
+  meRef.current = me;
+
+  /** Je gedeelde race ophalen en narekenen; zonder race: geen race. */
+  const reloadRace = useCallback(async () => {
+    const who = meRef.current;
+    if (!who) return;
+    const { raceId } = await api.myRace();
+    if (raceId === null) {
+      // Een oude race van alleen deze telefoon telt niet meer mee.
+      if (latestSave.current.race) await setRace(null);
+      return;
+    }
+    await setRace(buildRace(await api.race(raceId), who.id));
+  }, [setRace]);
+
   const check = useCallback(async () => {
     try {
       const who = await api.me();
+      meRef.current = who;
       setMe(who);
       setStatus('in');
       await syncWithServer(false);
+      await reloadRace();
     } catch (err) {
       if (err instanceof ApiError && err.status === 401) signedOut();
       else if (err instanceof ApiError && err.status === 404) setStatus('unavailable');
       else setStatus((s) => (s === 'in' ? s : 'offline'));
     }
-  }, [signedOut, syncWithServer]);
+  }, [signedOut, syncWithServer, reloadRace]);
+
+  // Keuzes en acties in een gedeelde race gaan via de server.
+  useEffect(() => {
+    if (!accountsEnabled) return;
+    const refetch = async (race: Race) => buildRace(await api.race(race.serverId!), meRef.current?.id ?? null);
+    setRemote({
+      decide: async (race, scheduledId, optionId) => {
+        await api.move(race.serverId!, 'decision', optionId, scheduledId);
+        return refetch(race);
+      },
+      act: async (race, actionId) => {
+        await api.move(race.serverId!, 'action', actionId);
+        return refetch(race);
+      },
+    });
+    return () => setRemote(null);
+  }, [setRemote]);
+
+  // Zolang de app open is: af en toe de gedeelde race verversen.
+  useEffect(() => {
+    if (status !== 'in') return;
+    const id = window.setInterval(() => {
+      if (document.visibilityState === 'visible') void reloadRace().catch(() => undefined);
+    }, RACE_REFRESH_MS);
+    return () => window.clearInterval(id);
+  }, [status, reloadRace]);
 
   // Bij het opstarten: ben ik ingelogd? Dan meteen vergelijken met de server.
   useEffect(() => {
@@ -193,16 +249,22 @@ export function AccountProvider({ children }: { children: ReactNode }) {
       lastSaved,
       register: async (nickname) => {
         const who = await api.register(nickname);
+        meRef.current = who;
         setMe(who);
         setStatus('in');
         await upload(latestSave.current);
+        await reloadRace();
       },
       login: async () => {
         const who = await api.login();
+        meRef.current = who;
         setMe(who);
         setStatus('in');
         await syncWithServer(true);
+        await reloadRace();
       },
+      refresh: check,
+      reloadRace,
       logout: async () => {
         await api.logout().catch(() => undefined);
         signedOut();
@@ -212,7 +274,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
         signedOut();
       },
     }),
-    [status, me, lastSaved, upload, syncWithServer, signedOut],
+    [status, me, lastSaved, upload, syncWithServer, signedOut, check, reloadRace],
   );
 
   return <AccountContext.Provider value={value}>{children}</AccountContext.Provider>;

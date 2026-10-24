@@ -29,7 +29,7 @@ export function Welcome() {
         <div className="welcome__intro">
           <h1 className="kop kop--36">{t.title}</h1>
           <p className="welcome__text">{t.intro}</p>
-          <p className="welcome__text welcome__text--zacht">{t.relax}</p>
+          <p className="welcome__text welcome__text--zacht">{accountsEnabled ? nl.account.welcomeNeed : t.relax}</p>
         </div>
         {!installed && (
           <div className="tip">
@@ -44,13 +44,19 @@ export function Welcome() {
       </main>
 
       <div className="screen__footer">
-        <PrimaryButton to="/kies" arrow>
-          {t.start}
-        </PrimaryButton>
-        {accountsEnabled && (
-          <Link to="/account" className="welcome__login">
-            {nl.account.welcomeLogin}
-          </Link>
+        {accountsEnabled ? (
+          <>
+            <PrimaryButton to="/account" arrow>
+              {nl.account.welcomeCreate}
+            </PrimaryButton>
+            <Link to="/account" className="welcome__login">
+              {nl.account.welcomeLogin}
+            </Link>
+          </>
+        ) : (
+          <PrimaryButton to="/kies" arrow>
+            {t.start}
+          </PrimaryButton>
         )}
       </div>
     </div>

@@ -7,6 +7,7 @@ import { PrimaryButton } from '../components/PrimaryButton';
 import { finalStandings, getRaceRacer } from '../game/engine';
 import { finishStats } from '../game/stats';
 import { useGame } from '../state/GameProvider';
+import { accountsEnabled } from '../account/AccountProvider';
 import { useRaceView } from '../state/useRaceView';
 import { HOUR } from '../utils/dates';
 import { formatDaysHours, formatKm } from '../utils/format';
@@ -128,7 +129,7 @@ export function Finish() {
       </main>
 
       <div className="screen__footer">
-        <PrimaryButton onClick={() => navigate('/kies')} arrow>
+        <PrimaryButton onClick={() => navigate(accountsEnabled ? '/races' : '/kies')} arrow>
           {t.newRace}
         </PrimaryButton>
       </div>

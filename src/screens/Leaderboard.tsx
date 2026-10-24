@@ -73,7 +73,10 @@ export function Leaderboard() {
                     <div className="board__place">{s.position}</div>
                   )}
                   <img className="board__racer" src={img(racer.image)} alt="" />
-                  <div className="board__name">{racer.name}</div>
+                  <div className="board__name">
+                    {racer.name}
+                    {race.owners?.[s.racerId] && <span className="board__owner">{race.owners[s.racerId]}</span>}
+                  </div>
                   <div className={`board__km${isMe ? ' board__km--me' : ''}`}>
                     {s.finishTime !== null ? formatDaysHours((s.finishTime - race.startTime) / 3_600_000) : formatKm(s.km)}
                   </div>

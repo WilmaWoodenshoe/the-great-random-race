@@ -41,15 +41,26 @@ export const RACERS_PER_RACE = 6;
 
 /** De racer van de speler plus willekeurige tegenstanders, vast per seed. */
 export function pickLineup(playerId: string, seed: number, pool: Racer[] = allRacers): Racer[] {
-  const player = pool.find((r) => r.id === playerId);
-  if (!player) throw new Error(`Onbekende racer: ${playerId}`);
-  const others = pool.filter((r) => r.id !== playerId);
+  return fillLineup([playerId], seed, pool);
+}
+
+/**
+ * De racers van de spelers, aangevuld met willekeurige computerracers tot
+ * er 6 zijn. Vast per seed, zodat elke telefoon dezelfde race krijgt.
+ */
+export function fillLineup(playerIds: string[], seed: number, pool: Racer[] = allRacers): Racer[] {
+  const players = playerIds.map((id) => {
+    const r = pool.find((x) => x.id === id);
+    if (!r) throw new Error(`Onbekende racer: ${id}`);
+    return r;
+  });
+  const others = pool.filter((r) => !playerIds.includes(r.id));
   const rng = createRng(deriveSeed(seed, 'tegenstanders'));
   for (let i = others.length - 1; i > 0; i--) {
     const j = rng.int(0, i);
     [others[i], others[j]] = [others[j], others[i]];
   }
-  return [player, ...others.slice(0, RACERS_PER_RACE - 1)];
+  return [...players, ...others.slice(0, Math.max(0, RACERS_PER_RACE - players.length))];
 }
 
 /** De racer die als eerste geselecteerd staat: die van de vorige race, anders de standaard. */

@@ -66,7 +66,11 @@ export function Racer() {
 
   return (
     <div className="screen screen--nav">
-      <BackHeader title={r.name} subtitle={r.title} fallback={isPlayer ? '/home' : '/tussenstand'} />
+      <BackHeader
+        title={r.name}
+        subtitle={race.owners?.[r.id] ? `${r.title} · ${nl.racer.playedBy(race.owners[r.id])}` : r.title}
+        fallback={isPlayer ? '/home' : '/tussenstand'}
+      />
 
       <div className="racer__hero">
         <img className="racer__bg" src={img('backgrounds/bg-landschap.webp')} alt="" />
