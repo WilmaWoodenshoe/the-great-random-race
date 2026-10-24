@@ -1,5 +1,8 @@
-# Bouwt de app bij elke wijziging op main en zet hem op GitHub Pages.
-# Daar staat de testversie: https://wilmawoodenshoe.github.io/the-great-random-race/
+# Bouwt de app bij elke wijziging op main:
+# - de testversie (met tijdmachine) op GitHub Pages:
+#   https://wilmawoodenshoe.github.io/the-great-random-race/
+# - de echte versie voor thegreatrandomrace.nl in de tak 'productie'.
+#   De server haalt die tak elke 5 minuten op (zie deploy/UITLEG.md).
 name: Testversie
 
 on:
@@ -35,6 +38,7 @@ jobs:
         run: npm run build
         env:
           BASE_PATH: /${{ github.event.repository.name }}/
+          VITE_TESTVERSIE: '1'
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main'
         with:
@@ -50,3 +54,33 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  productie:
+    if: github.ref == 'refs/heads/main'
+    needs: bouwen
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: productie
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Echte versie bouwen
+        run: npm run build
+        env:
+          BASE_PATH: /
+      - name: In de tak 'productie' zetten
+        run: |
+          cd dist
+          git init -q -b productie
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Echte versie van ${GITHUB_SHA::7}"
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" productie

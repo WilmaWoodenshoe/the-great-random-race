@@ -6,6 +6,7 @@ import { careerStats } from '../game/session';
 import { isFinished } from '../game/engine';
 import { useGame } from '../state/GameProvider';
 import { DAY, HOUR } from '../utils/dates';
+import { isTestVersion } from '../utils/env';
 
 interface Item {
   to: string;
@@ -82,40 +83,44 @@ export function More() {
           )}
         </div>
 
-        <h2 className="more__h2">{t.previewSection}</h2>
-        <MenuList
-          items={[
-            { to: '/welkom', title: t.welcome, hint: t.welcomeHint },
-            { to: '/event', title: t.event, hint: t.eventHint },
-          ]}
-        />
+        {isTestVersion && (
+          <>
+            <h2 className="more__h2">{t.previewSection}</h2>
+            <MenuList
+              items={[
+                { to: '/welkom', title: t.welcome, hint: t.welcomeHint },
+                { to: '/event', title: t.event, hint: t.eventHint },
+              ]}
+            />
 
-        <h2 className="more__h2">{t.testTools}</h2>
-        <div className="card card--wit info">
-          <p className="info__hint">{t.testToolsHint}</p>
-          <p className="info__clock" role="status">
-            {clockText(save.clockOffset)}
-          </p>
-          <div className="info__buttons">
-            <button type="button" className="chip-btn" onClick={() => setClockOffset(save.clockOffset + HOUR)}>
-              {t.plusHour}
-            </button>
-            <button type="button" className="chip-btn" onClick={() => setClockOffset(save.clockOffset + DAY)}>
-              {t.plusDay}
-            </button>
-            <button
-              type="button"
-              className="chip-btn"
-              disabled={save.clockOffset === 0}
-              onClick={() => setClockOffset(0)}
-            >
-              {t.backToNow}
-            </button>
-          </div>
-          <button type="button" className="link-btn" onClick={reset}>
-            {t.reset}
-          </button>
-        </div>
+            <h2 className="more__h2">{t.testTools}</h2>
+            <div className="card card--wit info">
+              <p className="info__hint">{t.testToolsHint}</p>
+              <p className="info__clock" role="status">
+                {clockText(save.clockOffset)}
+              </p>
+              <div className="info__buttons">
+                <button type="button" className="chip-btn" onClick={() => setClockOffset(save.clockOffset + HOUR)}>
+                  {t.plusHour}
+                </button>
+                <button type="button" className="chip-btn" onClick={() => setClockOffset(save.clockOffset + DAY)}>
+                  {t.plusDay}
+                </button>
+                <button
+                  type="button"
+                  className="chip-btn"
+                  disabled={save.clockOffset === 0}
+                  onClick={() => setClockOffset(0)}
+                >
+                  {t.backToNow}
+                </button>
+              </div>
+              <button type="button" className="link-btn" onClick={reset}>
+                {t.reset}
+              </button>
+            </div>
+          </>
+        )}
 
         <p className="more__privacy">{t.privacy}</p>
       </main>

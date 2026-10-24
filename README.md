@@ -28,7 +28,7 @@ Website (later): thegreatrandomrace.nl
 
 Alle schermen werken met de echte race (fase 1–9). Nog te doen: de app afmaken als installeerbare app en echt online zetten op thegreatrandomrace.nl (fase 11).
 
-**Testen zonder een week te wachten:** onder *Meer → Testversie: tijdmachine* kun je de klok van de app een uur of een dag vooruit zetten, en alles wissen. Dit verdwijnt in de echte versie.
+**Testen zonder een week te wachten:** onder *Meer → Testversie: tijdmachine* kun je de klok van de app een uur of een dag vooruit zetten, en alles wissen. Dit staat alleen in de testversie (GitHub Pages), niet op thegreatrandomrace.nl.
 
 ## Hoe de race werkt (kort)
 
@@ -185,3 +185,4 @@ Techniek: React + Vite + TypeScript, React Router, vite-plugin-pwa, IndexedDB (i
 | `src/theme/` | Huisstijl: kleuren, letters, animaties |
 | `src/utils/` | Hulpfuncties |
 | `tests/` | Tests |
+| `deploy/` | Online zetten op de server (nginx) — zie `deploy/UITLEG.md` |

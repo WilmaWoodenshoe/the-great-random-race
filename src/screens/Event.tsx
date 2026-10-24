@@ -1,8 +1,9 @@
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { nl } from '../content/nl';
 import { getChoice, getCourse } from '../content';
 import { useGame } from '../state/GameProvider';
 import { useRaceView } from '../state/useRaceView';
+import { isTestVersion } from '../utils/env';
 import type { ChoiceColor } from '../models/Choice';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { AppleIcon, CloseIcon, SitIcon, SkipIcon } from '../components/Icons';
@@ -27,6 +28,8 @@ export function Event() {
   const choice = open?.choice ?? getChoice('aardbei');
   const course = view?.race.course ?? getCourse('grote-bosrace');
   const close = () => navigate('/home');
+  // Zonder open keuze alleen in de testversie een voorbeeld tonen.
+  if (!open && !isTestVersion) return <Navigate to="/home" replace />;
   const pick = async (optionId: string) => {
     if (open) await decide(open.id, optionId);
     close();
