@@ -12,6 +12,7 @@ const groteBosrace: Course = {
     height: 1536,
     finish: { x: 720, y: 55 },
   },
+  background: 'backgrounds/bg-landschap.webp',
   segments: [
     {
       id: 'startweide',

@@ -16,6 +16,7 @@ const strandrace: Course = {
     // Paasei: soms scheurt er een motorcrosser over het duin (#84, The King of Sand).
     easterEgg: { image: 'courses/strandrace-kaart-84.webp', chance: 0.25, journalKey: 'kingOfSand' },
   },
+  background: 'backgrounds/bg-strand.webp',
   segments: [
     {
       id: 'prikgraspad',

@@ -48,3 +48,8 @@ export function hasEasterEgg(race: { seed: number; course: Course }): boolean {
 export function mapImageOf(race: { seed: number; course: Course }): string {
   return hasEasterEgg(race) ? race.course.map.easterEgg!.image : race.course.map.image;
 }
+
+/** De achtergrond bij je racer: die van de route, anders het landschap. */
+export function backgroundOf(course: Course | undefined | null): string {
+  return course?.background ?? 'backgrounds/bg-landschap.webp';
+}

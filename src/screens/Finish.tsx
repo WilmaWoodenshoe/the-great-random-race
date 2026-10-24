@@ -12,6 +12,7 @@ import { useRaceView } from '../state/useRaceView';
 import { HOUR } from '../utils/dates';
 import { formatDaysHours, formatKm } from '../utils/format';
 import { img } from '../utils/images';
+import { backgroundOf } from '../game/course';
 
 /** Uitslag met confetti (Finish.html): dramatisch, met statistieken die niemand vroeg. */
 export function Finish() {
@@ -81,7 +82,7 @@ export function Finish() {
 
       <main className="screen__main finish__main">
         <div className="finish__hero">
-          <img className="finish__bg" src={img('backgrounds/bg-landschap.webp')} alt="" />
+          <img className="finish__bg" src={img(backgroundOf(race.course))} alt="" />
           <LivingRacer
             image={won && player.id === 'gerard' ? 'racers/gerard-kroon.webp' : player.image}
             alt={won ? t.winnerAlt(player.name) : player.name}

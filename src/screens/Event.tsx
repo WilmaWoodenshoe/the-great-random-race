@@ -51,7 +51,7 @@ export function Event() {
         <h1 id="event-kop" className="kop kop--32 event__heading">
           {say(choice.heading)}
         </h1>
-        <img className="event__img" src={img(choice.image)} alt={say(choice.imageAlt)} />
+        <img className="event__img" src={img(choice.imageByCourse?.[course.id] ?? choice.image)} alt={say(choice.imageAlt)} />
         <h2 className="kop kop--26">{say(choice.title)}</h2>
         <p className="event__text">{say(choice.text)}</p>
         <div className="event__options">

@@ -4,16 +4,15 @@ import { nl } from '../content/nl';
 import type { ActionId } from '../models/Race';
 import { BackHeader } from '../components/BackHeader';
 import { PrimaryButton } from '../components/PrimaryButton';
-import { LeafIcon, MegaphoneIcon, ZzzIcon } from '../components/Icons';
 import { useGame } from '../state/GameProvider';
 import { useRaceView } from '../state/useRaceView';
 import { img } from '../utils/images';
 
 const ACTIONS: { id: ActionId; bg: string; icon: ReactNode }[] = [
-  { id: 'voeren', bg: '#DCEFD9', icon: <LeafIcon /> },
-  { id: 'aanmoedigen', bg: '#FCEFC7', icon: <MegaphoneIcon /> },
+  { id: 'voeren', bg: '#DCEFD9', icon: <img src={img('ui/t-sla.png')} alt="" className="action__hat" /> },
+  { id: 'aanmoedigen', bg: '#FCEFC7', icon: <img src={img('ui/t-ster.png')} alt="" className="action__hat" /> },
   { id: 'hoed', bg: '#F3EAD8', icon: <img src={img('accessories/hoed.png')} alt="" className="action__hat" /> },
-  { id: 'niets', bg: '#D5E8F7', icon: <ZzzIcon /> },
+  { id: 'niets', bg: '#D5E8F7', icon: <img src={img('ui/t-zzz.png')} alt="" className="action__hat" /> },
 ];
 
 /** Actie van vandaag (Action.html): één keer per kalenderdag iets doen voor Gerard. */

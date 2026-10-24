@@ -7,7 +7,11 @@ const uitzicht: Choice = {
   text: '{naam} heeft een uitzicht gevonden. Het is erg mooi. Hoe lang mag {hij} kijken?',
   announce: '{naam} staat stil bij een prachtig uitzicht. {Hij} is er zichtbaar door geraakt.',
   image: 'backgrounds/bg-landschap.webp',
-  imageAlt: 'Een zonnig landschap met bomen, een kasteel en een vulkaan',
+  imageByCourse: {
+    kasteelrace: 'backgrounds/bg-kasteel.webp',
+    strandrace: 'backgrounds/bg-strand.webp',
+  },
+  imageAlt: 'Een prachtig uitzicht',
   options: [
     {
       id: 'genieten',

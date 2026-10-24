@@ -43,6 +43,8 @@ export interface Choice {
   announce: string;
   /** Afbeelding, relatief aan public/images/. */
   image: string;
+  /** Andere afbeelding per route (route-id → afbeelding), bijv. het uitzicht. */
+  imageByCourse?: Record<string, string>;
   imageAlt: string;
   options: ChoiceOption[];
 }

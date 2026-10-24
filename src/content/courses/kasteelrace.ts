@@ -14,6 +14,7 @@ const kasteelrace: Course = {
     height: 1536,
     finish: { x: 300, y: 40 },
   },
+  background: 'backgrounds/bg-kasteel.webp',
   segments: [
     {
       id: 'ophaalbrug',

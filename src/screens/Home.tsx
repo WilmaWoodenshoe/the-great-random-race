@@ -12,6 +12,7 @@ import { formatClock } from '../utils/dates';
 import { formatKm } from '../utils/format';
 import { img } from '../utils/images';
 import { newlyUnlocked } from '../game/collection';
+import { backgroundOf } from '../game/course';
 
 /** Klein plaatje bij "… is momenteel", passend bij wat de racer doet. */
 function statusIcon(activity: string): string {
@@ -53,7 +54,7 @@ export function Home() {
 
   return (
     <div className="screen screen--nav">
-      <img className="home__bg" src={img('backgrounds/bg-landschap.webp')} alt="" />
+      <img className="home__bg" src={img(backgroundOf(race.course))} alt="" />
       <div className="home__fade" />
 
       <header className="home__header">

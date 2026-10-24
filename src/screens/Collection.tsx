@@ -9,6 +9,7 @@ import { defaultRacerId } from '../game/session';
 import type { Accessory, AccessorySlot, Unlock } from '../models/Accessory';
 import { useGame } from '../state/GameProvider';
 import { img } from '../utils/images';
+import { backgroundOf } from '../game/course';
 import { fill, who } from '../utils/text';
 
 type Tab = 'alle' | AccessorySlot;
@@ -115,7 +116,7 @@ export function Collection() {
       </header>
       <main className="screen__main collection">
         <div className="collection__hero">
-          <img className="collection__bg" src={img('backgrounds/bg-landschap.webp')} alt="" />
+          <img className="collection__bg" src={img(backgroundOf(race?.course))} alt="" />
           <LivingRacer image={racer.image} alt={racer.name} wear={wearOn(racer, tryOn)} wobble className="collection__racer" />
         </div>
 

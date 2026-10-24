@@ -46,8 +46,8 @@ export function upgradeRace(race: Race): Race {
       const nowOption = now.options.find((x) => x.id === o.id);
       return nowOption ? { ...o, label: nowOption.label, journal: nowOption.journal } : o;
     });
-    const { heading, title, text, announce, image, imageAlt } = now;
-    return { ...sc, choice: { ...sc.choice, heading, title, text, announce, image, imageAlt, options } };
+    const { heading, title, text, announce, image, imageByCourse, imageAlt } = now;
+    return { ...sc, choice: { ...sc.choice, heading, title, text, announce, image, imageByCourse, imageAlt, options } };
   });
 
   return { ...race, course: upgradedCourse, racers, choices };

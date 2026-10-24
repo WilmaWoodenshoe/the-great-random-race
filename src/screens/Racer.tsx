@@ -15,6 +15,7 @@ import { useRaceView } from '../state/useRaceView';
 import { formatClock } from '../utils/dates';
 import { formatKm } from '../utils/format';
 import { img } from '../utils/images';
+import { backgroundOf } from '../game/course';
 import { fill, who } from '../utils/text';
 
 /**
@@ -73,7 +74,7 @@ export function Racer() {
       />
 
       <div className="racer__hero">
-        <img className="racer__bg" src={img('backgrounds/bg-landschap.webp')} alt="" />
+        <img className="racer__bg" src={img(backgroundOf(race.course))} alt="" />
         <LivingRacer
           image={r.image}
           alt={t.inLandscape(r.name)}

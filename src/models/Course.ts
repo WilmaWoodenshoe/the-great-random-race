@@ -44,5 +44,7 @@ export interface Course {
      */
     easterEgg?: { image: string; chance: number; journalKey: string };
   };
+  /** Achtergrond bij je racer (Home, profiel, finish), relatief aan public/images/. */
+  background?: string;
   segments: CourseSegment[];
 }
