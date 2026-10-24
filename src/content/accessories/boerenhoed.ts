@@ -7,6 +7,7 @@ const boerenhoed: Accessory = {
   kind: 'hoed',
   slot: 'hoofd',
   image: 'accessories/boerenhoed.png',
+  fit: { x: 50, y: 78, size: 1.15, aspect: 512 / 508 },
   tagline: 'Tegen de zon op de Hijgheuvel.',
   unlock: { type: 'finished', count: 1 },
 };

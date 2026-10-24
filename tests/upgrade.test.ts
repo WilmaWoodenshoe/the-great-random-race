@@ -11,7 +11,7 @@ import { START, makeRace } from './helpers';
 function oldRace() {
   const race = structuredClone(makeRace(7));
   for (const s of race.course.segments) delete (s as Partial<typeof s>).path;
-  for (const r of race.racers) delete r.hatSpot;
+  for (const r of race.racers) delete r.wear;
   race.racers.find((r) => r.id === 'gerard')!.title = 'The Unreasonably Slow';
   return race;
 }
@@ -23,7 +23,7 @@ describe('oude opgeslagen races', () => {
     expect(race.course.segments.every((s) => s.path.length >= 2)).toBe(true);
     expect(() => placeRacers(race.course, standingsAt(race, START + DAY))).not.toThrow();
     expect(race.racers.find((r) => r.id === 'gerard')!.title).toBe('The Determined');
-    expect(race.racers.find((r) => r.id === 'gerard')!.hatSpot).toBeDefined();
+    expect(race.racers.find((r) => r.id === 'gerard')!.wear).toBeDefined();
     expect(journalAt(race, START + 2 * DAY).length).toBeGreaterThan(0);
   });
 

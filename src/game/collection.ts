@@ -4,7 +4,7 @@
 
 import { accessories as allAccessories } from '../content';
 import type { Accessory, AccessorySlot, Unlock } from '../models/Accessory';
-import type { Racer } from '../models/Racer';
+import type { Racer, WearSpot } from '../models/Racer';
 import type { SaveData } from '../models/Save';
 import type { Worn } from '../components/Gerard';
 import { archiveIfFinished } from './session';
@@ -77,19 +77,30 @@ export function wear(save: SaveData, slot: AccessorySlot, id: string | null): Sa
 
 const SLOT_ORDER: AccessorySlot[] = ['nek', 'ogen', 'hoofd'];
 
-/**
- * Wat er op de afbeelding van deze racer komt, met de plekken uit het
- * racerbestand. Zonder plek (of zonder hatSpot) kan de racer het niet dragen.
- */
+/** Waar een accessoire op de afbeelding van deze racer komt. */
+export function placeOn(racer: Racer, acc: Accessory): WearSpot | undefined {
+  const wear = racer.wear;
+  if (!wear) return undefined;
+  const anchor = acc.slot === 'hoofd' ? wear.head : acc.slot === 'ogen' ? wear.eyes : wear.neck;
+  const width = anchor.w * acc.fit.size;
+  // Hoogte in procenten van de hoogte van de racerafbeelding.
+  const height = (width * wear.aspect) / acc.fit.aspect;
+  return {
+    left: anchor.x - (acc.fit.x / 100) * width,
+    top: anchor.y - (acc.fit.y / 100) * height,
+    width,
+    rotate: anchor.angle,
+    origin: `${acc.fit.x}% ${acc.fit.y}%`,
+  };
+}
+
+/** Wat er op de afbeelding van deze racer komt (nek, dan ogen, dan hoofd). */
 export function wearOn(racer: Racer, items: Accessory[]): { items: Worn[]; aspect: number } | undefined {
-  const aspect = racer.hatSpot?.aspect;
-  if (!aspect) return undefined;
-  const spotFor = (slot: AccessorySlot) =>
-    slot === 'hoofd' ? racer.hatSpot : slot === 'ogen' ? racer.eyeSpot : racer.neckSpot;
+  if (!racer.wear) return undefined;
   const placed = SLOT_ORDER.flatMap((slot) => {
     const acc = items.find((a) => a.slot === slot);
-    const spot = acc && spotFor(slot);
+    const spot = acc && placeOn(racer, acc);
     return acc && spot ? [{ image: acc.image, alt: acc.name, spot }] : [];
   });
-  return { items: placed, aspect };
+  return { items: placed, aspect: racer.wear.aspect };
 }

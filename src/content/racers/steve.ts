@@ -9,9 +9,14 @@ const steve: Racer = {
   title: 'Still Going',
   tagline: 'Still going.',
   image: 'racers/steen.webp',
-  hatSpot: { left: 36, top: -19, width: 28, rotate: -5, aspect: 512 / 433 },
-  eyeSpot: { left: 36, top: 54, width: 34 },
-  neckSpot: { left: 28, top: 68, width: 44 },
+  // Waar hoed, bril en sjaal zitten (Collectie): punt boven op het hoofd,
+  // midden tussen de ogen en de nek, in procenten van de afbeelding.
+  wear: {
+    aspect: 512 / 433,
+    head: { x: 48, y: 3, w: 38 },
+    eyes: { x: 56, y: 48, w: 36, angle: -6 },
+    neck: { x: 58, y: 73, w: 40 },
+  },
   facts: {
     favoriteFood: 'Onbekend',
     dislikes: 'Niets',

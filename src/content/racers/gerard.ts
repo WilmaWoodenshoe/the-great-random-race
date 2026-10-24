@@ -9,10 +9,15 @@ const gerard: Racer = {
   title: 'The Determined',
   tagline: 'Langzaam, maar met overtuiging.',
   image: 'racers/gerard.webp',
+  // Waar hoed, bril en sjaal zitten (Collectie): punt boven op het hoofd,
+  // midden tussen de ogen en de nek, in procenten van de afbeelding.
+  wear: {
+    aspect: 720 / 519,
+    head: { x: 45, y: 14, w: 30, angle: -10 },
+    eyes: { x: 84.5, y: 13, w: 27, angle: 8 },
+    neck: { x: 84, y: 66, w: 22 },
+  },
   playable: true,
-  hatSpot: { left: 27, top: -8, width: 26, rotate: -8, aspect: 720 / 519 }, // op het huisje
-  eyeSpot: { left: 74, top: 12, width: 24, rotate: 5 },
-  neckSpot: { left: 66, top: 45, width: 28 },
   facts: {
     favoriteFood: 'Sla',
     dislikes: 'Kiezelstenen',

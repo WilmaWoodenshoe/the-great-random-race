@@ -90,7 +90,7 @@ export default ducky;
 
 Een nieuwe racer verschijnt vanzelf bij **Kies je racer** en kan als tegenstander meedoen. Elke race heeft 6 racers: de racer van de speler plus 5 willekeurige tegenstanders. Controleer na het toevoegen met de balanstest (`npm test`) of de snelheid redelijk is.
 
-**Hoed:** een racer kan alleen een hoed dragen als in zijn bestand `hatSpot` staat: waar de hoed zit, in procenten van de afbeelding. Gerard draagt hem op zijn huisje: `hatSpot: { left: 27, top: -8, width: 26, rotate: -8, aspect: 720 / 519 }` (`rotate` = scheve stand in graden, `aspect` = breedte ÷ hoogte van zijn afbeelding in pixels).
+**Accessoires dragen:** een racer kan alleen accessoires dragen als in zijn bestand `wear` staat. Gerard: `wear: { aspect: 720 / 519, head: { x: 45, y: 14, w: 30, angle: -10 }, eyes: { x: 84.5, y: 13, w: 27, angle: 8 }, neck: { x: 84, y: 66, w: 22 } }` (`head` = punt boven op het hoofd, bij Gerard op het huisje; `eyes` = midden tussen de ogen; `neck` = de nek; `w` = breedte; `angle` = schuine stand in graden; `aspect` = breedte ÷ hoogte van de afbeelding).
 
 ### Accessoire — `src/content/accessories/<naam>.ts`
 
@@ -113,7 +113,7 @@ export default kroon;
 
 Manieren om te verdienen (`unlock`): `{ type: 'start' }` (meteen), `{ type: 'raceStarted' }` (eerste race begonnen), `{ type: 'finished', count: 1 }` (zoveel races uitgereden), `{ type: 'podium' }`, `{ type: 'win' }`, `{ type: 'races', count: 3 }` (zoveel races uitgespeeld), `{ type: 'daysOpened', count: 7 }` (app op zoveel dagen geopend), `{ type: 'longRace', days: 21 }` (race van zoveel dagen uitgespeeld).
 
-Accessoires zijn alleen voor de sier. Waar ze op een racer zitten, staat in het racerbestand: `hatSpot` (hoofd), `eyeSpot` (ogen) en `neckSpot` (nek), in procenten van de afbeelding.
+Accessoires zijn alleen voor de sier. In het racerbestand staat onder `wear` waar het hoofd, de ogen en de nek zitten (punt en breedte in procenten van de afbeelding). In het accessoirebestand staat onder `fit` welk punt van het plaatje daarop komt en hoe groot het is. Elk nieuw accessoire past zo vanzelf bij elke racer; controleer het in de Pasruimte (Inventaris).
 
 ### Route — `src/content/courses/<naam>.ts`
 
@@ -176,7 +176,7 @@ const aardbei: Choice = {
   title: 'Een gigantische aardbei',
   text: '{naam} heeft nog nooit zo’n grote aardbei gezien. Wat moet {hij} doen?',
   announce: '{naam} heeft een gigantische aardbei gevonden.', // journaalregel
-  image: 'ui/event-aardbei.png',
+  image: 'ui/event-aardbei.webp',
   imageAlt: 'Een gigantische aardbei',
   options: [
     {

@@ -9,9 +9,14 @@ const kevin: Racer = {
   title: 'Professional Napper',
   tagline: 'Slaapt vooral.',
   image: 'racers/rups.webp',
-  hatSpot: { left: 67, top: 0, width: 26, rotate: 8, aspect: 512 / 479 },
-  eyeSpot: { left: 70, top: 39, width: 29, rotate: 5 },
-  neckSpot: { left: 62, top: 52, width: 28 },
+  // Waar hoed, bril en sjaal zitten (Collectie): punt boven op het hoofd,
+  // midden tussen de ogen en de nek, in procenten van de afbeelding.
+  wear: {
+    aspect: 512 / 479,
+    head: { x: 77, y: 27, w: 42, angle: 5 },
+    eyes: { x: 86, y: 40, w: 32, angle: -3 },
+    neck: { x: 70, y: 66, w: 30 },
+  },
   facts: {
     favoriteFood: 'Bladeren',
     dislikes: 'Wekkers',

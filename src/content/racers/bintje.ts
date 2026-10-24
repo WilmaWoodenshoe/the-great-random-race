@@ -10,9 +10,14 @@ const bintje: Racer = {
   title: 'The Couch Potato',
   tagline: 'Niemand weet hoe hij beweegt.',
   image: 'racers/aardappel.webp',
-  hatSpot: { left: 36, top: -22, width: 38, rotate: 8, aspect: 441 / 512 },
-  eyeSpot: { left: 57, top: 27, width: 33 },
-  neckSpot: { left: 22, top: 44, width: 60 },
+  // Waar hoed, bril en sjaal zitten (Collectie): punt boven op het hoofd,
+  // midden tussen de ogen en de nek, in procenten van de afbeelding.
+  wear: {
+    aspect: 441 / 512,
+    head: { x: 54, y: 3, w: 50, angle: 6 },
+    eyes: { x: 69, y: 35, w: 28, angle: -6 },
+    neck: { x: 60, y: 52, w: 58, angle: -4 },
+  },
   facts: {
     favoriteFood: 'Liever niet over praten',
     dislikes: 'Frituurpannen',

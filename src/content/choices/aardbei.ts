@@ -7,7 +7,7 @@ const aardbei: Choice = {
   title: 'Een gigantische aardbei',
   text: '{naam} heeft nog nooit zo’n grote aardbei gezien. Wat moet {hij} doen?',
   announce: '{naam} heeft een gigantische aardbei gevonden. {Hij} kijkt ernaar. De aardbei kijkt niet terug.',
-  image: 'ui/event-aardbei.png',
+  image: 'ui/event-aardbei.webp',
   imageAlt: 'Een gigantische aardbei',
   options: [
     {

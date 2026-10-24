@@ -11,9 +11,14 @@ const philippe: Racer = {
   title: 'The Clean Sweep',
   tagline: 'Moet steeds terug naar het stopcontact.',
   image: 'racers/stofzuiger.webp',
-  hatSpot: { left: 22, top: 14, width: 27, rotate: -6, aspect: 498 / 512 },
-  eyeSpot: { left: 8, top: 50, width: 28 },
-  neckSpot: { left: 36, top: 36, width: 30 },
+  // Waar hoed, bril en sjaal zitten (Collectie): punt boven op het hoofd,
+  // midden tussen de ogen en de nek, in procenten van de afbeelding.
+  wear: {
+    aspect: 498 / 512,
+    head: { x: 42, y: 34, w: 28, angle: -6 },
+    eyes: { x: 28, y: 56, w: 26 },
+    neck: { x: 55, y: 62, w: 22 },
+  },
   facts: {
     favoriteFood: 'Kruimels',
     dislikes: 'Verlengsnoeren die te kort zijn',

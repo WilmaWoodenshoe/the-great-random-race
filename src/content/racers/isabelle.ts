@@ -11,9 +11,14 @@ const isabelle: Racer = {
   title: 'The Huggable',
   tagline: 'Wordt overal geknuffeld. Dat kost tijd.',
   image: 'racers/knuffel.webp',
-  hatSpot: { left: 38, top: -15, width: 34, aspect: 488 / 512 },
-  eyeSpot: { left: 47, top: 32, width: 32 },
-  neckSpot: { left: 33, top: 42, width: 48 },
+  // Waar hoed, bril en sjaal zitten (Collectie): punt boven op het hoofd,
+  // midden tussen de ogen en de nek, in procenten van de afbeelding.
+  wear: {
+    aspect: 488 / 512,
+    head: { x: 55, y: 9, w: 58 },
+    eyes: { x: 69, y: 36, w: 36, angle: -3 },
+    neck: { x: 62, y: 63, w: 44 },
+  },
   facts: {
     favoriteFood: 'Thee met koekjes',
     dislikes: 'De wasmachine',

@@ -89,7 +89,8 @@ describe('Collectie: dragen', () => {
     for (const a of accessories) {
       expect(a.tagline, a.id).toBeTruthy();
       expect(a.unlock, a.id).toBeTruthy();
-      expect(getRacer('gerard').hatSpot).toBeDefined();
+      expect(a.fit.size, a.id).toBeGreaterThan(0);
+      expect(getRacer('gerard').wear).toBeDefined();
     }
   });
 });

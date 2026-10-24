@@ -10,9 +10,14 @@ const roger: Racer = {
   title: 'The Hard Worker',
   tagline: 'Draagt onderweg dingen die niet van hem zijn.',
   image: 'racers/mier.webp',
-  hatSpot: { left: 58, top: 10, width: 24, rotate: 10, aspect: 510 / 512 },
-  eyeSpot: { left: 61, top: 40, width: 29, rotate: 8 },
-  neckSpot: { left: 45, top: 50, width: 22 },
+  // Waar hoed, bril en sjaal zitten (Collectie): punt boven op het hoofd,
+  // midden tussen de ogen en de nek, in procenten van de afbeelding.
+  wear: {
+    aspect: 510 / 512,
+    head: { x: 70, y: 30, w: 42, angle: 10 },
+    eyes: { x: 81, y: 45, w: 32, angle: -3 },
+    neck: { x: 52, y: 60, w: 18, angle: 30 },
+  },
   facts: {
     favoriteFood: 'Een kruimel, twintig keer zo groot als hij',
     dislikes: 'Pauzes',

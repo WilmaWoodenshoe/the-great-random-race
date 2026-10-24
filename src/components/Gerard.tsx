@@ -14,7 +14,7 @@ interface Props {
   mood?: Mood;
   /**
    * Wat de racer draagt (hoed, bril, sjaal), met de plek op de afbeelding
-   * (zie Racer.hatSpot) en de verhouding breedte/hoogte van de afbeelding.
+   * (zie Racer.wear) en de verhouding breedte/hoogte van de afbeelding.
    */
   wear?: { items: Worn[]; aspect: number };
 }
@@ -59,6 +59,7 @@ export function LivingRacer({ image, alt, className = '', wobble = false, mood =
             top: `${w.spot.top}%`,
             width: `${w.spot.width}%`,
             transform: w.spot.rotate ? `rotate(${w.spot.rotate}deg)` : undefined,
+            transformOrigin: w.spot.origin,
           }}
         />
       ))}

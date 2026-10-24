@@ -27,6 +27,13 @@ export interface Accessory {
   slot: AccessorySlot;
   /** Afbeelding, relatief aan public/images/. */
   image: string;
+  /**
+   * Hoe het accessoire op een racer past: het punt in de eigen afbeelding
+   * (procenten) dat op de plek van de racer komt (bijv. midden onder de
+   * hoed, of de brug van de bril), hoe breed het is ten opzichte van die
+   * plek (1 = even breed als het hoofd) en breedte ÷ hoogte van de afbeelding.
+   */
+  fit: { x: number; y: number; size: number; aspect: number };
   /** Grappig zinnetje in de Collectie. */
   tagline: string;
   unlock: Unlock;

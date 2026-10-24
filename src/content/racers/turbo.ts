@@ -9,9 +9,14 @@ const turbo: Racer = {
   title: 'The Relentless',
   tagline: 'Laat zich door niets afleiden.',
   image: 'racers/schildpad.webp',
-  hatSpot: { left: 63, top: -15, width: 24, rotate: 8, aspect: 512 / 363 },
-  eyeSpot: { left: 67, top: 14, width: 29, rotate: 6 },
-  neckSpot: { left: 60, top: 38, width: 25 },
+  // Waar hoed, bril en sjaal zitten (Collectie): punt boven op het hoofd,
+  // midden tussen de ogen en de nek, in procenten van de afbeelding.
+  wear: {
+    aspect: 512 / 363,
+    head: { x: 81, y: 5, w: 34, angle: 10 },
+    eyes: { x: 82, y: 17, w: 26 },
+    neck: { x: 73, y: 50, w: 22, angle: 20 },
+  },
   facts: {
     favoriteFood: 'Paardenbloemen',
     dislikes: 'Haast',

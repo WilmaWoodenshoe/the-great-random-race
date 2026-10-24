@@ -11,9 +11,14 @@ const charles: Racer = {
   title: 'The Retired Champion',
   tagline: 'Was ooit kampioen. Nu vooral moe.',
   image: 'racers/konijn.webp',
-  hatSpot: { left: 46, top: -12, width: 28, rotate: 5, aspect: 512 / 469 },
-  eyeSpot: { left: 51, top: 22, width: 29 },
-  neckSpot: { left: 35, top: 38, width: 40 },
+  // Waar hoed, bril en sjaal zitten (Collectie): punt boven op het hoofd,
+  // midden tussen de ogen en de nek, in procenten van de afbeelding.
+  wear: {
+    aspect: 512 / 469,
+    head: { x: 69, y: 13, w: 38, angle: 5 },
+    eyes: { x: 71, y: 28, w: 23, angle: -3 },
+    neck: { x: 66, y: 55, w: 34 },
+  },
   facts: {
     favoriteFood: 'Wortels, zoals vroeger',
     dislikes: 'Jonge honden',

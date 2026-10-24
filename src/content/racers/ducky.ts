@@ -9,9 +9,14 @@ const ducky: Racer = {
   title: 'Chaotic Excellence',
   tagline: 'Snel, maar weet zelden waarheen.',
   image: 'racers/eend.webp',
-  hatSpot: { left: 53, top: -19, width: 30, rotate: 8, aspect: 512 / 464 },
-  eyeSpot: { left: 68, top: 8, width: 30, rotate: 8 },
-  neckSpot: { left: 48, top: 28, width: 30 },
+  // Waar hoed, bril en sjaal zitten (Collectie): punt boven op het hoofd,
+  // midden tussen de ogen en de nek, in procenten van de afbeelding.
+  wear: {
+    aspect: 512 / 464,
+    head: { x: 69, y: 4, w: 44, angle: 8 },
+    eyes: { x: 84, y: 18, w: 32 },
+    neck: { x: 62, y: 42, w: 30, angle: 10 },
+  },
   facts: {
     favoriteFood: 'Broodkruimels',
     dislikes: 'Rechte lijnen',

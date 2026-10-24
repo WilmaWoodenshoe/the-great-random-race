@@ -129,7 +129,7 @@ export function Inventory() {
             <div className="inv__chips">
               <span>{t.speed(comma(r.speed))}</span>
               <span>{r.pronoun ?? 'hij'}</span>
-              {r.hatSpot && <span>{t.hat}</span>}
+              {r.wear && <span>{t.hat}</span>}
               {t.special[r.species] && <span>{t.special[r.species]}</span>}
             </div>
             {(Object.keys(TRAIT_COLORS) as (keyof typeof TRAIT_COLORS)[]).map((k) => (

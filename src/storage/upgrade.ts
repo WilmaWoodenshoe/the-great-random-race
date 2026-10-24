@@ -34,7 +34,7 @@ export function upgradeRace(race: Race): Race {
       pronoun: now.pronoun,
       image: now.image,
       facts: now.facts,
-      hatSpot: now.hatSpot,
+      wear: now.wear,
     };
   });
 

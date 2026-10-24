@@ -6,12 +6,22 @@ export interface Traits {
   lazy: number;
 }
 
-/** Plek van een accessoire op de afbeelding, in procenten (zie hatSpot). */
+/** Een plek op de racer (zie Racer.wear): punt en breedte in procenten, schuine stand in graden. */
+export interface WearAnchor {
+  x: number;
+  y: number;
+  w: number;
+  angle?: number;
+}
+
+/** Waar een accessoire op de afbeelding komt (uitgerekend), in procenten. */
 export interface WearSpot {
   left: number;
   top: number;
   width: number;
   rotate?: number;
+  /** Draaipunt, bijv. '50% 85%'. */
+  origin?: string;
 }
 
 /** Een racer zoals hij in src/content/racers/ staat. */
@@ -35,16 +45,19 @@ export interface Racer {
   /** De racer die als eerste geselecteerd staat bij 'Kies je racer'. */
   playable?: boolean;
   /**
-   * Waar een hoed past, in procenten van de afbeelding (links, boven,
-   * breedte; boven mag negatief zijn), een eventuele scheve stand in graden
-   * (negatief = naar links) en de verhouding breedte/hoogte van de
-   * afbeelding. Zonder dit kan deze racer geen hoed dragen.
+   * Waar accessoires zitten (Collectie), in procenten van de afbeelding:
+   * het punt boven op het hoofd (bij Gerard: op het huisje), het midden
+   * tussen de ogen en de nek, met de breedte (van het hoofd, van de ogen
+   * van buitenkant tot buitenkant, van de nek) en een eventuele schuine
+   * stand in graden. `aspect` is breedte ÷ hoogte van de afbeelding.
+   * Zonder dit kan deze racer niets dragen.
    */
-  hatSpot?: WearSpot & { aspect: number };
-  /** Waar een bril zit (Collectie), zoals bij hatSpot. */
-  eyeSpot?: WearSpot;
-  /** Waar een sjaal zit (Collectie), zoals bij hatSpot. */
-  neckSpot?: WearSpot;
+  wear?: {
+    aspect: number;
+    head: WearAnchor;
+    eyes: WearAnchor;
+    neck: WearAnchor;
+  };
   /** Weetjes voor het racerprofiel (optioneel). */
   facts?: {
     favoriteFood?: string;
