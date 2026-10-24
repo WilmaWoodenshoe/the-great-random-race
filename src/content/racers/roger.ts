@@ -10,6 +10,7 @@ const roger: Racer = {
   title: 'The Hard Worker',
   tagline: 'Draagt onderweg dingen die niet van hem zijn.',
   image: 'racers/mier.webp',
+  hatSpot: { left: 58, top: 10, width: 24, rotate: 10, aspect: 510 / 512 },
   facts: {
     favoriteFood: 'Een kruimel, twintig keer zo groot als hij',
     dislikes: 'Pauzes',

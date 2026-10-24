@@ -9,6 +9,7 @@ const ducky: Racer = {
   title: 'Chaotic Excellence',
   tagline: 'Snel, maar weet zelden waarheen.',
   image: 'racers/eend.webp',
+  hatSpot: { left: 53, top: -19, width: 30, rotate: 8, aspect: 512 / 464 },
   facts: {
     favoriteFood: 'Broodkruimels',
     dislikes: 'Rechte lijnen',

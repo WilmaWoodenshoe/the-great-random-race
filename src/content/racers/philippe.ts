@@ -11,6 +11,7 @@ const philippe: Racer = {
   title: 'The Clean Sweep',
   tagline: 'Moet steeds terug naar het stopcontact.',
   image: 'racers/stofzuiger.webp',
+  hatSpot: { left: 22, top: 14, width: 27, rotate: -6, aspect: 498 / 512 },
   facts: {
     favoriteFood: 'Kruimels',
     dislikes: 'Verlengsnoeren die te kort zijn',

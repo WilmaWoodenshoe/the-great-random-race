@@ -11,6 +11,7 @@ const charles: Racer = {
   title: 'The Retired Champion',
   tagline: 'Was ooit kampioen. Nu vooral moe.',
   image: 'racers/konijn.webp',
+  hatSpot: { left: 46, top: -12, width: 28, rotate: 5, aspect: 512 / 469 },
   facts: {
     favoriteFood: 'Wortels, zoals vroeger',
     dislikes: 'Jonge honden',

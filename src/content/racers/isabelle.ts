@@ -11,6 +11,7 @@ const isabelle: Racer = {
   title: 'The Huggable',
   tagline: 'Wordt overal geknuffeld. Dat kost tijd.',
   image: 'racers/knuffel.webp',
+  hatSpot: { left: 38, top: -15, width: 34, rotate: 0, aspect: 488 / 512 },
   facts: {
     favoriteFood: 'Thee met koekjes',
     dislikes: 'De wasmachine',

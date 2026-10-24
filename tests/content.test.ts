@@ -23,6 +23,8 @@ describe('racers', () => {
       }
       expect(imageExists(r.image), r.image).toBe(true);
       expect(r.tagline, r.id).toBeTruthy();
+      // Elke racer kan een hoed krijgen (dagelijkse actie).
+      expect(r.hatSpot, r.id).toBeDefined();
     }
   });
 

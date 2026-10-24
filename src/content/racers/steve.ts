@@ -9,6 +9,7 @@ const steve: Racer = {
   title: 'Still Going',
   tagline: 'Still going.',
   image: 'racers/steen.webp',
+  hatSpot: { left: 36, top: -19, width: 28, rotate: -5, aspect: 512 / 433 },
   facts: {
     favoriteFood: 'Onbekend',
     dislikes: 'Niets',

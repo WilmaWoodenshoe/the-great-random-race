@@ -9,6 +9,7 @@ const kevin: Racer = {
   title: 'Professional Napper',
   tagline: 'Slaapt vooral.',
   image: 'racers/rups.webp',
+  hatSpot: { left: 67, top: 0, width: 26, rotate: 8, aspect: 512 / 479 },
   facts: {
     favoriteFood: 'Bladeren',
     dislikes: 'Wekkers',

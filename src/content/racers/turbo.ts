@@ -9,6 +9,7 @@ const turbo: Racer = {
   title: 'The Relentless',
   tagline: 'Laat zich door niets afleiden.',
   image: 'racers/schildpad.webp',
+  hatSpot: { left: 63, top: -15, width: 24, rotate: 8, aspect: 512 / 363 },
   facts: {
     favoriteFood: 'Paardenbloemen',
     dislikes: 'Haast',
