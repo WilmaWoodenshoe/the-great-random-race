@@ -493,17 +493,19 @@
 }
 
 .race-map__sign {
+  /* Naambordje over het getekende bordje heen, goed leesbaar op de telefoon. */
   position: absolute;
-  width: 23%;
-  height: 5.4%;
   transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  max-width: 34%;
+  padding: 2px 7px;
+  border-radius: 7px;
+  background: #fbe9c4;
+  border: 1.5px solid #8a5a2b;
+  box-shadow: 0 2px 4px rgba(60, 35, 10, 0.3);
   text-align: center;
   font-family: var(--font-kop);
-  font-size: 13px;
-  font-size: clamp(10px, 3.55cqw, 16px);
+  font-size: 12px;
+  font-size: clamp(10px, 3.1cqw, 15px);
   font-weight: 800;
   line-height: 1.05;
   color: #5a3a1a;

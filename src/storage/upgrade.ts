@@ -8,19 +8,16 @@ import type { Race } from '../models/Race';
 
 export function upgradeRace(race: Race): Race {
   const course = allCourses.find((c) => c.id === race.course.id);
+  // De kaart (afbeelding, bordjes, pad) is uiterlijk: altijd die van nu.
+  // Afstanden en terrein blijven die van de race zelf.
   const upgradedCourse = course
     ? {
         ...race.course,
-        map: { ...course.map, ...race.course.map, finish: race.course.map?.finish ?? course.map.finish },
+        map: course.map,
         segments: race.course.segments.map((s) => {
           const now = course.segments.find((x) => x.id === s.id);
           if (!now) return s;
-          return {
-            ...s,
-            withArticle: s.withArticle ?? now.withArticle,
-            sign: s.sign ?? now.sign,
-            path: s.path?.length ? s.path : now.path,
-          };
+          return { ...s, withArticle: now.withArticle, sign: now.sign, path: now.path };
         }),
       }
     : race.course;
