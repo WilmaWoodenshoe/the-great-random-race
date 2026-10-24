@@ -1725,3 +1725,166 @@ a.chip-btn {
   font-weight: 800;
   color: var(--groen);
 }
+
+/* ---------- Inventaris ---------- */
+
+.inv {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 30px;
+}
+
+.inv__intro {
+  font-size: 13px;
+  color: var(--inkt-zacht);
+}
+
+.inv__card {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inv__head {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.inv__head--top {
+  align-items: flex-start;
+}
+
+.inv__h3 {
+  font-family: var(--font-kop);
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 1.1;
+}
+
+.inv__racer {
+  width: 72px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.inv__icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.inv__choice {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.inv__map {
+  width: 90px;
+  border-radius: 10px;
+}
+
+.inv__tagline {
+  font-size: 14px;
+}
+
+.inv__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.inv__chips span {
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--tabblad);
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+
+.inv__event {
+  border-left: 5px solid var(--grijs);
+}
+
+.inv__event--groen { border-left-color: var(--groen); }
+.inv__event--oranje { border-left-color: var(--oranje); }
+.inv__event--paars { border-left-color: #6b4fc4; }
+
+.inv__effect {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.inv__card details summary {
+  cursor: pointer;
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.inv__card details ul,
+.inv__segments {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  font-size: 13px;
+  color: var(--inkt-zacht);
+  display: grid;
+  gap: 3px;
+}
+
+.inv__opts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.inv__opts li {
+  display: flex;
+  gap: 8px;
+}
+
+.inv__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex: none;
+  margin-top: 4px;
+}
+
+.inv__quote {
+  font-style: italic;
+  font-size: 13px;
+  color: var(--inkt-zacht);
+}
+
+.inv__acc {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.inv__acc figure {
+  margin: 0;
+  padding: 8px;
+  text-align: center;
+}
+
+.inv__acc img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+.inv__acc figcaption {
+  display: flex;
+  flex-direction: column;
+  font-weight: 800;
+  font-size: 13px;
+}

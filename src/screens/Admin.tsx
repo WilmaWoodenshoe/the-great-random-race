@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { nl } from '../content/nl';
 import { BackHeader } from '../components/BackHeader';
 import { api, ApiError, type AdminUser } from '../account/api';
@@ -57,6 +57,9 @@ export function Admin() {
       <BackHeader title={t.title} fallback="/meer" />
       <main className="screen__main account">
         {message && <p className="account__error">{message}</p>}
+        <Link to="/inventaris" className="players__join">
+          {t.inventoryLink}
+        </Link>
 
         <h2 className="more__h2">{t.pending}</h2>
         {users && pending.length === 0 && <p className="account__note">{t.pendingEmpty}</p>}

@@ -21,6 +21,7 @@ import { NewRace } from './screens/NewRace';
 import { JoinRace } from './screens/JoinRace';
 import { Lobby } from './screens/Lobby';
 import { Admin } from './screens/Admin';
+import { Inventory } from './screens/Inventory';
 import { NotFound } from './screens/NotFound';
 
 /** Bij elk nieuw scherm bovenaan beginnen. */
@@ -65,6 +66,7 @@ export function App() {
               <Route path="/races/:id/meedoen" element={<JoinRace />} />
               <Route path="/wachtruimte" element={<Lobby />} />
               <Route path="/beheer" element={<Admin />} />
+              <Route path="/inventaris" element={<Inventory />} />
               <Route path="/spelers" element={<Navigate to="/races" replace />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

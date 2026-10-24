@@ -120,6 +120,7 @@ export function More() {
               items={[
                 { to: '/welkom', title: t.welcome, hint: t.welcomeHint },
                 { to: '/event', title: t.event, hint: t.eventHint },
+                { to: '/inventaris', title: nl.inventory.title, hint: nl.inventory.menuHint },
               ]}
             />
 
