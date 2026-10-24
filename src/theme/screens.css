@@ -1619,3 +1619,69 @@ a.chip-btn {
 .pick__tile--taken .pick__img {
   height: 62px;
 }
+
+/* ---------- Wisselen tussen je races ---------- */
+
+.switcher {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 2px 6px;
+  scrollbar-width: none;
+}
+
+.switcher__chip {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 2px solid var(--rand-warm);
+  border-radius: 14px;
+  padding: 6px 12px;
+  background: var(--kaart);
+  cursor: pointer;
+  max-width: 200px;
+}
+
+.switcher__chip--on {
+  border-color: var(--blauw);
+  background: #eaf3fc;
+}
+
+.switcher__name {
+  font-weight: 800;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.switcher__state {
+  font-size: 12px;
+  color: var(--grijs);
+}
+
+.share-btn {
+  align-self: center;
+}
+
+.new-race__without {
+  align-self: center;
+  margin-top: 0;
+  color: var(--navy);
+}
+
+.race-card__foot {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.race-card__foot > span:first-child {
+  flex: 1 1 100%;
+}
+
+.race-card__foot .chip-btn {
+  white-space: nowrap;
+}

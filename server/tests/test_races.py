@@ -130,13 +130,37 @@ def test_race_maken_en_anderen_doen_mee(app_):
     assert [(p["nickname"], p["racerId"]) for p in res.json()["participants"]] == [("Wilma", "isabelle"), ("Piet", "philippe")]
     detail = anon.get(f"/api/races/{race['id']}").json()
     assert detail["seed"] >= 0 and detail["snapshot"] == SNAPSHOT and detail["moves"] == []
-    assert piet.get("/api/my-race").json()["raceId"] == race["id"]
+    assert [r["id"] for r in piet.get("/api/my-races").json()["races"]] == [race["id"]]
 
 
-def test_een_race_tegelijk(app_):
+def test_hoogstens_drie_races_tegelijk(app_):
     owner = player(app_, "Wilma")
-    assert new_race(owner).status_code == 200
+    for _ in range(3):
+        assert new_race(owner).status_code == 200
     assert new_race(owner).status_code == 409
+    mine = owner.get("/api/my-races").json()["races"]
+    assert len(mine) == 3
+
+
+def test_niet_twee_keer_in_dezelfde_race(app_):
+    owner = player(app_, "Wilma")
+    race = new_race(owner, "gerard").json()
+    assert owner.post(f"/api/races/{race['id']}/join", json={"racerId": "roger"}, headers=HEADERS).status_code == 409
+
+
+def test_beheerder_maakt_race_zonder_zelf_mee_te_doen(app_):
+    owner = player(app_, "Wilma")
+    piet = player(app_, "Piet")
+    approve(owner, piet)
+    race = new_race(owner, racer=None).json()
+    assert race["participants"] == []
+    assert owner.get("/api/my-races").json()["races"] == []
+    # Een gewone speler moet wel een racer kiezen.
+    assert new_race(piet, racer=None).status_code == 422
+    # Piet doet mee en meldt zich weer af: de race van de beheerder blijft bestaan.
+    piet.post(f"/api/races/{race['id']}/join", json={"racerId": "roger"}, headers=HEADERS)
+    piet.post(f"/api/races/{race['id']}/leave", headers=HEADERS)
+    assert owner.get(f"/api/races/{race['id']}").status_code == 200
 
 
 def test_race_is_vol_bij_zes_spelers(app_):
@@ -161,9 +185,11 @@ def test_starttijd_en_duur_worden_gecontroleerd(app_):
 
 def test_afmelden_voor_de_start_en_lege_race_verdwijnt(app_):
     owner = player(app_, "Wilma")
-    race = new_race(owner).json()
-    assert owner.post(f"/api/races/{race['id']}/leave", headers=HEADERS).status_code == 200
-    assert owner.get(f"/api/races/{race['id']}").status_code == 404
+    piet = player(app_, "Piet")
+    approve(owner, piet)
+    race = new_race(piet).json()
+    assert piet.post(f"/api/races/{race['id']}/leave", headers=HEADERS).status_code == 200
+    assert piet.get(f"/api/races/{race['id']}").status_code == 404
 
 
 def test_meedoen_kan_niet_meer_na_de_start(app_):

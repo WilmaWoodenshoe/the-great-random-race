@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { rememberInvite, takeInvite } from '../account/invite';
 import { nl } from '../content/nl';
 import { racers } from '../content';
 import { BackHeader } from '../components/BackHeader';
@@ -14,13 +15,19 @@ import { useGame } from '../state/GameProvider';
 export function JoinRace() {
   const { id } = useParams();
   const raceId = Number(id);
-  const { me, reloadRace } = useAccount();
+  const { me, selectRace } = useAccount();
   const { save } = useGame();
   const navigate = useNavigate();
   const [race, setRace] = useState<RaceSummary | null>(null);
   const [picked, setPicked] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+
+  // Aangekomen via een uitnodiging: die is nu gebruikt.
+  const approved = isApproved(me);
+  useEffect(() => {
+    if (approved) takeInvite();
+  }, [approved]);
 
   useEffect(() => {
     api
@@ -29,7 +36,31 @@ export function JoinRace() {
       .catch((err) => setMessage(err instanceof ApiError ? err.message : nl.races.error));
   }, [raceId]);
 
-  if (!isApproved(me)) return <Navigate to="/races" replace />;
+  // Uitgenodigd, maar (nog) geen goedgekeurd account: eerst dat regelen.
+  if (!isApproved(me)) {
+    if (Number.isInteger(raceId) && raceId > 0) rememberInvite(raceId);
+    return (
+      <div className="screen">
+        <BackHeader title={nl.join.title} fallback="/" />
+        <main className="screen__main account">
+          {race && <p className="account__intro">{nl.invite.invited(nl.races.name(race.id, race.name))}</p>}
+          {race && (
+            <p className="account__small center">
+              {nl.races.startsAt(race.startTime)} · {nl.races.days(race.days)}
+            </p>
+          )}
+          <section className="card card--wit account__card">
+            <p>{me ? nl.invite.afterApproval : nl.invite.afterAccount}</p>
+            {!me && (
+              <PrimaryButton to="/account" arrow>
+                {nl.account.welcomeCreate}
+              </PrimaryButton>
+            )}
+          </section>
+        </main>
+      </div>
+    );
+  }
 
   const taken = Object.fromEntries((race?.participants ?? []).map((p) => [p.racerId, p.nickname || nl.races.removed]));
   const free = racers.filter((r) => !(r.id in taken));
@@ -42,7 +73,7 @@ export function JoinRace() {
     setMessage(null);
     try {
       await api.joinRace(raceId, selected.id);
-      await reloadRace();
+      await selectRace(raceId);
       navigate('/wachtruimte', { replace: true });
     } catch (err) {
       setMessage(err instanceof ApiError ? err.message : nl.error.text);

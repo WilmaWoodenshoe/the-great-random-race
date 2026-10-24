@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { nl } from '../content/nl';
 import { racers } from '../content';
 import { BackHeader } from '../components/BackHeader';
 import { BottomNav } from '../components/BottomNav';
 import { PrimaryButton } from '../components/PrimaryButton';
+import { ShareButton } from '../components/ShareButton';
 import { api, type RaceSummary } from '../account/api';
 import { isApproved, useAccount } from '../account/AccountProvider';
 import { useGame } from '../state/GameProvider';
@@ -16,7 +17,8 @@ const RACERS_PER_RACE = 6;
 /** Alle gedeelde races: open (meedoen), bezig en net afgelopen. */
 export function Races() {
   const t = nl.races;
-  const { me, status, refresh } = useAccount();
+  const { me, status, refresh, selectRace } = useAccount();
+  const navigate = useNavigate();
   const { now } = useGame();
   const [races, setRaces] = useState<RaceSummary[] | null>(null);
   const [failed, setFailed] = useState(false);
@@ -37,8 +39,14 @@ export function Races() {
     };
   }, []);
 
-  const mine = races?.find((r) => r.status !== 'finished' && r.participants.some((p) => p.userId === me?.id));
-  const canJoin = isApproved(me) && !mine;
+  const MAX_ACTIVE = 3;
+  const active = (races ?? []).filter((r) => r.status !== 'finished' && r.participants.some((p) => p.userId === me?.id));
+  const canJoin = isApproved(me) && active.length < MAX_ACTIVE;
+  const canCreate = isApproved(me) && (active.length < MAX_ACTIVE || !!me?.isAdmin);
+  const goTo = async (r: RaceSummary) => {
+    await selectRace(r.id);
+    navigate(r.status === 'open' ? '/wachtruimte' : '/home');
+  };
   const open = (races ?? []).filter((r) => r.status === 'open').sort((a, b) => a.startTime - b.startTime);
   const running = (races ?? []).filter((r) => r.status === 'running');
   const finished = (races ?? []).filter((r) => r.status === 'finished');
@@ -73,13 +81,22 @@ export function Races() {
             );
           })}
         </ul>
+        {r.status === 'running' && isMine && (
+          <div className="race-card__foot">
+            <span />
+            <button type="button" className="chip-btn" onClick={() => void goTo(r)}>
+              {t.toYourRace} →
+            </button>
+          </div>
+        )}
         {r.status === 'open' && (
           <div className="race-card__foot">
             <span>{free > 0 ? t.spots(free) : t.full}</span>
+            {(isMine || me?.isAdmin) && free > 0 && <ShareButton race={r} />}
             {isMine ? (
-              <Link to="/wachtruimte" className="chip-btn">
+              <button type="button" className="chip-btn" onClick={() => void goTo(r)}>
                 {t.toYourRace} →
-              </Link>
+              </button>
             ) : (
               canJoin &&
               free > 0 && (
@@ -102,16 +119,12 @@ export function Races() {
       <main className="screen__main races">
         {status === 'out' && <p className="account__note">{t.needAccount}</p>}
         {me && !isApproved(me) && <p className="account__note">{t.pendingNote}</p>}
-        {mine && (
-          <PrimaryButton to={mine.status === 'open' ? '/wachtruimte' : '/home'} arrow>
-            {t.toYourRace}
-          </PrimaryButton>
-        )}
-        {canJoin && (
+        {canCreate && (
           <PrimaryButton to="/races/nieuw" arrow>
             {t.newRace}
           </PrimaryButton>
         )}
+        {isApproved(me) && active.length >= MAX_ACTIVE && <p className="account__note">{t.maxNote}</p>}
         {failed && <p className="account__error">{t.error}</p>}
         {!races && !failed && <p className="account__note">{t.loading}</p>}
 

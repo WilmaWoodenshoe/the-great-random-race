@@ -1,6 +1,7 @@
 import { Link, Navigate } from 'react-router-dom';
 import { nl } from '../content/nl';
 import { BottomNav } from '../components/BottomNav';
+import { RaceSwitcher } from '../components/RaceSwitcher';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { ProgressBar } from '../components/ProgressBar';
 import { LivingRacer, moodFor } from '../components/Gerard';
@@ -61,6 +62,7 @@ export function Home() {
       </header>
 
       <main className="screen__main home__main">
+        <RaceSwitcher />
         <section className="card hero-card">
           <LivingRacer
             image={me.image}

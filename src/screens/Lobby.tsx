@@ -3,6 +3,8 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { nl } from '../content/nl';
 import { BackHeader } from '../components/BackHeader';
 import { BottomNav } from '../components/BottomNav';
+import { RaceSwitcher } from '../components/RaceSwitcher';
+import { ShareButton } from '../components/ShareButton';
 import { api, ApiError, type RaceSummary } from '../account/api';
 import { useAccount } from '../account/AccountProvider';
 import { useGame } from '../state/GameProvider';
@@ -75,6 +77,7 @@ export function Lobby() {
     <div className="screen screen--nav">
       <BackHeader title={summary ? nl.races.name(summary.id, summary.name) : t.title} fallback="/races" />
       <main className="screen__main account">
+        <RaceSwitcher />
         {message && <p className="account__error">{message}</p>}
         <section className="card card--wit account__card lobby__start">
           <div className="lobby__when">{race.startTime - now > MINUTE ? t.startsIn(untilText(race.startTime - now)) : t.startsSoon}</div>
@@ -102,6 +105,7 @@ export function Lobby() {
           })}
         </ul>
         {summary && <p className="account__small center">{t.computerFill(RACERS_PER_RACE - participants.length)}</p>}
+        {summary && participants.length < RACERS_PER_RACE && <ShareButton race={summary} />}
 
         {isCreator ? (
           <button type="button" className="link-btn account__delete" onClick={() => run(t.cancelConfirm, () => api.cancelRace(serverId))}>

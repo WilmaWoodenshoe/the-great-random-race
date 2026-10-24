@@ -64,7 +64,8 @@ export interface NewRace {
   courseId: string;
   days: number;
   startTime: number;
-  racerId: string;
+  /** null: de beheerder zet een race klaar zonder zelf mee te doen. */
+  racerId: string | null;
   snapshot: RaceSnapshot;
 }
 
@@ -139,7 +140,7 @@ export const api = {
   // Gedeelde races
   races: () => call<{ races: RaceSummary[]; now: number }>('GET', '/races'),
   race: (id: number) => call<RaceDetail>('GET', `/races/${id}`),
-  myRace: () => call<{ raceId: number | null }>('GET', '/my-race'),
+  myRaces: () => call<{ races: RaceSummary[]; now: number }>('GET', '/my-races'),
   createRace: (race: NewRace) => call<RaceSummary>('POST', '/races', race),
   joinRace: (id: number, racerId: string) => call<RaceSummary>('POST', `/races/${id}/join`, { racerId }),
   leaveRace: (id: number) => call<{ ok: true }>('POST', `/races/${id}/leave`),

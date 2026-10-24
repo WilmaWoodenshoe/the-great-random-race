@@ -185,8 +185,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             db.execute("UPDATE participants SET nickname = '' WHERE user_id = ?", (user_id,))
             db.execute("DELETE FROM users WHERE id = ?", (user_id,))
             # Lege races die nog niet begonnen zijn, hebben geen zin meer.
+            # (Races van de beheerder blijven staan, ook als ze leeg zijn.)
             db.execute(
-                "DELETE FROM races WHERE start_time > ? AND id NOT IN (SELECT race_id FROM participants)", (now_ms,)
+                "DELETE FROM races WHERE start_time > ? AND id NOT IN (SELECT race_id FROM participants) "
+                "AND (created_by IS NULL OR created_by NOT IN (SELECT id FROM users WHERE is_admin = 1))",
+                (now_ms,),
             )
 
     @app.get("/api/health")

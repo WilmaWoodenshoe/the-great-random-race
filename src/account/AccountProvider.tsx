@@ -17,7 +17,7 @@ import type { SaveData } from '../models/Save';
 import { useGame } from '../state/GameProvider';
 import { parseSave } from '../storage/storage';
 import { isTestVersion } from '../utils/env';
-import { api, ApiError, type Me } from './api';
+import { api, ApiError, type Me, type RaceSummary } from './api';
 import { buildRace } from './buildRace';
 
 export type AccountStatus = 'unavailable' | 'checking' | 'offline' | 'out' | 'in';
@@ -35,6 +35,10 @@ interface AccountContextValue {
   refresh(): Promise<void>;
   /** Je gedeelde race opnieuw ophalen (na aanmaken, meedoen of afmelden). */
   reloadRace(): Promise<void>;
+  /** Alle races waar je aan meedoet (nog niet voorbij, of net afgelopen). */
+  myRaces: RaceSummary[];
+  /** Een andere van je races bekijken. */
+  selectRace(id: number): Promise<void>;
 }
 
 /** Mag dit account races maken en meedoen? */
@@ -45,6 +49,37 @@ export const accountsEnabled: boolean =
   !isTestVersion && typeof window !== 'undefined' && typeof window.PublicKeyCredential === 'function';
 
 const META_KEY = 'grr-account-sync';
+/** Welke van je races je het laatst bekeek. */
+const CURRENT_KEY = 'grr-huidige-race';
+
+function readCurrent(): number | null {
+  try {
+    const id = Number(localStorage.getItem(CURRENT_KEY));
+    return Number.isInteger(id) && id > 0 ? id : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeCurrent(id: number | null): void {
+  try {
+    if (id === null) localStorage.removeItem(CURRENT_KEY);
+    else localStorage.setItem(CURRENT_KEY, String(id));
+  } catch {
+    // Niet erg: dan kiest de app zelf een race.
+  }
+}
+
+/** Welke race laten we zien? Je laatste keuze, anders een lopende, dan een open, dan de laatste. */
+function pickCurrent(races: RaceSummary[], preferred: number | null): RaceSummary | null {
+  return (
+    races.find((r) => r.id === preferred) ??
+    races.filter((r) => r.status === 'running').sort((a, b) => b.startTime - a.startTime)[0] ??
+    races.filter((r) => r.status === 'open').sort((a, b) => a.startTime - b.startTime)[0] ??
+    [...races].sort((a, b) => b.endTime - a.endTime)[0] ??
+    null
+  );
+}
 /** Bij terugkomen in de app hoogstens eens per minuut bij de server kijken. */
 const PULL_EVERY_MS = 60_000;
 /** Zolang de app open is: zo vaak de gedeelde race verversen (zetten van anderen). */
@@ -84,6 +119,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
   const { loading, save, replaceSave, setRace, setRemote } = useGame();
   const [status, setStatus] = useState<AccountStatus>(accountsEnabled ? 'checking' : 'unavailable');
   const [me, setMe] = useState<Me | null>(null);
+  const [myRaces, setMyRaces] = useState<RaceSummary[]>([]);
   const [lastSaved, setLastSaved] = useState<number | null>(() => {
     const at = readMeta().syncedAt;
     return at ? at * 1000 : null;
@@ -102,6 +138,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
 
   const signedOut = useCallback(() => {
     setMe(null);
+    setMyRaces([]);
     setStatus('out');
     writeMeta({ syncedAt: null, dirty: false });
     setLastSaved(null);
@@ -163,18 +200,25 @@ export function AccountProvider({ children }: { children: ReactNode }) {
   const meRef = useRef<Me | null>(null);
   meRef.current = me;
 
-  /** Je gedeelde race ophalen en narekenen; zonder race: geen race. */
-  const reloadRace = useCallback(async () => {
-    const who = meRef.current;
-    if (!who) return;
-    const { raceId } = await api.myRace();
-    if (raceId === null) {
-      // Een oude race van alleen deze telefoon telt niet meer mee.
-      if (latestSave.current.race) await setRace(null);
-      return;
-    }
-    await setRace(buildRace(await api.race(raceId), who.id));
-  }, [setRace]);
+  /** Je gedeelde races ophalen en de gekozen race narekenen; zonder race: geen race. */
+  const loadRaces = useCallback(
+    async (preferred: number | null) => {
+      const who = meRef.current;
+      if (!who) return;
+      const { races } = await api.myRaces();
+      setMyRaces(races);
+      const current = pickCurrent(races, preferred);
+      writeCurrent(current?.id ?? null);
+      if (!current) {
+        // Een oude race van alleen deze telefoon telt niet meer mee.
+        if (latestSave.current.race) await setRace(null);
+        return;
+      }
+      await setRace(buildRace(await api.race(current.id), who.id));
+    },
+    [setRace],
+  );
+  const reloadRace = useCallback(() => loadRaces(readCurrent()), [loadRaces]);
 
   const check = useCallback(async () => {
     try {
@@ -265,6 +309,8 @@ export function AccountProvider({ children }: { children: ReactNode }) {
       },
       refresh: check,
       reloadRace,
+      myRaces,
+      selectRace: (id) => loadRaces(id),
       logout: async () => {
         await api.logout().catch(() => undefined);
         signedOut();
@@ -274,7 +320,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
         signedOut();
       },
     }),
-    [status, me, lastSaved, upload, syncWithServer, signedOut, check, reloadRace],
+    [status, me, lastSaved, upload, syncWithServer, signedOut, check, reloadRace, myRaces, loadRaces],
   );
 
   return <AccountContext.Provider value={value}>{children}</AccountContext.Provider>;

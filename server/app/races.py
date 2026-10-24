@@ -19,6 +19,8 @@ from .db import Database
 
 DAY_MS = 24 * 3600 * 1000
 RACERS_PER_RACE = 6
+# Aan zoveel races (nog niet voorbij) mag je tegelijk meedoen.
+MAX_ACTIVE_RACES = 3
 ALLOWED_DAYS = (7, 14, 21)
 # Een race mag tot twee weken vooruit gepland worden.
 MAX_PLAN_AHEAD_MS = 14 * DAY_MS
@@ -35,7 +37,8 @@ class RaceIn(BaseModel):
     courseId: str = Field(pattern=ID_PATTERN)
     days: int
     startTime: int
-    racerId: str = Field(pattern=ID_PATTERN)
+    # Leeg: de beheerder maakt een race zonder zelf mee te doen.
+    racerId: str | None = Field(default=None, pattern=ID_PATTERN)
     # Racers, route en keuze-events zoals de app ze kent bij het aanmaken.
     snapshot: dict[str, Any]
 
@@ -106,13 +109,28 @@ def register_race_routes(
             raise HTTPException(404, "Deze race bestaat niet (meer).")
         return row
 
-    def busy_race(user_id: int, at: int):
-        """De race die nog niet voorbij is waar deze speler in zit, of None."""
+    def active_count(user_id: int, at: int) -> int:
+        """Aan hoeveel races die nog niet voorbij zijn doet deze speler mee?"""
         return db.one(
-            "SELECT r.id FROM races r JOIN participants p ON p.race_id = r.id "
+            "SELECT COUNT(*) AS n FROM races r JOIN participants p ON p.race_id = r.id "
             "WHERE p.user_id = ? AND r.start_time + r.days * ? > ?",
             (user_id, DAY_MS, at),
-        )
+        )["n"]
+
+    def check_room(user_id: int, at: int) -> None:
+        if active_count(user_id, at) >= MAX_ACTIVE_RACES:
+            raise HTTPException(409, f"Je doet al mee aan {MAX_ACTIVE_RACES} races. Meer tegelijk kan niet.")
+
+    def is_admin(user_id: int) -> bool:
+        row = db.one("SELECT is_admin FROM users WHERE id = ?", (user_id,))
+        return bool(row and row["is_admin"])
+
+    def drop_if_empty(race_id: int) -> None:
+        """Een lege race die nog niet begonnen is, verdwijnt (behalve races van de beheerder)."""
+        row = db.one("SELECT created_by FROM races WHERE id = ?", (race_id,))
+        if row and not db.one("SELECT 1 FROM participants WHERE race_id = ?", (race_id,)):
+            if not (row["created_by"] and is_admin(row["created_by"])):
+                db.execute("DELETE FROM races WHERE id = ?", (race_id,))
 
     def nickname_of(user_id: int) -> str:
         return db.one("SELECT nickname FROM users WHERE id = ?", (user_id,))["nickname"]
@@ -153,16 +171,16 @@ def register_race_routes(
             "now": now_ms(),
         }
 
-    @app.get("/api/my-race")
-    def my_race(user_id: int = Depends(current_user)):
-        """Je huidige race: eerst een die nog niet voorbij is, anders de laatste."""
+    @app.get("/api/my-races")
+    def my_races(user_id: int = Depends(current_user)):
+        """Je races: die nog niet voorbij zijn, plus die van de laatste twee weken."""
         at = now_ms()
-        row = busy_race(user_id, at) or db.one(
-            "SELECT r.id FROM races r JOIN participants p ON p.race_id = r.id WHERE p.user_id = ? "
-            "ORDER BY r.start_time DESC LIMIT 1",
-            (user_id,),
+        rows = db.all(
+            "SELECT r.* FROM races r JOIN participants p ON p.race_id = r.id "
+            "WHERE p.user_id = ? AND r.start_time + r.days * ? > ? ORDER BY r.start_time DESC LIMIT 20",
+            (user_id, DAY_MS, at - SHOW_FINISHED_MS),
         )
-        return {"raceId": row["id"] if row else None}
+        return {"races": [summary(r, at) for r in rows], "now": at}
 
     # ----- Meedoen (goedgekeurde spelers) -----
 
@@ -180,10 +198,15 @@ def register_race_routes(
             raise HTTPException(422, "Een race duurt 7, 14 of 21 dagen.")
         if body.startTime < at - 60_000 or body.startTime > at + MAX_PLAN_AHEAD_MS:
             raise HTTPException(422, "Kies een starttijd tussen nu en over twee weken.")
-        if body.racerId not in snapshot_racer_ids(body.snapshot) or len(snapshot_racer_ids(body.snapshot)) < RACERS_PER_RACE:
-            raise HTTPException(422, "Deze racer bestaat niet.")
-        if busy_race(user_id, at):
-            raise HTTPException(409, "Je doet al mee aan een race. Eén race tegelijk.")
+        if len(snapshot_racer_ids(body.snapshot)) < RACERS_PER_RACE:
+            raise HTTPException(422, "Deze race klopt niet.")
+        if body.racerId is None:
+            if not is_admin(user_id):
+                raise HTTPException(422, "Kies een racer.")
+        else:
+            if body.racerId not in snapshot_racer_ids(body.snapshot):
+                raise HTTPException(422, "Deze racer bestaat niet.")
+            check_room(user_id, at)
         name = " ".join(body.name.split())
         with db.transaction():
             cur = db.execute(
@@ -201,10 +224,11 @@ def register_race_routes(
                 ),
             )
             race_id = cur.lastrowid
-            db.execute(
-                "INSERT INTO participants (race_id, user_id, racer_id, nickname, joined_at) VALUES (?, ?, ?, ?, ?)",
-                (race_id, user_id, body.racerId, nickname_of(user_id), at),
-            )
+            if body.racerId is not None:
+                db.execute(
+                    "INSERT INTO participants (race_id, user_id, racer_id, nickname, joined_at) VALUES (?, ?, ?, ?, ?)",
+                    (race_id, user_id, body.racerId, nickname_of(user_id), at),
+                )
         return summary(get_race(race_id), now_ms())
 
     @app.post("/api/races/{race_id}/join")
@@ -214,8 +238,9 @@ def register_race_routes(
             row = get_race(race_id)
             if status_of(row, at) != "open":
                 raise HTTPException(409, "Deze race is al begonnen.")
-            if busy_race(user_id, at):
-                raise HTTPException(409, "Je doet al mee aan een race. Eén race tegelijk.")
+            if db.one("SELECT 1 FROM participants WHERE race_id = ? AND user_id = ?", (race_id, user_id)):
+                raise HTTPException(409, "Je doet al mee aan deze race.")
+            check_room(user_id, at)
             if body.racerId not in snapshot_racer_ids(json.loads(row["snapshot"])):
                 raise HTTPException(422, "Deze racer bestaat niet.")
             count = db.one("SELECT COUNT(*) AS n FROM participants WHERE race_id = ?", (race_id,))["n"]
@@ -237,16 +262,14 @@ def register_race_routes(
             if status_of(row, at) != "open":
                 raise HTTPException(409, "De race is al begonnen; afmelden kan niet meer.")
             db.execute("DELETE FROM participants WHERE race_id = ? AND user_id = ?", (race_id, user_id))
-            if not db.one("SELECT 1 FROM participants WHERE race_id = ?", (race_id,)):
-                db.execute("DELETE FROM races WHERE id = ?", (race_id,))
+            drop_if_empty(race_id)
         return {"ok": True}
 
     @app.delete("/api/races/{race_id}")
     def cancel_race(race_id: int, user_id: int = Depends(current_user)):
         """Race schrappen: de maker zolang hij niet begonnen is, de beheerder altijd."""
         row = get_race(race_id)
-        is_admin = bool(db.one("SELECT is_admin FROM users WHERE id = ?", (user_id,))["is_admin"])
-        if not is_admin and (row["created_by"] != user_id or status_of(row, now_ms()) != "open"):
+        if not is_admin(user_id) and (row["created_by"] != user_id or status_of(row, now_ms()) != "open"):
             raise HTTPException(403, "Alleen de maker kan deze race schrappen, en alleen voor de start.")
         db.execute("DELETE FROM races WHERE id = ?", (race_id,))
         return {"ok": True}

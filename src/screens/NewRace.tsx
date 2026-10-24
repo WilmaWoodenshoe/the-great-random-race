@@ -35,11 +35,13 @@ function toInput(ms: number): string {
 /** Nieuwe gedeelde race: eerst je racer, dan naam, duur en starttijd. */
 export function NewRace() {
   const t = nl.newRace;
-  const { me, reloadRace } = useAccount();
+  const { me, selectRace } = useAccount();
   const { save } = useGame();
   const navigate = useNavigate();
   const [step, setStep] = useState<1 | 2>(1);
   const [racerId, setRacerId] = useState(() => defaultRacerId(save));
+  // De beheerder kan een race klaarzetten zonder zelf mee te doen.
+  const [joining, setJoining] = useState(true);
   const [name, setName] = useState('');
   const [days, setDays] = useState(7);
   const [startChoice, setStartChoice] = useState<StartChoice>('tomorrow');
@@ -73,8 +75,19 @@ export function NewRace() {
     setBusy(true);
     setMessage(null);
     try {
-      await api.createRace({ name, courseId: 'grote-bosrace', days, startTime: start, racerId: racer.id, snapshot: contentSnapshot() });
-      await reloadRace();
+      const created = await api.createRace({
+        name,
+        courseId: 'grote-bosrace',
+        days,
+        startTime: start,
+        racerId: joining ? racer.id : null,
+        snapshot: contentSnapshot(),
+      });
+      if (!joining) {
+        navigate('/races', { replace: true });
+        return;
+      }
+      await selectRace(created.id);
       navigate(startChoice === 'now' ? '/home' : '/wachtruimte', { replace: true });
     } catch (err) {
       setMessage(err instanceof ApiError ? err.message : nl.error.text);
@@ -92,9 +105,27 @@ export function NewRace() {
         </main>
         <div className="screen__footer pick__footer">
           <RacerLine racer={racer} />
-          <PrimaryButton onClick={() => setStep(2)} arrow>
+          <PrimaryButton
+            onClick={() => {
+              setJoining(true);
+              setStep(2);
+            }}
+            arrow
+          >
             {t.next}
           </PrimaryButton>
+          {me?.isAdmin && (
+            <button
+              type="button"
+              className="link-btn new-race__without"
+              onClick={() => {
+                setJoining(false);
+                setStep(2);
+              }}
+            >
+              {t.withoutMe}
+            </button>
+          )}
         </div>
       </div>
     );
@@ -172,9 +203,9 @@ export function NewRace() {
         </section>
 
         <div className="new-race__racer">
-          <RacerLine racer={racer} />
+          {joining ? <RacerLine racer={racer} /> : <p className="account__small center">{t.notJoining}</p>}
           <button type="button" className="link-btn" onClick={() => setStep(1)}>
-            {nl.pick.title}
+            {joining ? nl.pick.title : t.chooseRacer}
           </button>
         </div>
 

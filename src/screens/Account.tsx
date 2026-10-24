@@ -6,6 +6,7 @@ import { accountsEnabled, useAccount } from '../account/AccountProvider';
 import { ApiError, isCancelled } from '../account/api';
 import { isTestVersion } from '../utils/env';
 import { useGame } from '../state/GameProvider';
+import { peekInvite } from '../account/invite';
 
 /** Account: aanmaken, inloggen met een passkey, uitloggen en verwijderen. */
 export function Account() {
@@ -59,7 +60,7 @@ export function Account() {
             </PrimaryButton>
           </section>
         ) : (
-          <PrimaryButton to={race?.serverId ? '/home' : '/races'} arrow>
+          <PrimaryButton to={peekInvite() ? '/' : race?.serverId ? '/home' : '/races'} arrow>
             {race?.serverId ? nl.finish.toHome.replace('{naam}', race.racers.find((r) => r.id === race.playerId)?.name ?? '') : t.toRaces}
           </PrimaryButton>
         )}
