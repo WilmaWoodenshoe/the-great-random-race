@@ -26,7 +26,7 @@ describe('race aanmaken', () => {
     expect(race.startTime).toBe(START);
     expect(race.endTime).toBe(START + 7 * DAY);
     expect(race.seed).toBe(99);
-    expect(race.racers).toHaveLength(5);
+    expect(race.racers).toHaveLength(racers.length);
     expect(race.playerId).toBe('gerard');
   });
 
@@ -65,7 +65,7 @@ describe('positie en stand', () => {
       expect(s.slice(0, finished.length)).toEqual(finished);
       for (let i = 1; i < finished.length; i++) expect(finished[i].finishTime!).toBeGreaterThanOrEqual(finished[i - 1].finishTime!);
       for (let i = 1; i < rest.length; i++) expect(rest[i].km).toBeLessThanOrEqual(rest[i - 1].km);
-      expect(s.map((x) => x.position)).toEqual([1, 2, 3, 4, 5]);
+      expect(s.map((x) => x.position)).toEqual(s.map((_, i) => i + 1));
     }
   });
 
@@ -220,7 +220,7 @@ describe('tijd vooruitspoelen: een hele race van 7 dagen', () => {
     }
 
     const final = finalStandings(race);
-    expect(final).toHaveLength(5);
+    expect(final).toHaveLength(racers.length);
     for (const s of final) if (s.finishTime !== null) expect(s.finishTime).toBeLessThanOrEqual(race.endTime);
     expect(race.actions.length).toBeGreaterThanOrEqual(6);
     expect(race.decisions.length).toBe(race.choices.length);

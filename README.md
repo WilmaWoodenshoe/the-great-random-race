@@ -35,7 +35,7 @@ Alle schermen werken met de echte race (fase 1–9). Nog te doen: de app afmaken
 - Bij de start liggen starttijd, eindtijd (+ 7 dagen) en een *seed* (startgetal voor het toeval) vast. Daarmee wordt meteen het hele eventschema berekend: wie wanneer een bloem vindt, een dutje doet of verdwaalt.
 - De positie van elke racer wordt op elk moment uitgerekend uit dat schema. De app hoeft dus niet open te staan, en de race is altijd hetzelfde, hoe vaak je ook kijkt.
 - Keuzes van de speler en de dagelijkse actie tellen pas mee vanaf het moment dat ze gemaakt zijn. Wat al gebeurd is, verandert nooit.
-- De balanstest (`tests/balance.test.ts`) speelt 1.000 races en controleert de doelen uit de briefing. Uitkomst bij de huidige instellingen: Gerard wint ± 27%, finisht meestal halverwege dag 7; Ducky wint ± 71%; Turbo haalt in ± 55% van de races de finish, Kevin in ± 9%, Steve nooit.
+- De balanstest (`tests/balance.test.ts`) speelt 1.000 races en controleert de doelen uit de briefing. Uitkomst bij de huidige instellingen: Gerard wint ± 25%, finisht meestal halverwege dag 7; Mr. M (de eend) wint ± 70%; Charles (het oude konijn) haalt in ± 22% van de races de finish en wint soms; Turbo haalt in ± 55% van de races de finish, Kevin in ± 9%, Steve nooit.
 - Een tweede balanstest speelt 1.000 races waarin de speler elke dag Gerard voert: hij wint dan iets vaker, maar minder dan 10 procentpunt. De actie helpt, maar beslist de race niet.
 - Afstellen gebeurt in `src/game/racers.ts` (`BASE_KMH`), `src/game/events.ts` (kansen per event) en `src/game/personality.ts` (wat de eigenschappen doen).
 
@@ -57,7 +57,7 @@ import type { Racer } from '../../models/Racer';
 
 const ducky: Racer = {
   id: 'ducky',
-  name: 'Ducky',
+  name: 'Mr. M',
   species: 'Eend',
   speed: 1.3, // ten opzichte van Gerard (1,00)
   traits: { curious: 60, stubborn: 30, chaotic: 90, lazy: 30 }, // elk 0–100

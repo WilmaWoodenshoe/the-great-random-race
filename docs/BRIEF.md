@@ -59,7 +59,7 @@ vraag ze na afloop:
 
 - 1 race: De Grote Bosrace, 7 dagen.
 
-- 5 racers in totaal: Gerard plus 4 gesimuleerde tegenstanders (alles
+- 6 racers in totaal: Gerard plus 5 gesimuleerde tegenstanders (alles
   lokaal op het toestel).
 
 - Raceprogressie op basis van verstreken tijd, ook als de app dicht is.
@@ -71,7 +71,7 @@ vraag ze na afloop:
 
 - Racejournaal (tijdlijn van gebeurtenissen).
 
-- Tussenstand (leaderboard van de 5 racers).
+- Tussenstand (leaderboard van de 6 racers).
 
 - Racerprofiel.
 
@@ -117,10 +117,11 @@ Snelheid is relatief aan Gerard (1,00). Eigenschappen lopen van 0 tot
 | **Naam** | **Soort** | **Snelheid** | **Curious / Stubborn / Chaotic / Lazy** | **Titel**             | **Rol in de race**                     |
 |----------|-----------|--------------|-----------------------------------------|-----------------------|----------------------------------------|
 | Gerard   | Slak      | 1,00         | 85 / 75 / 20 / 60                       | The Determined        | De held. Kan winnen, maar nooit zeker. |
-| Ducky    | Eend      | 1,30         | 60 / 30 / 90 / 30                       | Chaotic Excellence    | Snelste, maar verdwaalt vaak.          |
+| Mr. M    | Eend      | 1,30         | 60 / 30 / 90 / 30                       | Chaotic Excellence    | Snelste, maar verdwaalt vaak.          |
 | Turbo    | Schildpad | 0,85         | 30 / 90 / 15 / 50                       | The Relentless        | Traag maar onverstoorbaar.             |
 | Kevin    | Rups      | 1,00         | 70 / 20 / 60 / 80                       | Professional Napper   | Slaapt; haalt de finish zelden.        |
 | Steve    | Steen     | 0,15         | 5 / 100 / 1 / 100                       | Still Going           | Running gag. Haalt de finish nooit.    |
+| Charles  | Konijn    | 1,05         | 40 / 35 / 80 / 85                       | The Retired Champion  | Vroeger snel, nu vooral moe. Soms een sprint, dan een dutje. |
 
 ## 8. Wat doen de eigenschappen?
 
@@ -186,7 +187,7 @@ gesimuleerde races:
 - Gerard bij gemiddeld geluk rond dag 6 à 7 finisht en 15–35% van de
   races wint;
 
-- Ducky meestal als eerste finisht, maar niet altijd;
+- Mr. M (de eend) meestal als eerste finisht, maar niet altijd;
 
 - Turbo de finish soms net wel en soms net niet haalt;
 

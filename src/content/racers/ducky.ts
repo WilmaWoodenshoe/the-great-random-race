@@ -2,7 +2,7 @@ import type { Racer } from '../../models/Racer';
 
 const ducky: Racer = {
   id: 'ducky',
-  name: 'Ducky',
+  name: 'Mr. M',
   species: 'Eend',
   speed: 1.3,
   traits: { curious: 60, stubborn: 30, chaotic: 90, lazy: 30 },

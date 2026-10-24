@@ -7,8 +7,16 @@ import { VitePWA } from 'vite-plugin-pwa';
 // thegreatrandomrace.nl is het gewoon '/'.
 const base = process.env.BASE_PATH ?? '/';
 
+// De testversie wordt niet samengeperst: foutmeldingen tonen dan echte
+// namen, wat het opsporen van fouten op een telefoon veel makkelijker maakt.
+const testVersion = process.env.VITE_TESTVERSIE === '1';
+
 export default defineConfig({
   base,
+  build: {
+    minify: testVersion ? false : 'esbuild',
+    sourcemap: testVersion,
+  },
   plugins: [
     react(),
     VitePWA({

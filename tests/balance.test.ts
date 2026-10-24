@@ -33,6 +33,11 @@ describe('balans over 1.000 races', () => {
     expect(winsWith - winsWithout).toBeLessThan(0.1);
   });
 
+  it('Charles verrast soms, maar wint zelden', () => {
+    expect(pct(p.charles.finishes)).toBeGreaterThan(0.05);
+    expect(pct(p.charles.wins)).toBeLessThan(0.15);
+  });
+
   it('Kevin haalt de finish zelden, Steve nooit', () => {
     expect(pct(p.kevin.finishes)).toBeGreaterThan(0);
     expect(pct(p.kevin.finishes)).toBeLessThan(0.15);

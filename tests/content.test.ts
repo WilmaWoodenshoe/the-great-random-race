@@ -6,8 +6,8 @@ import { resolve } from 'node:path';
 const imageExists = (path: string) => existsSync(resolve(process.cwd(), 'public/images', path));
 
 describe('racers', () => {
-  it('v0.1 heeft precies 5 racers, met Gerard als speler', () => {
-    expect(racers).toHaveLength(5);
+  it('er doen 6 racers mee, met Gerard als speler', () => {
+    expect(racers).toHaveLength(6);
     expect(playerRacer.id).toBe('gerard');
     expect(racers.filter((r) => r.playable)).toHaveLength(1);
   });
