@@ -24,7 +24,7 @@ Website (later): thegreatrandomrace.nl
 | 8 | Dagelijkse actie | Klaar |
 | 9 | Finishscherm met confetti | Klaar |
 | 10 | Balanstest, tests en afwerking | Klaar |
-| 11 | PWA afmaken en online op thegreatrandomrace.nl | – |
+| 11 | PWA afmaken (icoon, offline, installeren) en online op thegreatrandomrace.nl | Klaar, op het slotje (HTTPS) na |
 
 Alle schermen werken met de echte race (fase 1–9). Nog te doen: de app afmaken als installeerbare app en echt online zetten op thegreatrandomrace.nl (fase 11).
 

@@ -41,6 +41,8 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,woff2,png,webp,svg}'],
+        // De privacypagina is een losse pagina, geen scherm van de app.
+        navigateFallbackDenylist: [/^\/privacy/, /\/privacy\//],
       },
     }),
   ],

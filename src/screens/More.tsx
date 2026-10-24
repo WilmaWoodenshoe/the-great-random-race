@@ -122,7 +122,10 @@ export function More() {
           </>
         )}
 
-        <p className="more__privacy">{t.privacy}</p>
+        <p className="more__privacy">
+          {t.privacy}{' '}
+          <a href={`${import.meta.env.BASE_URL}privacy/`}>{t.privacyLink}</a>
+        </p>
       </main>
       <BottomNav />
     </div>

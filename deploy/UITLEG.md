@@ -65,6 +65,15 @@ systemctl reload nginx
 
 Dit kan pas als stap 1 klaar is.
 
+Heb je stap 4 vóór 24 oktober gedaan? Haal dan eerst de bijgewerkte nginx-instelling op (die houdt geen bezoekerslogboek bij, zoals de privacyverklaring belooft):
+
+```
+curl -fsSL -o /etc/nginx/sites-available/thegreatrandomrace https://raw.githubusercontent.com/WilmaWoodenshoe/the-great-random-race/main/deploy/nginx-thegreatrandomrace.conf
+nginx -t && systemctl reload nginx
+```
+
+Daarna:
+
 ```
 certbot --nginx -d thegreatrandomrace.nl -d www.thegreatrandomrace.nl
 ```

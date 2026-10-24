@@ -385,6 +385,7 @@ export const nl = {
     event: 'Keuze-event',
     eventHint: 'De pop-up met de gigantische aardbei.',
     privacy: 'Deze app verzamelt niets. Geen cookies, geen tracking. Alles blijft op je telefoon.',
+    privacyLink: 'Lees de privacyverklaring',
     yourRace: 'Jouw race',
     noRace: 'Er loopt nog geen race.',
     started: 'Gestart',
