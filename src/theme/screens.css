@@ -2060,28 +2060,6 @@ a.chip-btn {
   box-shadow: 0 1px 4px rgba(30, 42, 54, 0.25);
 }
 
-.stat__crowd {
-  display: flex;
-  justify-content: center;
-  height: 34px;
-}
-
-.stat__crowd img {
-  width: 30px;
-  height: 30px;
-  margin: 2px -5px 0;
-  object-fit: contain;
-  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
-}
-
-.stat__crowd img:nth-child(2) {
-  position: relative;
-  z-index: 1;
-  margin-top: 0;
-  width: 32px;
-  height: 32px;
-}
-
 /* Profiel: met een accessoire iets kleiner, zodat alles in beeld blijft (zoals bij Collectie). */
 .racer__gerard.living--hoed {
   width: 230px;
@@ -2114,4 +2092,34 @@ a.chip-btn {
   display: flex;
   height: 34px;
   align-items: center;
+}
+
+/* Race met staande kaart: de kaart ligt achter de kop en de voortgangsbalk. */
+.race-screen--vol .race__map {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.race-screen--vol .race {
+  position: static;
+  justify-content: flex-end;
+}
+
+.race-screen--vol .race__progress {
+  margin-top: auto;
+}
+
+.race-screen--vol .back-header,
+.race-screen--vol .race__progress {
+  z-index: 2;
+}
+
+/* Home: aantal racers, zonder plaatje. */
+.stat--midden {
+  justify-content: center;
+}
+
+.stat__big--groot {
+  font-size: 38px;
 }

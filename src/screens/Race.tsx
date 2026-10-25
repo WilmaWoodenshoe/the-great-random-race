@@ -23,6 +23,8 @@ export function Race() {
   const { race, standings, me, player } = view;
   const course = race.course;
   const places = placeRacers(course, standings);
+  // Een staande kaart (zo lang als een telefoon) vult het hele scherm, achter de kop en de balk.
+  const tall = course.map.width / course.map.height < 0.6;
   const markers = standings.map((s) => {
     const racer = getRaceRacer(race, s.racerId);
     return {
@@ -37,9 +39,9 @@ export function Race() {
   });
 
   return (
-    <div className="screen screen--passend race-screen">
-      {/* De kaart nog eens, vervaagd, als achtergrond: zo is het hele scherm gevuld. */}
-      <img className="race-screen__bg" src={img(mapImageOf(view.race))} alt="" />
+    <div className={`screen screen--passend race-screen${tall ? ' race-screen--vol' : ''}`}>
+      {/* Staande kaart: vult het hele scherm. Anders de kaart nog eens, vervaagd, als achtergrond. */}
+      {!tall && <img className="race-screen__bg" src={img(mapImageOf(view.race))} alt="" />}
       <BackHeader
         title={nl.common.raceNumber(race.number)}
         subtitle={course.name}
@@ -56,7 +58,7 @@ export function Race() {
 
       <main className="race">
         <div className="race__map">
-          <RaceMap course={course} image={mapImageOf(view.race)} alt={nl.race.mapAlt(course.name, player.name, me.position)} markers={markers} />
+          <RaceMap course={course} cover={tall} image={mapImageOf(view.race)} alt={nl.race.mapAlt(course.name, player.name, me.position)} markers={markers} />
         </div>
         <Link to="/tussenstand" className="race__progress card">
           <ProgressBar value={view.progress} height={14} label={course.name} />

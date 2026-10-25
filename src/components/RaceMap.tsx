@@ -23,6 +23,8 @@ interface Props {
   alt: string;
   /** Andere kaartafbeelding (bijv. met paasei); standaard die van de route. */
   image?: string;
+  /** Het hele vak vullen (staande kaart); randen mogen dan iets wegvallen. */
+  cover?: boolean;
 }
 
 /**
@@ -30,7 +32,7 @@ interface Props {
  * Racers staan er zonder naamkaartje op; één tik laat zien wie het is,
  * nog een tik opent de racerkaart.
  */
-export function RaceMap({ course, markers, alt, image }: Props) {
+export function RaceMap({ course, markers, alt, image, cover = false }: Props) {
   const navigate = useNavigate();
   const [selected, setSelected] = useState<string | null>(null);
   const { width, height } = course.map;
@@ -53,8 +55,9 @@ export function RaceMap({ course, markers, alt, image }: Props) {
       className="race-map"
       style={{
         aspectRatio: `${width} / ${height}`,
-        // Zo groot mogelijk, maar nooit hoger dan de ruimte die er is.
-        width: `min(100cqw, calc(100cqh * ${width / height}))`,
+        // Zo groot mogelijk, maar nooit hoger dan de ruimte die er is (of juist alles vullen).
+        width: `${cover ? 'max' : 'min'}(100cqw, calc(100cqh * ${width / height}))`,
+        flexShrink: 0,
       }}
       onClick={() => setSelected(null)}
     >

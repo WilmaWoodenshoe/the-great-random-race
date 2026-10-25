@@ -14,7 +14,6 @@ import { formatKm } from '../utils/format';
 import { img } from '../utils/images';
 import { newlyUnlocked } from '../game/collection';
 import { backgroundOf } from '../game/course';
-import { getRaceRacer } from '../game/engine';
 
 /** Klein plaatje bij "… is momenteel", passend bij wat de racer doet. */
 function statusIcon(activity: string): string {
@@ -172,13 +171,8 @@ export function Home() {
               {view.finished ? t.raceOver : nl.common.daysLeft(view.daysLeft)}
             </div>
           </Link>
-          <Link to="/tussenstand" className="stat">
-            <span className="stat__crowd" aria-hidden="true">
-              {view.standings.slice(0, 3).map((s) => (
-                <img key={s.racerId} src={img(getRaceRacer(race, s.racerId).image)} alt="" />
-              ))}
-            </span>
-            <div className="stat__big">{race.racers.length}</div>
+          <Link to="/tussenstand" className="stat stat--midden">
+            <div className="stat__big stat__big--groot">{race.racers.length}</div>
             <div className="stat__label">{nl.common.racers}</div>
           </Link>
           <Link to="/tussenstand" className="stat">
