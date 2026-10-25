@@ -18,6 +18,16 @@ const bintje: Racer = {
     eyes: { x: 69, y: 35, w: 28, angle: -6 },
     neck: { x: 60, y: 52, w: 58, angle: -4 },
   },
+  wornImages: {
+    pet: { image: 'racers/worn/aardappel-pet.webp', left: 1.0, top: -4.2, width: 98.0 },
+    hoed: { image: 'racers/worn/aardappel-hoed.webp', left: -3.9, top: -26.5, width: 104.3 },
+    boerenhoed: { image: 'racers/worn/aardappel-boerenhoed.webp', left: -7.8, top: -21.1, width: 111.1 },
+    feesthoed: { image: 'racers/worn/aardappel-feesthoed.webp', left: 0.0, top: -40.4, width: 102.0 },
+    kroon: { image: 'racers/worn/aardappel-kroon.webp', left: -3.1, top: -26.9, width: 104.2 },
+    helm: { image: 'racers/worn/aardappel-helm.webp', left: 4.7, top: -0.8, width: 94.3 },
+    zonnebril: { image: 'racers/worn/aardappel-zonnebril.webp', left: 0.0, top: 0.0, width: 100.0 },
+    sjaal: { image: 'racers/worn/aardappel-sjaal.webp', left: 1.1, top: 0.0, width: 108.7 },
+  },
   facts: {
     favoriteFood: 'Liever niet over praten',
     dislikes: 'Frituurpannen',
