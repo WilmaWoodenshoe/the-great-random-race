@@ -16,7 +16,7 @@ interface Props {
    * Wat de racer draagt (hoed, bril, sjaal), met de plek op de afbeelding
    * (zie Racer.wear) en de verhouding breedte/hoogte van de afbeelding.
    */
-  wear?: { items: Worn[]; aspect: number };
+  wear?: { items: Worn[]; aspect: number; base?: Worn };
 }
 
 export interface Worn {
@@ -40,14 +40,23 @@ export function moodFor(activity: string): Mood {
  * telefoon staat dit allemaal uit (zie theme.css).
  */
 export function LivingRacer({ image, alt, className = '', wobble = false, mood = 'gewoon', wear }: Props) {
-  const hat = wear && wear.items.length > 0 ? wear : undefined;
+  const hat = wear && (wear.items.length > 0 || wear.base) ? wear : undefined;
   const breathe = mood === 'slaapt' ? 'grr-breathe-slow' : 'grr-breathe';
   const sway = wobble && mood === 'gewoon' ? ' grr-wobble' : '';
   // Met hoed: afbeelding en hoed samen in een vak met precies de verhouding
   // van de afbeelding, zodat de hoed altijd op dezelfde plek op het hoofd zit.
   const picture = hat ? (
     <span className={`living__fig ${breathe}`} style={{ width: `min(100cqw, calc(100cqh * ${hat.aspect}))`, aspectRatio: String(hat.aspect) }}>
-      <img className="living__img" src={img(image)} alt={alt} />
+      {/* Getekend plaatje mét accessoire: de gewone racer houdt alleen de ruimte vast. */}
+      <img className="living__img" src={img(image)} alt={alt} style={hat.base ? { visibility: 'hidden' } : undefined} />
+      {hat.base && (
+        <img
+          className="living__hat living__worn"
+          src={img(hat.base.image)}
+          alt=""
+          style={{ left: `${hat.base.spot.left}%`, top: `${hat.base.spot.top}%`, width: `${hat.base.spot.width}%` }}
+        />
+      )}
       {hat.items.map((w) => (
         <img
           key={w.image}

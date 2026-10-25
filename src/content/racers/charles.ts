@@ -19,6 +19,18 @@ const charles: Racer = {
     eyes: { x: 71, y: 28, w: 23, angle: -3 },
     neck: { x: 66, y: 55, w: 34 },
   },
+  // Getekende plaatjes van deze racer mét accessoire (Collectie). Plek in procenten
+  // van de gewone afbeelding. Zonder plaatje wordt het accessoire erop gelegd.
+  wornImages: {
+    pet: { image: 'racers/worn/konijn-pet.webp', left: 0.0, top: -2.1, width: 98.0 },
+    hoed: { image: 'racers/worn/konijn-hoed.webp', left: 2.0, top: -15.0, width: 98.0 },
+    boerenhoed: { image: 'racers/worn/konijn-boerenhoed.webp', left: 0.0, top: -5.5, width: 100.0 },
+    feesthoed: { image: 'racers/worn/konijn-feesthoed.webp', left: 1.0, top: -18.6, width: 100.0 },
+    kroon: { image: 'racers/worn/konijn-kroon.webp', left: -2.0, top: -11.1, width: 102.0 },
+    helm: { image: 'racers/worn/konijn-helm.webp', left: -1.0, top: -4.4, width: 100.0 },
+    zonnebril: { image: 'racers/worn/konijn-zonnebril.webp', left: 3.8, top: 0.0, width: 96.2 },
+    sjaal: { image: 'racers/worn/konijn-sjaal.webp', left: 4.8, top: 0.0, width: 96.2 },
+  },
   facts: {
     favoriteFood: 'Wortels, zoals vroeger',
     dislikes: 'Jonge honden',

@@ -12,6 +12,8 @@ export interface MapMarker {
   isPlayer?: boolean;
   /** Bijnaam van de speler die deze racer bestuurt (gedeelde race). */
   owner?: string;
+  /** Plek in de tussenstand. */
+  position: number;
 }
 
 interface Props {
@@ -74,10 +76,17 @@ export function RaceMap({ course, markers, alt, image }: Props) {
             aria-label={nl.racer.open(m.label)}
           >
             <img className="race-map__racer race-map__racer--other" src={img(m.image)} alt="" />
-            <div className="race-map__tag">
-              {m.label}
-              {m.owner && <span className="race-map__owner">{m.owner}</span>}
-            </div>
+            {/* Computerracers: alleen hun plek, zodat de kaart rustig blijft als
+                iedereen bij elkaar staat. Racers van spelers: de bijnaam. */}
+            {m.owner ? (
+              <div className="race-map__tag">
+                <span className="race-map__owner">{m.owner}</span>
+              </div>
+            ) : (
+              <div className="race-map__pos" aria-hidden="true">
+                {m.position}
+              </div>
+            )}
           </Link>
         ),
       )}

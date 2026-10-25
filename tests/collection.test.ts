@@ -73,7 +73,8 @@ describe('Collectie: dragen', () => {
 
   it('elke racer heeft een plek voor hoed, bril en sjaal', () => {
     for (const r of racers) {
-      const placed = wearOn(r, [acc('pet'), acc('zonnebril'), acc('sjaal')])!;
+      // Zonder getekende plaatjes: alles wordt erop gelegd, nek eerst, hoofd bovenop.
+      const placed = wearOn({ ...r, wornImages: undefined }, [acc('pet'), acc('zonnebril'), acc('sjaal')])!;
       expect(placed.items.map((w) => w.image), r.id).toEqual([acc('sjaal').image, acc('zonnebril').image, acc('pet').image]);
     }
   });
@@ -92,5 +93,16 @@ describe('Collectie: dragen', () => {
       expect(a.fit.size, a.id).toBeGreaterThan(0);
       expect(getRacer('gerard').wear).toBeDefined();
     }
+  });
+
+  it('een getekend plaatje van de racer met accessoire gaat voor', () => {
+    const gerard = getRacer('gerard');
+    const w = wearOn(gerard, [acc('kroon'), acc('zonnebril')])!;
+    expect(w.base?.image).toContain('gerard-kroon');
+    // De zonnebril heeft ook een eigen plaatje, maar het hoofd gaat voor: de bril wordt erop gelegd.
+    expect(w.items.map((x) => x.image)).toEqual([acc('zonnebril').image]);
+    const kevin = wearOn(getRacer('kevin'), [acc('kroon')])!;
+    expect(kevin.base).toBeUndefined();
+    expect(kevin.items).toHaveLength(1);
   });
 });

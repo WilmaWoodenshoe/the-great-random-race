@@ -115,6 +115,8 @@ Manieren om te verdienen (`unlock`): `{ type: 'start' }` (meteen), `{ type: 'rac
 
 Accessoires zijn alleen voor de sier. In het racerbestand staat onder `wear` waar het hoofd, de ogen en de nek zitten (punt en breedte in procenten van de afbeelding). In het accessoirebestand staat onder `fit` welk punt van het plaatje daarop komt en hoe groot het is. Elk nieuw accessoire past zo vanzelf bij elke racer; controleer het in de Pasruimte (Inventaris).
 
+**Getekende plaatjes van een racer mét accessoire** (mooier dan erop leggen): zet ze in `public/images/racers/worn/` (bijv. `gerard-sjaal.webp`) en noem ze in het racerbestand onder `wornImages` met de plek in procenten van de gewone afbeelding. Die plek wordt met een hulpscript uitgerekend door de nieuwe tekening over de gewone racer te leggen. Lever ze aan in dezelfde houding als de gewone racer, met doorzichtige achtergrond.
+
 ### Route — `src/content/courses/<naam>.ts`
 
 ```ts

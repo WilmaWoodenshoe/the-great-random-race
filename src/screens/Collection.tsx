@@ -92,7 +92,8 @@ export function Collection() {
     line = unlocked
       ? fill(acc.tagline, words)
       : `${t.locked}: ${howTo(acc.unlock)}${p.need > 1 ? ` (${t.progress(p.have, p.need)})` : ''}`;
-    if (unlocked && !wearOn(racer, [acc])?.items.length) line = fill(t.cantWear, words);
+    const fits = wearOn(racer, [acc]);
+    if (unlocked && !fits?.items.length && !fits?.base) line = fill(t.cantWear, words);
     else if (unlocked) {
       action = isWorn ? (
         <PrimaryButton color="blauw" onClick={() => void wearAccessory(acc.slot, null)}>

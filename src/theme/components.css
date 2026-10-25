@@ -652,3 +652,25 @@
   box-shadow: 0 0 0 2px var(--blauw);
   background: rgba(255, 255, 255, 0.6);
 }
+
+.living__worn {
+  filter: none;
+}
+
+/* Plek van een computerracer op de kaart: klein rondje rechtsonder. */
+.race-map__pos {
+  position: absolute;
+  left: 10px;
+  top: 2px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--wit);
+  color: var(--inkt);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 17px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}

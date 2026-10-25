@@ -95,12 +95,27 @@ export function placeOn(racer: Racer, acc: Accessory): WearSpot | undefined {
 }
 
 /** Wat er op de afbeelding van deze racer komt (nek, dan ogen, dan hoofd). */
-export function wearOn(racer: Racer, items: Accessory[]): { items: Worn[]; aspect: number } | undefined {
+export function wearOn(racer: Racer, items: Accessory[]): { items: Worn[]; aspect: number; base?: Worn } | undefined {
   if (!racer.wear) return undefined;
-  const placed = SLOT_ORDER.flatMap((slot) => {
+  const chosen = SLOT_ORDER.flatMap((slot) => {
     const acc = items.find((a) => a.slot === slot);
-    const spot = acc && placeOn(racer, acc);
-    return acc && spot ? [{ image: acc.image, alt: acc.name, spot }] : [];
+    return acc ? [acc] : [];
   });
-  return { items: placed, aspect: racer.wear.aspect };
+  // Is er een getekend plaatje van de racer met een van deze accessoires?
+  // Dan dat plaatje (hoofd gaat voor), en de rest erop leggen.
+  const drawn = [...chosen].reverse().find((a) => racer.wornImages?.[a.id]);
+  const variant = drawn && racer.wornImages![drawn.id]!;
+  const placed = chosen
+    .filter((a) => a !== drawn)
+    .flatMap((acc) => {
+      const spot = placeOn(racer, acc);
+      return spot ? [{ image: acc.image, alt: acc.name, spot }] : [];
+    });
+  return {
+    items: placed,
+    aspect: racer.wear.aspect,
+    base: variant
+      ? { image: variant.image, alt: drawn!.name, spot: { left: variant.left, top: variant.top, width: variant.width } }
+      : undefined,
+  };
 }

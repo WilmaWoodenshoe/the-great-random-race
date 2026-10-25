@@ -47,10 +47,17 @@ export function placeRacers(
       candidates.push({ x: Math.cos(a) * ring * minDistance, y: Math.sin(a) * ring * minDistance * 0.8 });
     }
   }
-  const inside = (p: MapPoint) => p.x >= 0 && p.y >= 0 && p.x <= course.map.width && p.y <= course.map.height;
+  // Ruim binnen de kaart blijven, zodat racer en label niet buiten de kaart vallen.
+  const margin = 70;
+  const inside = (p: MapPoint) =>
+    p.x >= margin && p.y >= margin && p.x <= course.map.width - margin && p.y <= course.map.height - margin;
+  const clamp = (p: MapPoint): MapPoint => ({
+    x: Math.min(Math.max(p.x, margin), course.map.width - margin),
+    y: Math.min(Math.max(p.y, margin), course.map.height - margin),
+  });
 
   for (const r of [...racers].sort((a, b) => b.km - a.km)) {
-    const base = mapPointAt(course, r.km);
+    const base = clamp(mapPointAt(course, r.km));
     let point = base;
     for (const c of candidates) {
       const candidate = { x: base.x + c.x, y: base.y + c.y };

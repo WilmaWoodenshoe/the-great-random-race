@@ -58,6 +58,12 @@ export interface Racer {
     eyes: WearAnchor;
     neck: WearAnchor;
   };
+  /**
+   * Getekende plaatjes van de racer mét een accessoire (accessoire-id →
+   * plaatje en plek in procenten van de gewone afbeelding). Die zien er
+   * mooier uit dan een accessoire dat erop gelegd wordt.
+   */
+  wornImages?: Partial<Record<string, { image: string; left: number; top: number; width: number }>>;
   /** Weetjes voor het racerprofiel (optioneel). */
   facts?: {
     favoriteFood?: string;

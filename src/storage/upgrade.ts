@@ -35,6 +35,7 @@ export function upgradeRace(race: Race): Race {
       image: now.image,
       facts: now.facts,
       wear: now.wear,
+      wornImages: now.wornImages,
     };
   });
 
