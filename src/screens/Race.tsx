@@ -28,7 +28,7 @@ export function Race() {
       racerId: s.racerId,
       point: places[s.racerId],
       image: racer.image,
-      label: `${racer.name} · #${s.position}`,
+      name: racer.name,
       isPlayer: s.racerId === race.playerId,
       owner: race.owners?.[s.racerId],
       position: s.position,

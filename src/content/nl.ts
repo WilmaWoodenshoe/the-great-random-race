@@ -74,6 +74,11 @@ export const nl = {
   race: {
     openJournal: 'Journaal openen',
     you: 'jij',
+    yourRacer: 'jouw racer',
+    computer: 'computer',
+    player: (nick: string) => `speler: ${nick}`,
+    cardHint: 'Tik nog eens voor de racerkaart',
+    who: (name: string, pos: number) => `${name}, plek ${pos}. Tik om te zien wie het is.`,
     standings: 'Bekijk de tussenstand',
     finish: 'Finish',
     mapAlt: (course: string, name: string, pos: number) => `Geïllustreerde kaart van ${course} met ${name} op plek ${pos}`,

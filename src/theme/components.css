@@ -530,6 +530,11 @@
   position: absolute;
   width: 0;
   height: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .race-map__ping {
@@ -554,20 +559,6 @@
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
 }
 
-.race-map__label {
-  position: absolute;
-  left: 14px;
-  top: -38px;
-  background: var(--wit);
-  color: var(--inkt);
-  border-radius: 10px;
-  padding: 3px 8px;
-  font-size: 12px;
-  font-weight: 800;
-  white-space: nowrap;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
 .race-map__marker--player {
   z-index: 3;
 }
@@ -581,21 +572,6 @@
   top: -18px;
   width: 40px;
   height: 30px;
-}
-
-.race-map__tag {
-  position: absolute;
-  left: 50%;
-  top: 12px;
-  transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--inkt);
-  border-radius: 8px;
-  padding: 1px 6px;
-  font-size: 10px;
-  font-weight: 800;
-  white-space: nowrap;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Ruim tikvlak rond elke racer op de kaart. */
@@ -639,14 +615,6 @@
   color: var(--wit);
 }
 
-/* Gedeelde race: onder de racer de bijnaam van de speler. */
-.race-map__owner {
-  display: block;
-  color: var(--blauw);
-  font-weight: 800;
-  text-align: center;
-}
-
 .race-map__marker--human .race-map__racer--other {
   border-radius: 50%;
   box-shadow: 0 0 0 2px var(--blauw);
@@ -657,7 +625,7 @@
   filter: none;
 }
 
-/* Plek van een computerracer op de kaart: klein rondje rechtsonder. */
+/* Plek van een racer op de kaart: klein rondje rechtsonder. */
 .race-map__pos {
   position: absolute;
   left: 10px;
@@ -673,4 +641,119 @@
   line-height: 17px;
   text-align: center;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.race-map__marker--player .race-map__pos {
+  left: 14px;
+  top: 6px;
+  background: var(--oranje);
+  color: var(--wit);
+}
+
+.race-map__marker--selected {
+  z-index: 5;
+}
+
+.race-map__marker--selected .race-map__racer {
+  transform: scale(1.15);
+}
+
+/* Ballon met wie het is: verschijnt na één tik op een racer. */
+.race-map__bubble {
+  position: absolute;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  margin: 0;
+  padding: 6px 10px 5px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--wit);
+  color: var(--inkt);
+  font: inherit;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  --bx: -50%;
+  --by: calc(-100% - 30px);
+  transform: translate(var(--bx), var(--by));
+  animation: grr-bubble 0.18s ease-out;
+}
+
+.race-map__bubble--links {
+  --bx: -22px;
+}
+
+.race-map__bubble--rechts {
+  --bx: calc(-100% + 22px);
+}
+
+/* Racer bovenaan de kaart: ballon eronder. */
+.race-map__bubble--onder {
+  --by: 30px;
+}
+
+.race-map__bubble--onder::after {
+  bottom: auto;
+  top: -6px;
+  border: 7px solid transparent;
+  border-top: 0;
+  border-bottom-color: var(--wit);
+}
+
+.race-map__bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  margin-left: -7px;
+  border: 7px solid transparent;
+  border-bottom: 0;
+  border-top-color: var(--wit);
+}
+
+.race-map__bubble--links::after {
+  left: 22px;
+}
+
+.race-map__bubble--rechts::after {
+  left: auto;
+  right: 15px;
+}
+
+.race-map__bubble-name {
+  font-family: var(--font-kop);
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.race-map__bubble-who {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--grijs);
+}
+
+.race-map__bubble-who--human {
+  color: var(--blauw);
+}
+
+.race-map__bubble--player .race-map__bubble-who {
+  color: var(--oranje);
+}
+
+.race-map__bubble-hint {
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: 700;
+  opacity: 0.6;
+}
+
+@keyframes grr-bubble {
+  from {
+    opacity: 0;
+  }
 }
