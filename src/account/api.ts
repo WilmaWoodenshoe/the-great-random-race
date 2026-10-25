@@ -148,6 +148,11 @@ export const api = {
   move: (id: number, kind: 'decision' | 'action', value: string, key = '') =>
     call<{ time: number; key: string }>('POST', `/races/${id}/moves`, { kind, key, value }),
 
+  // Dagelijkse melding
+  pushKey: () => call<{ key: string }>('GET', '/push/key'),
+  pushSubscribe: (sub: PushSubscriptionJSON) => call<{ ok: true }>('POST', '/push/subscribe', sub),
+  pushUnsubscribe: (endpoint: string) => call<{ ok: true }>('POST', '/push/unsubscribe', { endpoint }),
+
   // Beheer
   adminUsers: () => call<{ users: AdminUser[] }>('GET', '/admin/users'),
   approveUser: (id: number) => call<{ ok: true }>('POST', `/admin/users/${id}/approve`),

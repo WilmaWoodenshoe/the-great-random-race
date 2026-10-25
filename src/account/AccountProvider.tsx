@@ -17,6 +17,7 @@ import type { SaveData } from '../models/Save';
 import { useGame } from '../state/GameProvider';
 import { parseSave } from '../storage/storage';
 import { isTestVersion } from '../utils/env';
+import { disablePush } from './push';
 import { api, ApiError, type Me, type RaceSummary } from './api';
 import { buildRace } from './buildRace';
 
@@ -312,11 +313,14 @@ export function AccountProvider({ children }: { children: ReactNode }) {
       myRaces,
       selectRace: (id) => loadRaces(id),
       logout: async () => {
+        // Geen meldingen meer naar deze telefoon voor dit account.
+        await disablePush().catch(() => undefined);
         await api.logout().catch(() => undefined);
         signedOut();
       },
       deleteAccount: async () => {
         await api.deleteAccount();
+        await disablePush().catch(() => undefined);
         signedOut();
       },
     }),

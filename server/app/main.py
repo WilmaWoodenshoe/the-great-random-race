@@ -10,6 +10,7 @@
 # Draait achter nginx op https://thegreatrandomrace.nl/api. Starten:
 #   uvicorn app.main:create_app --factory --host 127.0.0.1 --port 8100
 
+import asyncio
 import json
 import re
 import secrets
@@ -38,6 +39,7 @@ from webauthn.helpers.structs import (
 
 from .config import Settings, load_settings
 from .db import Database
+from .push import Pusher, register_push_routes
 from .races import register_race_routes
 from .security import SESSION_COOKIE, SESSION_SECONDS, RateLimiter, cleanup, create_session, end_session, session_user
 
@@ -90,14 +92,19 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     save_limit = RateLimiter(240, 3600)
     read_limit = RateLimiter(300, 600)
 
+    pusher = Pusher(db, settings.db_path, settings.origin)
+
     @asynccontextmanager
     async def lifespan(_app: FastAPI):
         cleanup(db)
+        task = asyncio.create_task(pusher.run_forever())
         yield
+        task.cancel()
 
     app = FastAPI(title="The Great Random Race", docs_url=None, redoc_url=None, openapi_url=None, lifespan=lifespan)
     app.state.db = db
     app.state.settings = settings
+    app.state.pusher = pusher
 
     @app.middleware("http")
     async def check_origin(request: Request, call_next):
@@ -354,6 +361,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         return {"ok": True}
 
     register_race_routes(app, db, approved_user, current_user, admin_user, lambda r: limit(read_limit, client_ip(r)))
+    register_push_routes(app, db, pusher, current_user)
 
     # ----- Spel bewaren -----
 

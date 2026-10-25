@@ -7,6 +7,7 @@ import { ApiError, isCancelled } from '../account/api';
 import { isTestVersion } from '../utils/env';
 import { useGame } from '../state/GameProvider';
 import { peekInvite } from '../account/invite';
+import { PushCard } from '../components/PushCard';
 
 /** Account: aanmaken, inloggen met een passkey, uitloggen en verwijderen. */
 export function Account() {
@@ -74,6 +75,7 @@ export function Account() {
               : t.notSavedYet}
           </p>
         </section>
+        {me.status === 'approved' && <PushCard />}
         <PrimaryButton color="blauw" onClick={() => run('other', logout)}>
           {t.logout}
         </PrimaryButton>

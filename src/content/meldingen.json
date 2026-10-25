@@ -1,0 +1,24 @@
+{
+  "_uitleg": "De dagelijkse melding tijdens een race. De server kiest elke dag één bericht. Je mag {naam}, {hij}, {Hij}, {zijn}, {hem} en {route} gebruiken. Een bericht toevoegen: zet het tussen aanhalingstekens in de lijst, met een komma ertussen.",
+  "titel": "The Great Random Race",
+  "berichten": [
+    "{naam} heeft vandaag drie keer de weg gevraagd. Aan een steen. Kom even kijken.",
+    "Breaking news: {naam} is nog steeds onderweg. Meer weten? Tik hier.",
+    "{naam} vraagt of je nog weet dat {hij} meedoet. Even zwaaien?",
+    "Er is iets gebeurd op {route}. Of niet. Je weet het pas als je kijkt.",
+    "{naam} heeft een snack gevonden en vergeten waar de finish was.",
+    "De tussenstand is veranderd! Of {naam} daar blij mee is? Kijk zelf.",
+    "{naam} oefent {zijn} overwinningsdansje alvast. Te vroeg? Check de stand.",
+    "Psst… {naam} wil je iets laten zien. Iets met een blaadje, denken we.",
+    "Dagelijks rapport: {naam} leeft, rent (ongeveer) en mist je aanmoediging.",
+    "{naam} heeft een tegenstander zien struikelen en doet alsof {hij} niks zag.",
+    "Het nieuws van vandaag op {route} is binnen. Spoiler: het is raar.",
+    "{naam} staat bij een bordje en weet niet of het links of rechts is. Help!",
+    "Heb je {naam} al gezien vandaag? {Hij} jou wel. Elke minuut.",
+    "Iemand op {route} heeft een hoed verloren. Was het {naam}? Kom kijken.",
+    "{naam} heeft een kopje thee gezet. Halverwege de race. Klassiek.",
+    "Reminder van {naam}: aanmoedigen kost niks en maakt {hem} 0,1 km/u sneller.",
+    "{naam} heeft vandaag een nieuwe vriend gemaakt. Het is een mier.",
+    "Live vanaf {route}: {naam} doet {zijn} best. Echt waar. Bijna."
+  ]
+}

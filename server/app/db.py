@@ -81,6 +81,16 @@ CREATE TABLE IF NOT EXISTS moves (
     UNIQUE (race_id, racer_id, kind, key)
 );
 
+-- Dagelijkse melding: het adres van de meldingendienst van een telefoon.
+CREATE TABLE IF NOT EXISTS push_subscriptions (
+    endpoint      TEXT PRIMARY KEY,
+    user_id       INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    p256dh        TEXT NOT NULL,
+    auth          TEXT NOT NULL,
+    created_at    INTEGER NOT NULL,
+    last_sent_day TEXT                      -- 'YYYY-MM-DD': vandaag al een melding gehad
+);
+
 -- Oud (v0.2): het spelersoverzicht staat nu bij de races.
 DROP TABLE IF EXISTS players;
 """

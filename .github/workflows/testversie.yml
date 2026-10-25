@@ -89,6 +89,7 @@ jobs:
         run: |
           mkdir -p dist/_server
           cp -r server/app server/requirements.txt dist/_server/
+          cp src/content/meldingen.json dist/_server/app/
           find dist/_server -name __pycache__ -prune -exec rm -rf {} +
           echo "${GITHUB_SHA}" > dist/_server/VERSION
       - name: In de tak 'productie' zetten

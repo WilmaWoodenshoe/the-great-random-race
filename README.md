@@ -200,6 +200,17 @@ const aardbei: Choice = {
 export default aardbei;
 ```
 
+### Dagelijkse melding — `src/content/meldingen.json`
+
+Tijdens een race krijgt iedereen die de melding aanzet (Meer → Account) elke dag om 19.00 uur één van deze berichten. Een bericht toevoegen: zet het tussen aanhalingstekens in de lijst `berichten`, met een komma achter het vorige bericht. Je mag `{naam}`, `{hij}`, `{Hij}`, `{zijn}`, `{hem}` en `{route}` gebruiken.
+
+```json
+"berichten": [
+  "{naam} heeft vandaag drie keer de weg gevraagd. Aan een steen. Kom even kijken.",
+  "Live vanaf {route}: {naam} doet {zijn} best. Echt waar. Bijna."
+]
+```
+
 ## Voor ontwikkelaars
 
 ```bash

@@ -455,6 +455,17 @@ export const nl = {
   },
   account: {
     title: 'Account',
+    pushTitle: 'Dagelijkse melding',
+    pushIntro:
+      'Tijdens een race krijg je elke avond om 19.00 uur één melding op je telefoon. Bijvoorbeeld: "Gerard heeft vandaag een nieuwe vriend gemaakt. Het is een mier."',
+    pushOn: 'Aan op deze telefoon.',
+    pushEnable: 'Zet de melding aan',
+    pushDisable: 'Melding uitzetten',
+    pushDenied: 'Je telefoon blokkeert meldingen van deze app. Zet ze aan in de instellingen van je telefoon (bij Meldingen) en probeer het opnieuw.',
+    pushRefused: 'Geen toestemming gekregen. Je kunt het later nog eens proberen.',
+    pushHomeScreen:
+      'Op een iPhone werkt dit alleen als de app op je beginscherm staat: tik in Safari op het deel-icoon (vierkantje met pijl omhoog) en kies "Zet op beginscherm". Open de app daarna vanaf je beginscherm.',
+    pushUnsupported: 'Deze browser kan geen meldingen krijgen.',
     menuHint: 'Je race bewaren en op een andere telefoon verder spelen.',
     menuHintIn: (nick: string) => `Ingelogd als ${nick}.`,
     intro:
