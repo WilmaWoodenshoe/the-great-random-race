@@ -28,8 +28,8 @@ const charles: Racer = {
     feesthoed: { image: 'racers/worn/konijn-feesthoed.webp', left: 1.0, top: -18.6, width: 100.0 },
     kroon: { image: 'racers/worn/konijn-kroon.webp', left: -2.0, top: -11.1, width: 102.0 },
     helm: { image: 'racers/worn/konijn-helm.webp', left: -1.0, top: -4.4, width: 100.0 },
-    zonnebril: { image: 'racers/worn/konijn-zonnebril.webp', left: 3.8, top: 0.0, width: 96.2 },
-    sjaal: { image: 'racers/worn/konijn-sjaal.webp', left: 4.8, top: 0.0, width: 96.2 },
+    zonnebril: { image: 'racers/worn/konijn-zonnebril.webp', left: 3.8, top: 0.0, width: 96.2, overlay: 'racers/worn/konijn-zonnebril-los.webp' },
+    sjaal: { image: 'racers/worn/konijn-sjaal.webp', left: 4.8, top: 0.0, width: 96.2, overlay: 'racers/worn/konijn-sjaal-los.webp' },
   },
   facts: {
     favoriteFood: 'Wortels, zoals vroeger',

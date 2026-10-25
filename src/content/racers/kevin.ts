@@ -24,8 +24,8 @@ const kevin: Racer = {
     feesthoed: { image: 'racers/worn/rups-feesthoed.webp', left: 1.0, top: -8.6, width: 100.0 },
     kroon: { image: 'racers/worn/rups-kroon.webp', left: -1.0, top: -1.0, width: 98.0 },
     helm: { image: 'racers/worn/rups-helm.webp', left: 1.9, top: -1.0, width: 96.2 },
-    zonnebril: { image: 'racers/worn/rups-zonnebril.webp', left: 1.0, top: 0.0, width: 100.0 },
-    sjaal: { image: 'racers/worn/rups-sjaal.webp', left: 1.9, top: 1.0, width: 96.2 },
+    zonnebril: { image: 'racers/worn/rups-zonnebril.webp', left: 1.0, top: 0.0, width: 100.0, overlay: 'racers/worn/rups-zonnebril-los.webp' },
+    sjaal: { image: 'racers/worn/rups-sjaal.webp', left: 1.9, top: 1.0, width: 96.2, overlay: 'racers/worn/rups-sjaal-los.webp' },
   },
   facts: {
     favoriteFood: 'Bladeren',

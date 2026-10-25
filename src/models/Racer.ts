@@ -63,7 +63,19 @@ export interface Racer {
    * plaatje en plek in procenten van de gewone afbeelding). Die zien er
    * mooier uit dan een accessoire dat erop gelegd wordt.
    */
-  wornImages?: Partial<Record<string, { image: string; left: number; top: number; width: number }>>;
+  wornImages?: Partial<
+    Record<
+      string,
+      {
+        image: string;
+        left: number;
+        top: number;
+        width: number;
+        /** Alleen het accessoire, uitgeknipt uit `image` (zelfde plek): om over een ander getekend plaatje te leggen. */
+        overlay?: string;
+      }
+    >
+  >;
   /** Weetjes voor het racerprofiel (optioneel). */
   facts?: {
     favoriteFood?: string;

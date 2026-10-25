@@ -25,8 +25,8 @@ const bintje: Racer = {
     feesthoed: { image: 'racers/worn/aardappel-feesthoed.webp', left: 0.0, top: -40.4, width: 102.0 },
     kroon: { image: 'racers/worn/aardappel-kroon.webp', left: -3.1, top: -26.9, width: 104.2 },
     helm: { image: 'racers/worn/aardappel-helm.webp', left: 4.7, top: -0.8, width: 94.3 },
-    zonnebril: { image: 'racers/worn/aardappel-zonnebril.webp', left: 0.0, top: 0.0, width: 100.0 },
-    sjaal: { image: 'racers/worn/aardappel-sjaal.webp', left: 1.1, top: 0.0, width: 108.7 },
+    zonnebril: { image: 'racers/worn/aardappel-zonnebril.webp', left: 0.0, top: 0.0, width: 100.0, overlay: 'racers/worn/aardappel-zonnebril-los.webp' },
+    sjaal: { image: 'racers/worn/aardappel-sjaal.webp', left: 1.1, top: 0.0, width: 108.7, overlay: 'racers/worn/aardappel-sjaal-los.webp' },
   },
   facts: {
     favoriteFood: 'Liever niet over praten',

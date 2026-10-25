@@ -108,6 +108,9 @@ export function wearOn(racer: Racer, items: Accessory[]): { items: Worn[]; aspec
   const placed = chosen
     .filter((a) => a !== drawn)
     .flatMap((acc) => {
+      // Uitgeknipt uit een eigen tekening? Dan past het precies over het getekende plaatje.
+      const cut = variant && racer.wornImages?.[acc.id];
+      if (cut?.overlay) return [{ image: cut.overlay, alt: acc.name, spot: { left: cut.left, top: cut.top, width: cut.width } }];
       const spot = placeOn(racer, acc);
       return spot ? [{ image: acc.image, alt: acc.name, spot }] : [];
     });

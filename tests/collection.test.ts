@@ -99,8 +99,8 @@ describe('Collectie: dragen', () => {
     const gerard = getRacer('gerard');
     const w = wearOn(gerard, [acc('kroon'), acc('zonnebril')])!;
     expect(w.base?.image).toContain('gerard-kroon');
-    // De zonnebril heeft ook een eigen plaatje, maar het hoofd gaat voor: de bril wordt erop gelegd.
-    expect(w.items.map((x) => x.image)).toEqual([acc('zonnebril').image]);
+    // Het hoofd gaat voor; de bril komt erover, uitgeknipt uit de eigen tekening.
+    expect(w.items.map((x) => x.image)).toEqual(['racers/worn/gerard-zonnebril-los.webp']);
     const turbo = wearOn(getRacer('turbo'), [acc('kroon')])!;
     expect(turbo.base).toBeUndefined();
     expect(turbo.items).toHaveLength(1);
