@@ -724,6 +724,10 @@ export const nl = {
       `Computerracers uit ${name} halen? Alleen de spelers racen dan nog. De tussenstand en het journaal worden opnieuw uitgerekend, zonder de computerracers.`,
     addComputerConfirm: (name: string) => `Computerracers terugzetten in ${name}? De tussenstand en het journaal worden opnieuw uitgerekend.`,
   },
+  update: {
+    text: 'Er is een nieuwe versie van de app!',
+    button: 'Vernieuwen',
+  },
   error: {
     title: 'Oeps.',
     text: 'Er ging iets mis. Gerard heeft er niets mee te maken. Waarschijnlijk.',

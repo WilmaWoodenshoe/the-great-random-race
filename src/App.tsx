@@ -3,6 +3,7 @@ import { HashRouter, Navigate, Route, Routes, useLocation } from 'react-router-d
 import { GameProvider } from './state/GameProvider';
 import { AccountProvider } from './account/AccountProvider';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { UpdateBanner } from './components/UpdateBanner';
 import { Start } from './screens/Start';
 import { Welcome } from './screens/Welcome';
 import { PickRacer } from './screens/PickRacer';
@@ -45,6 +46,7 @@ export function App() {
         <AccountProvider>
           <HashRouter>
             <ScrollToTop />
+            <UpdateBanner />
             <Routes>
               <Route path="/" element={<Start />} />
               <Route path="/welkom" element={<Welcome />} />

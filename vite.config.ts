@@ -23,7 +23,8 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      // Nieuwe versie: de app toont een balk 'Vernieuwen' (src/components/UpdateBanner.tsx).
+      registerType: 'prompt',
       includeAssets: ['images/**/*', 'icons/*'],
       manifest: {
         name: 'The Great Random Race',
