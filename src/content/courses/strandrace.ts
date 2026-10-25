@@ -12,7 +12,7 @@ const strandrace: Course = {
     image: 'courses/strandrace-kaart.webp',
     width: 1024,
     height: 1536,
-    finish: { x: 380, y: 40 },
+    finish: { x: 590, y: 95 },
     // Paasei: soms scheurt er een motorcrosser over het duin (#84, The King of Sand).
     easterEgg: { image: 'courses/strandrace-kaart-84.webp', chance: 0.25, journalKey: 'kingOfSand' },
   },

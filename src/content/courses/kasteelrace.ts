@@ -12,7 +12,7 @@ const kasteelrace: Course = {
     image: 'courses/kasteelrace-kaart.webp',
     width: 1024,
     height: 1536,
-    finish: { x: 300, y: 40 },
+    finish: { x: 545, y: 95 },
   },
   background: 'backgrounds/bg-kasteel.webp',
   extraEvents: ['fountain'],

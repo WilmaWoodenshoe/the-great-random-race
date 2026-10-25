@@ -493,10 +493,10 @@
 }
 
 .race-map__sign {
-  /* Naambordje over het getekende bordje heen, goed leesbaar op de telefoon. */
+  /* Naambordje naast het pad (de kaarten hebben geen getekende bordjes). */
   position: absolute;
   transform: translate(-50%, -50%);
-  max-width: 34%;
+  white-space: nowrap;
   padding: 2px 7px;
   border-radius: 7px;
   background: #fbe9c4;
@@ -637,4 +637,18 @@
 .nav__new {
   background: var(--oranje);
   color: var(--wit);
+}
+
+/* Gedeelde race: onder de racer de bijnaam van de speler. */
+.race-map__owner {
+  display: block;
+  color: var(--blauw);
+  font-weight: 800;
+  text-align: center;
+}
+
+.race-map__marker--human .race-map__racer--other {
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--blauw);
+  background: rgba(255, 255, 255, 0.6);
 }

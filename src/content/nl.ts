@@ -73,6 +73,7 @@ export const nl = {
   },
   race: {
     openJournal: 'Journaal openen',
+    you: 'jij',
     standings: 'Bekijk de tussenstand',
     finish: 'Finish',
     mapAlt: (course: string, name: string, pos: number) => `Geïllustreerde kaart van ${course} met ${name} op plek ${pos}`,

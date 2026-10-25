@@ -10,6 +10,8 @@ export interface MapMarker {
   label: string;
   /** De racer van de speler: groter, met een pulserende ring. */
   isPlayer?: boolean;
+  /** Bijnaam van de speler die deze racer bestuurt (gedeelde race). */
+  owner?: string;
 }
 
 interface Props {
@@ -58,18 +60,24 @@ export function RaceMap({ course, markers, alt, image }: Props) {
           >
             <div className="race-map__ping grr-ping" />
             <img className="race-map__racer" src={img(m.image)} alt="" />
-            <div className="race-map__label">{m.label}</div>
+            <div className="race-map__label">
+              {m.label}
+              {m.owner && <span className="race-map__owner">{nl.race.you}</span>}
+            </div>
           </Link>
         ) : (
           <Link
             key={m.racerId}
             to={`/racer/${m.racerId}`}
-            className="race-map__marker race-map__marker--other"
+            className={`race-map__marker race-map__marker--other${m.owner ? ' race-map__marker--human' : ''}`}
             style={pos(m.point)}
             aria-label={nl.racer.open(m.label)}
           >
             <img className="race-map__racer race-map__racer--other" src={img(m.image)} alt="" />
-            <div className="race-map__tag">{m.label}</div>
+            <div className="race-map__tag">
+              {m.label}
+              {m.owner && <span className="race-map__owner">{m.owner}</span>}
+            </div>
           </Link>
         ),
       )}

@@ -30,6 +30,7 @@ export function Race() {
       image: racer.image,
       label: `${racer.name} · #${s.position}`,
       isPlayer: s.racerId === race.playerId,
+      owner: race.owners?.[s.racerId],
     };
   });
 
