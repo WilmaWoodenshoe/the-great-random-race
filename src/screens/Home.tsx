@@ -2,6 +2,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { nl } from '../content/nl';
 import { BottomNav } from '../components/BottomNav';
 import { RaceSwitcher } from '../components/RaceSwitcher';
+import { PushInvite } from '../components/PushInvite';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { ProgressBar } from '../components/ProgressBar';
 import { LivingRacer, moodFor } from '../components/Gerard';
@@ -116,6 +117,8 @@ export function Home() {
             {t.viewRace}
           </PrimaryButton>
         )}
+
+        {race.serverId && !view.finished && <PushInvite />}
 
         {fresh.length > 0 && (
           <Link to="/collectie" className="card card--wit action-teaser grr-pop">

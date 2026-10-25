@@ -466,6 +466,15 @@ export const nl = {
     pushHomeScreen:
       'Op een iPhone werkt dit alleen als de app op je beginscherm staat: tik in Safari op het deel-icoon (vierkantje met pijl omhoog) en kies "Zet op beginscherm". Open de app daarna vanaf je beginscherm.',
     pushUnsupported: 'Deze browser kan geen meldingen krijgen.',
+    inviteTitle: 'Elke avond nieuws van je racer?',
+    inviteText: 'Tijdens de race krijg je om 19.00 uur één grappige melding. Je telefoon vraagt zo of dat mag.',
+    inviteYes: 'Ja, leuk!',
+    inviteNo: 'Nee, liever niet',
+    inviteLater: 'Je kunt het altijd aan- of uitzetten bij Meer → Account.',
+    inviteDone: 'Top! Tijdens de race hoor je elke avond om 19.00 uur van je racer.',
+    inviteHomeScreen:
+      'Op een iPhone kan dat alleen als de app op je beginscherm staat: tik in Safari op het deel-icoon (vierkantje met pijl omhoog) en kies "Zet op beginscherm". Open de app daarna vanaf je beginscherm.',
+    inviteOk: 'Oké',
     menuHint: 'Je race bewaren en op een andere telefoon verder spelen.',
     menuHintIn: (nick: string) => `Ingelogd als ${nick}.`,
     intro:

@@ -5,6 +5,7 @@ import { BackHeader } from '../components/BackHeader';
 import { BottomNav } from '../components/BottomNav';
 import { RaceSwitcher } from '../components/RaceSwitcher';
 import { ShareButton } from '../components/ShareButton';
+import { PushInvite } from '../components/PushInvite';
 import { api, ApiError, type RaceSummary } from '../account/api';
 import { useAccount } from '../account/AccountProvider';
 import { useGame } from '../state/GameProvider';
@@ -85,6 +86,7 @@ export function Lobby() {
             {race.course.name} · {nl.races.startsAt(race.startTime)} · {t.duration(race.course.days)}
           </div>
         </section>
+        <PushInvite />
 
         <h2 className="more__h2">{t.participants}</h2>
         <ul className="card card--wit lobby__list">
