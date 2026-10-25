@@ -65,3 +65,19 @@ describe('gedeelde race narekenen', () => {
     expect(buildRace(detail(), null).playerId).toBe('isabelle');
   });
 });
+
+describe('lopende race krijgt de nieuwste kaart', () => {
+  it('oude kaart in de opgeslagen race: toch de kaart en achtergrond van nu', () => {
+    const d = detail();
+    d.snapshot.course = {
+      ...d.snapshot.course,
+      map: { ...d.snapshot.course.map, image: 'courses/grote-bosrace-kaart.webp', width: 1024, height: 1536 },
+      background: 'backgrounds/bg-landschap.webp',
+      backgroundTall: undefined,
+    };
+    const race = buildRace(d, 1);
+    expect(race.course.map.image).toBe('courses/grote-bosrace-kaart-staand.webp');
+    expect(race.course.map.height).toBe(1843);
+    expect(race.course.backgroundTall).toBe('backgrounds/bg-bos-staand.webp');
+  });
+});
