@@ -48,5 +48,7 @@ export interface Course {
   extraEvents?: ('fountain' | 'beach_ball')[];
   /** Achtergrond bij je racer (Home, profiel, finish), relatief aan public/images/. */
   background?: string;
+  /** Staande achtergrond die het hele Home-scherm vult (optioneel). */
+  backgroundTall?: string;
   segments: CourseSegment[];
 }

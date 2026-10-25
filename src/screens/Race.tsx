@@ -2,7 +2,8 @@ import { Link, Navigate } from 'react-router-dom';
 import { nl } from '../content/nl';
 import { mapImageOf } from '../game/course';
 import { BackHeader } from '../components/BackHeader';
-import { JournalIcon } from '../components/Icons';
+import { BookIcon } from '../components/Icons';
+import { img } from '../utils/images';
 import { Pill } from '../components/Pill';
 import { ProgressBar } from '../components/ProgressBar';
 import { RaceMap } from '../components/RaceMap';
@@ -36,13 +37,15 @@ export function Race() {
   });
 
   return (
-    <div className="screen screen--passend">
+    <div className="screen screen--passend race-screen">
+      {/* De kaart nog eens, vervaagd, als achtergrond: zo is het hele scherm gevuld. */}
+      <img className="race-screen__bg" src={img(mapImageOf(view.race))} alt="" />
       <BackHeader
         title={nl.common.raceNumber(race.number)}
         subtitle={course.name}
         right={
           <Link to="/journaal" className="icon-btn icon-btn--vierkant" aria-label={nl.race.openJournal}>
-            <JournalIcon />
+            <BookIcon size={26} />
           </Link>
         }
       >

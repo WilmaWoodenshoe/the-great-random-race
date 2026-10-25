@@ -26,13 +26,6 @@ export const Gear = ({ size = 22 }: P) => (
   </svg>
 );
 
-export const JournalIcon = ({ size = 20 }: P) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <rect x="4" y="3" width="16" height="18" rx="2" />
-    <path d="M8 8h8M8 12h8M8 16h5" />
-  </svg>
-);
-
 export const BookIcon = ({ size = 28 }: P) => (
   <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
     <path d="M3 5c3-1 6-1 9 1v14c-3-2-6-2-9-1z" fill="#2E8AD8" stroke="#1E2A36" strokeWidth="1.4" strokeLinejoin="round" />

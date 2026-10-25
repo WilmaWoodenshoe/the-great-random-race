@@ -6,7 +6,7 @@ import { PushInvite } from '../components/PushInvite';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { ProgressBar } from '../components/ProgressBar';
 import { LivingRacer, moodFor } from '../components/Gerard';
-import { Gear } from '../components/Icons';
+import { Gear, TrophyIcon } from '../components/Icons';
 import { useGame } from '../state/GameProvider';
 import { useRaceView } from '../state/useRaceView';
 import { formatClock } from '../utils/dates';
@@ -14,6 +14,7 @@ import { formatKm } from '../utils/format';
 import { img } from '../utils/images';
 import { newlyUnlocked } from '../game/collection';
 import { backgroundOf } from '../game/course';
+import { getRaceRacer } from '../game/engine';
 
 /** Klein plaatje bij "… is momenteel", passend bij wat de racer doet. */
 function statusIcon(activity: string): string {
@@ -55,8 +56,15 @@ export function Home() {
 
   return (
     <div className="screen screen--nav">
-      <img className="home__bg" src={img(backgroundOf(race.course))} alt="" />
-      <div className="home__fade" />
+      {race.course.backgroundTall ? (
+        // Staande achtergrond: vult het hele scherm.
+        <img className="home__bg home__bg--staand" src={img(race.course.backgroundTall)} alt="" />
+      ) : (
+        <>
+          <img className="home__bg" src={img(backgroundOf(race.course))} alt="" />
+          <div className="home__fade" />
+        </>
+      )}
 
       <header className="home__header">
         <img className="logo" src={img('ui/logo.png')} alt={nl.app.logoAlt} />
@@ -157,7 +165,7 @@ export function Home() {
 
         <div className="stat-grid">
           <Link to="/race" className="stat">
-            <img src={img('ui/icon-flower.png')} alt="" className="stat__icon" />
+            <img src={img(race.course.map.image)} alt="" className="stat__map" />
             <div className="stat__strong">{nl.common.raceNumber(race.number)}</div>
             <div className="stat__small">{race.course.name}</div>
             <div className="stat__small stat__small--gap">
@@ -165,12 +173,18 @@ export function Home() {
             </div>
           </Link>
           <Link to="/tussenstand" className="stat">
-            <img src={img('ui/icon-people.png')} alt="" className="stat__icon" />
+            <span className="stat__crowd" aria-hidden="true">
+              {view.standings.slice(0, 3).map((s) => (
+                <img key={s.racerId} src={img(getRaceRacer(race, s.racerId).image)} alt="" />
+              ))}
+            </span>
             <div className="stat__big">{race.racers.length}</div>
             <div className="stat__label">{nl.common.racers}</div>
           </Link>
           <Link to="/tussenstand" className="stat">
-            <img src={img('ui/icon-flower2.png')} alt="" className="stat__icon" />
+            <span className="stat__trophy">
+              <TrophyIcon size={30} />
+            </span>
             <div className="stat__label stat__label--strong">{t.yourPosition}</div>
             <div className={`stat__big ${change > 0 ? 'stat__big--groen' : change < 0 ? 'stat__big--oranje' : 'stat__big--grijs'}`}>
               {change > 0 ? '↑' : change < 0 ? '↓' : '='} {change !== 0 && Math.abs(change)}

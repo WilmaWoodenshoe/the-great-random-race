@@ -2042,3 +2042,76 @@ a.chip-btn {
   margin: 10px auto 0;
   color: var(--grijs);
 }
+
+/* Home: staande achtergrond over het hele scherm. */
+.home__bg--staand {
+  height: 100%;
+  object-position: center top;
+}
+
+/* Home: kaartjes onderaan. */
+.stat__map {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 40%;
+  border: 2px solid var(--wit);
+  box-shadow: 0 1px 4px rgba(30, 42, 54, 0.25);
+}
+
+.stat__crowd {
+  display: flex;
+  justify-content: center;
+  height: 34px;
+}
+
+.stat__crowd img {
+  width: 30px;
+  height: 30px;
+  margin: 2px -5px 0;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
+}
+
+.stat__crowd img:nth-child(2) {
+  position: relative;
+  z-index: 1;
+  margin-top: 0;
+  width: 32px;
+  height: 32px;
+}
+
+/* Profiel: met een accessoire iets kleiner, zodat alles in beeld blijft (zoals bij Collectie). */
+.racer__gerard.living--hoed {
+  width: 230px;
+  height: 180px;
+  margin-left: -115px;
+}
+
+/* Race: vervaagde kaart als achtergrond achter alles. */
+.race-screen__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(18px) saturate(1.1);
+  transform: scale(1.15);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.race-screen > :not(.race-screen__bg) {
+  position: relative;
+}
+
+.race-screen {
+  overflow: hidden;
+}
+
+.stat__trophy {
+  display: flex;
+  height: 34px;
+  align-items: center;
+}
