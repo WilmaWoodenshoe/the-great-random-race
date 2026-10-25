@@ -2,20 +2,25 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { nl } from '../content/nl';
 import { BackHeader } from '../components/BackHeader';
-import { api, ApiError, type AdminUser } from '../account/api';
+import { api, ApiError, type AdminUser, type RaceSummary } from '../account/api';
 import { useAccount } from '../account/AccountProvider';
 
 /** Beheer (alleen de beheerder): nieuwe accounts goedkeuren of weigeren, accounts verwijderen. */
 export function Admin() {
   const t = nl.admin;
-  const { me } = useAccount();
+  const { me, reloadRace } = useAccount();
   const [users, setUsers] = useState<AdminUser[] | null>(null);
+  const [races, setRaces] = useState<RaceSummary[] | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
   const load = useCallback(() => {
     api
       .adminUsers()
       .then((res) => setUsers(res.users))
+      .catch(() => setMessage(t.error));
+    api
+      .races()
+      .then((res) => setRaces(res.races.filter((r) => r.status !== 'finished')))
       .catch(() => setMessage(t.error));
   }, [t.error]);
 
@@ -60,6 +65,40 @@ export function Admin() {
         <Link to="/inventaris" className="players__join">
           {t.inventoryLink}
         </Link>
+
+        <h2 className="more__h2">{t.races}</h2>
+        {races && races.length === 0 && <p className="account__note">{t.racesEmpty}</p>}
+        <ul className="admin__list">
+          {(races ?? []).map((r) => {
+            const name = nl.races.name(r.id, r.name);
+            const fill = r.computerFill !== false;
+            return (
+              <li key={r.id} className="card card--wit admin__row">
+                <div className="admin__who">
+                  <b>{name}</b>
+                  <div className="account__small">
+                    {t.raceInfo(r.status === 'running' ? t.running : t.open, r.participants.length)} ·{' '}
+                    {fill ? t.withComputer : t.withoutComputer}
+                  </div>
+                </div>
+                <div className="admin__buttons">
+                  <button
+                    type="button"
+                    className={`chip-btn ${fill ? 'chip-btn--rood' : 'chip-btn--groen'}`}
+                    onClick={() =>
+                      act(async () => {
+                        await api.setComputerFill(r.id, !fill);
+                        await reloadRace();
+                      }, fill ? t.removeComputerConfirm(name) : t.addComputerConfirm(name))
+                    }
+                  >
+                    {fill ? t.removeComputer : t.addComputer}
+                  </button>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
 
         <h2 className="more__h2">{t.pending}</h2>
         {users && pending.length === 0 && <p className="account__note">{t.pendingEmpty}</p>}

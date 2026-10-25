@@ -49,7 +49,7 @@ export function pickLineup(playerId: string, seed: number, pool: Racer[] = allRa
  * De racers van de spelers, aangevuld met willekeurige computerracers tot
  * er 6 zijn. Vast per seed, zodat elke telefoon dezelfde race krijgt.
  */
-export function fillLineup(playerIds: string[], seed: number, pool: Racer[] = allRacers): Racer[] {
+export function fillLineup(playerIds: string[], seed: number, pool: Racer[] = allRacers, size = RACERS_PER_RACE): Racer[] {
   const players = playerIds.map((id) => {
     const r = pool.find((x) => x.id === id);
     if (!r) throw new Error(`Onbekende racer: ${id}`);
@@ -61,7 +61,7 @@ export function fillLineup(playerIds: string[], seed: number, pool: Racer[] = al
     const j = rng.int(0, i);
     [others[i], others[j]] = [others[j], others[i]];
   }
-  return [...players, ...others.slice(0, Math.max(0, RACERS_PER_RACE - players.length))];
+  return [...players, ...others.slice(0, Math.max(0, size - players.length))];
 }
 
 /** De racer die als eerste geselecteerd staat: die van de vorige race, anders de standaard. */

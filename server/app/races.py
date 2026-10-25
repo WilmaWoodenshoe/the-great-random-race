@@ -47,6 +47,10 @@ class JoinIn(BaseModel):
     racerId: str = Field(pattern=ID_PATTERN)
 
 
+class ComputerIn(BaseModel):
+    fill: bool
+
+
 class MoveIn(BaseModel):
     kind: str = Field(pattern=r"^(decision|action)$")
     # Bij een keuze: welk keuze-event. Bij een actie: leeg (de server bepaalt de dag).
@@ -100,6 +104,7 @@ def register_race_routes(
             "endTime": end_time(row),
             "status": status_of(row, at),
             "createdBy": creator["nickname"] if creator else None,
+            "computerFill": bool(row["computer_fill"]),
             "participants": participants_of(row["id"]),
         }
 
@@ -273,6 +278,13 @@ def register_race_routes(
                 db.execute(
                     "UPDATE participants SET racer_id = ? WHERE race_id = ? AND user_id = ?", (body.racerId, race_id, user_id)
                 )
+        return summary(get_race(race_id), now_ms())
+
+    @app.post("/api/races/{race_id}/computer")
+    def set_computer_fill(race_id: int, body: ComputerIn, _admin: int = Depends(admin_user)):
+        """Beheerder: lege plekken wel of niet aanvullen met computerracers (ook tijdens de race)."""
+        get_race(race_id)
+        db.execute("UPDATE races SET computer_fill = ? WHERE id = ?", (int(body.fill), race_id))
         return summary(get_race(race_id), now_ms())
 
     @app.post("/api/races/{race_id}/leave")

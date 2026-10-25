@@ -106,7 +106,11 @@ export function Lobby() {
             );
           })}
         </ul>
-        {summary && <p className="account__small center">{t.computerFill(RACERS_PER_RACE - participants.length)}</p>}
+        {summary && (
+          <p className="account__small center">
+            {summary.computerFill === false ? t.noComputer : t.computerFill(RACERS_PER_RACE - participants.length)}
+          </p>
+        )}
         {summary && participants.length < RACERS_PER_RACE && <ShareButton race={summary} />}
         {summary && participants.some((p) => p.userId === me?.id) && (
           <Link to={`/races/${serverId}/andere-racer`} className="players__join lobby__switch">

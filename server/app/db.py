@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS races (
     start_time   INTEGER NOT NULL,
     seed         INTEGER NOT NULL,
     snapshot     TEXT NOT NULL,             -- racers, route en keuze-events bij het aanmaken
+    computer_fill INTEGER NOT NULL DEFAULT 1, -- lege plekken aanvullen met computerracers
     created_by   INTEGER REFERENCES users(id) ON DELETE SET NULL,
     created_at   INTEGER NOT NULL
 );
@@ -105,6 +106,9 @@ def migrate(conn) -> None:
         conn.execute("UPDATE users SET status = 'approved'")
     if "is_admin" not in columns:
         conn.execute("ALTER TABLE users ADD COLUMN is_admin INTEGER NOT NULL DEFAULT 0")
+    race_columns = {row[1] for row in conn.execute("PRAGMA table_info(races)")}
+    if race_columns and "computer_fill" not in race_columns:
+        conn.execute("ALTER TABLE races ADD COLUMN computer_fill INTEGER NOT NULL DEFAULT 1")
     # Nog geen beheerder? Dan wordt het oudste account beheerder (dat van de eigenaar).
     if not conn.execute("SELECT 1 FROM users WHERE is_admin = 1").fetchone():
         conn.execute(

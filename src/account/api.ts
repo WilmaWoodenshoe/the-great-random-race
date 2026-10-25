@@ -33,6 +33,8 @@ export interface RaceSummary {
   endTime: number;
   status: 'open' | 'running' | 'finished';
   createdBy: string | null;
+  /** Lege plekken aanvullen met computerracers (de beheerder kan dit uitzetten). */
+  computerFill?: boolean;
   participants: Participant[];
 }
 
@@ -144,6 +146,7 @@ export const api = {
   createRace: (race: NewRace) => call<RaceSummary>('POST', '/races', race),
   joinRace: (id: number, racerId: string) => call<RaceSummary>('POST', `/races/${id}/join`, { racerId }),
   switchRacer: (id: number, racerId: string) => call<RaceSummary>('POST', `/races/${id}/racer`, { racerId }),
+  setComputerFill: (id: number, fill: boolean) => call<RaceSummary>('POST', `/races/${id}/computer`, { fill }),
   leaveRace: (id: number) => call<{ ok: true }>('POST', `/races/${id}/leave`),
   cancelRace: (id: number) => call<{ ok: true }>('DELETE', `/races/${id}`),
   move: (id: number, kind: 'decision' | 'action', value: string, key = '') =>

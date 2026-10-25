@@ -24,7 +24,8 @@ export function buildRace(detail: RaceDetail, viewerUserId: number | null): Race
     seed: detail.seed,
     number: detail.id,
     course: courseForDays(snapshot.course, detail.days),
-    racers: fillLineup(humans, detail.seed, snapshot.racers),
+    // Zonder computerracers alleen de spelers (de beheerder kan dat per race kiezen).
+    racers: fillLineup(humans, detail.seed, snapshot.racers, detail.computerFill === false ? humans.length : undefined),
     choices: snapshot.choices,
     playerId: viewer,
     humanIds: humans,

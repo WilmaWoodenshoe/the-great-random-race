@@ -268,3 +268,38 @@ def test_andere_racer_kiezen_voor_de_start(app_):
     # Na de start ligt de racer vast.
     app_.state.db.execute("UPDATE races SET start_time = ?", (now_ms() - 1000,))
     assert w.post(f"/api/races/{rid}/racer", json={"racerId": "turbo"}, headers=HEADERS).status_code == 409
+
+
+def test_beheerder_haalt_computerracers_weg(app_):
+    w = player(app_, "Wilma")
+    p = player(app_, "Piet")
+    approve(w, p)
+    rid = new_race(p, racer="ducky").json()["id"]
+    assert w.get(f"/api/races/{rid}").json()["computerFill"] is True
+    # Alleen de beheerder.
+    assert p.post(f"/api/races/{rid}/computer", json={"fill": False}, headers=HEADERS).status_code == 403
+    app_.state.db.execute("UPDATE races SET start_time = ?", (now_ms() - 1000,))
+    res = w.post(f"/api/races/{rid}/computer", json={"fill": False}, headers=HEADERS)
+    assert res.status_code == 200, res.text
+    assert res.json()["computerFill"] is False
+    assert w.get(f"/api/races/{rid}").json()["computerFill"] is False
+
+
+def test_oude_database_krijgt_computerkolom(tmp_path):
+    import sqlite3
+
+    path = tmp_path / "oud.db"
+    conn = sqlite3.connect(path)
+    conn.executescript(
+        "CREATE TABLE users (id INTEGER PRIMARY KEY, handle BLOB, nickname TEXT, nickname_key TEXT, created_at INTEGER,"
+        " status TEXT NOT NULL DEFAULT 'approved', is_admin INTEGER NOT NULL DEFAULT 1);"
+        "CREATE TABLE races (id INTEGER PRIMARY KEY, name TEXT NOT NULL, course_id TEXT NOT NULL, days INTEGER NOT NULL,"
+        " start_time INTEGER NOT NULL, seed INTEGER NOT NULL, snapshot TEXT NOT NULL, created_by INTEGER, created_at INTEGER NOT NULL);"
+        "INSERT INTO races VALUES (1, 'Bunny Kingdom', 'grote-bosrace', 7, 0, 1, '{}', NULL, 0);"
+    )
+    conn.commit()
+    conn.close()
+    from app.db import Database
+
+    db = Database(str(path))
+    assert db.one("SELECT computer_fill FROM races WHERE id = 1")["computer_fill"] == 1
