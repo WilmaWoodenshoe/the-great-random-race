@@ -254,6 +254,27 @@ def register_race_routes(
             )
         return summary(get_race(race_id), now_ms())
 
+    @app.post("/api/races/{race_id}/racer")
+    def switch_racer(race_id: int, body: JoinIn, user_id: int = Depends(approved_user)):
+        """Voor de start een andere (vrije) racer kiezen, zonder je af te melden."""
+        at = now_ms()
+        with db.transaction():
+            row = get_race(race_id)
+            if status_of(row, at) != "open":
+                raise HTTPException(409, "De race is al begonnen; je racer ligt nu vast.")
+            mine = db.one("SELECT racer_id FROM participants WHERE race_id = ? AND user_id = ?", (race_id, user_id))
+            if not mine:
+                raise HTTPException(409, "Je doet niet mee aan deze race.")
+            if body.racerId not in snapshot_racer_ids(json.loads(row["snapshot"])):
+                raise HTTPException(422, "Deze racer bestaat niet.")
+            if body.racerId != mine["racer_id"]:
+                if db.one("SELECT 1 FROM participants WHERE race_id = ? AND racer_id = ?", (race_id, body.racerId)):
+                    raise HTTPException(409, "Deze racer is al gekozen door iemand anders.")
+                db.execute(
+                    "UPDATE participants SET racer_id = ? WHERE race_id = ? AND user_id = ?", (body.racerId, race_id, user_id)
+                )
+        return summary(get_race(race_id), now_ms())
+
     @app.post("/api/races/{race_id}/leave")
     def leave_race(race_id: int, user_id: int = Depends(current_user)):
         at = now_ms()

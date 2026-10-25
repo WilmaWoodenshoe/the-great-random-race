@@ -65,6 +65,7 @@ export function App() {
               <Route path="/races" element={<Races />} />
               <Route path="/races/nieuw" element={<NewRace />} />
               <Route path="/races/:id/meedoen" element={<JoinRace />} />
+              <Route path="/races/:id/andere-racer" element={<JoinRace switching />} />
               <Route path="/wachtruimte" element={<Lobby />} />
               <Route path="/beheer" element={<Admin />} />
               <Route path="/inventaris" element={<Inventory />} />

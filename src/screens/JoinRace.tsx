@@ -11,8 +11,11 @@ import { isApproved, useAccount } from '../account/AccountProvider';
 import { defaultRacerId } from '../game/session';
 import { useGame } from '../state/GameProvider';
 
-/** Meedoen met een open race: kies een racer die nog vrij is. */
-export function JoinRace() {
+/**
+ * Meedoen met een open race: kies een racer die nog vrij is.
+ * Met `switching`: je doet al mee en kiest voor de start een andere racer.
+ */
+export function JoinRace({ switching = false }: { switching?: boolean }) {
   const { id } = useParams();
   const raceId = Number(id);
   const { me, selectRace } = useAccount();
@@ -62,9 +65,11 @@ export function JoinRace() {
     );
   }
 
-  const taken = Object.fromEntries((race?.participants ?? []).map((p) => [p.racerId, p.nickname || nl.races.removed]));
+  const mine = race?.participants.find((p) => p.userId === me?.id)?.racerId;
+  const others = (race?.participants ?? []).filter((p) => p.racerId !== mine);
+  const taken = Object.fromEntries(others.map((p) => [p.racerId, p.nickname || nl.races.removed]));
   const free = racers.filter((r) => !(r.id in taken));
-  const preferred = picked ?? defaultRacerId(save);
+  const preferred = picked ?? (switching && mine ? mine : defaultRacerId(save));
   const selected = free.find((r) => r.id === preferred) ?? free[0];
 
   const join = async () => {
@@ -72,7 +77,8 @@ export function JoinRace() {
     setBusy(true);
     setMessage(null);
     try {
-      await api.joinRace(raceId, selected.id);
+      if (switching) await api.switchRacer(raceId, selected.id);
+      else await api.joinRace(raceId, selected.id);
       await selectRace(raceId);
       navigate('/wachtruimte', { replace: true });
     } catch (err) {
@@ -84,7 +90,10 @@ export function JoinRace() {
 
   return (
     <div className="screen">
-      <BackHeader title={race ? nl.races.name(race.id, race.name) : nl.join.title} fallback="/races" />
+      <BackHeader
+        title={switching ? nl.join.switchTitle : race ? nl.races.name(race.id, race.name) : nl.join.title}
+        fallback={switching ? '/wachtruimte' : '/races'}
+      />
       <main className="screen__main pick">
         {message && (
           <p className="account__error" role="alert">
@@ -98,7 +107,7 @@ export function JoinRace() {
         <div className="screen__footer pick__footer">
           <RacerLine racer={selected} />
           <PrimaryButton onClick={join} arrow={!busy}>
-            {busy ? nl.newRace.busy : nl.join.confirm}
+            {busy ? nl.newRace.busy : switching ? nl.join.switchConfirm : nl.join.confirm}
           </PrimaryButton>
         </div>
       )}

@@ -568,6 +568,8 @@ export const nl = {
     title: 'Meedoen',
     confirm: 'Doe mee met deze racer',
     started: 'Deze race is al begonnen.',
+    switchTitle: 'Andere racer kiezen',
+    switchConfirm: 'Kies deze racer',
   },
   lobby: {
     title: 'Wachtruimte',
@@ -577,6 +579,7 @@ export const nl = {
     computerFill: (n: number) =>
       n === 0 ? 'De race is vol.' : `Nog ${n === 1 ? '1 plek' : `${n} plekken`} vrij. Bij de start vullen computerracers de rest aan.`,
     you: 'jij',
+    switchRacer: 'Andere racer kiezen',
     leave: 'Afmelden',
     leaveConfirm: 'Wil je je afmelden voor deze race?',
     cancel: 'Race schrappen',

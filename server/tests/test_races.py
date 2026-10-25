@@ -247,3 +247,24 @@ def test_maker_kan_race_schrappen_voor_de_start(app_):
     approve(owner, other)
     assert other.delete(f"/api/races/{race['id']}", headers=HEADERS).status_code == 403
     assert piet.delete(f"/api/races/{race['id']}", headers=HEADERS).status_code == 200
+
+
+def test_andere_racer_kiezen_voor_de_start(app_):
+    w = player(app_, "Wilma")
+    p = player(app_, "Piet")
+    approve(w, p)
+    race = new_race(w, racer="gerard").json()
+    rid = race["id"]
+    assert p.post(f"/api/races/{rid}/join", json={"racerId": "ducky"}, headers=HEADERS).status_code == 200
+    # Bezet door een ander: mag niet.
+    assert w.post(f"/api/races/{rid}/racer", json={"racerId": "ducky"}, headers=HEADERS).status_code == 409
+    res = w.post(f"/api/races/{rid}/racer", json={"racerId": "isabelle"}, headers=HEADERS)
+    assert res.status_code == 200, res.text
+    assert sorted(x["racerId"] for x in res.json()["participants"]) == ["ducky", "isabelle"]
+    # Wie niet meedoet, kan niet wisselen.
+    q = player(app_, "Klaas")
+    approve(w, q)
+    assert q.post(f"/api/races/{rid}/racer", json={"racerId": "turbo"}, headers=HEADERS).status_code == 409
+    # Na de start ligt de racer vast.
+    app_.state.db.execute("UPDATE races SET start_time = ?", (now_ms() - 1000,))
+    assert w.post(f"/api/races/{rid}/racer", json={"racerId": "turbo"}, headers=HEADERS).status_code == 409

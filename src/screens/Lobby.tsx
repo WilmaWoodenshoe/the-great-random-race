@@ -108,6 +108,11 @@ export function Lobby() {
         </ul>
         {summary && <p className="account__small center">{t.computerFill(RACERS_PER_RACE - participants.length)}</p>}
         {summary && participants.length < RACERS_PER_RACE && <ShareButton race={summary} />}
+        {summary && participants.some((p) => p.userId === me?.id) && (
+          <Link to={`/races/${serverId}/andere-racer`} className="players__join lobby__switch">
+            {t.switchRacer} →
+          </Link>
+        )}
 
         {isCreator ? (
           <button type="button" className="link-btn account__delete" onClick={() => run(t.cancelConfirm, () => api.cancelRace(serverId))}>

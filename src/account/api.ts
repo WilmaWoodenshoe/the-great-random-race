@@ -143,6 +143,7 @@ export const api = {
   myRaces: () => call<{ races: RaceSummary[]; now: number }>('GET', '/my-races'),
   createRace: (race: NewRace) => call<RaceSummary>('POST', '/races', race),
   joinRace: (id: number, racerId: string) => call<RaceSummary>('POST', `/races/${id}/join`, { racerId }),
+  switchRacer: (id: number, racerId: string) => call<RaceSummary>('POST', `/races/${id}/racer`, { racerId }),
   leaveRace: (id: number) => call<{ ok: true }>('POST', `/races/${id}/leave`),
   cancelRace: (id: number) => call<{ ok: true }>('DELETE', `/races/${id}`),
   move: (id: number, kind: 'decision' | 'action', value: string, key = '') =>
