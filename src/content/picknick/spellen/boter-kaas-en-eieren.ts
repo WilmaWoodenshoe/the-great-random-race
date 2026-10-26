@@ -4,6 +4,7 @@ const boterKaasEnEieren: PicknickGame = {
   id: 'boter-kaas-en-eieren',
   name: 'Boter-kaas-en-eieren',
   intro: 'Drie op een rij. Jij zet blaadjes, de racer zet zichzelf.',
+  role: 'opponent',
   order: 1,
   remarks: {
     start: [

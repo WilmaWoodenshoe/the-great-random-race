@@ -9,8 +9,15 @@ export interface Tally {
   draw: number;
 }
 
+/** Bij spelletjes waarin de racer helpt: hoe vaak gespeeld en het beste resultaat (minste beurten). */
+export interface Played {
+  count: number;
+  best?: number;
+}
+
 interface Stored {
   tallies: Record<string, Record<string, Tally>>;
+  played?: Record<string, Record<string, Played>>;
   /** Hoe vaak Steve achter elkaar steen koos (steen-papier-schaar). */
   steveStreak: number;
 }
@@ -18,11 +25,12 @@ interface Stored {
 function load(): Stored {
   try {
     const raw = JSON.parse(localStorage.getItem(KEY) ?? 'null');
-    if (raw && typeof raw === 'object' && raw.tallies) return { tallies: raw.tallies, steveStreak: Number(raw.steveStreak) || 0 };
+    if (raw && typeof raw === 'object' && raw.tallies)
+      return { tallies: raw.tallies, played: raw.played ?? {}, steveStreak: Number(raw.steveStreak) || 0 };
   } catch {
     // Geen opslag of kapotte gegevens: opnieuw beginnen.
   }
-  return { tallies: {}, steveStreak: 0 };
+  return { tallies: {}, played: {}, steveStreak: 0 };
 }
 
 function store(data: Stored) {
@@ -52,4 +60,21 @@ export function bumpSteveStreak(): number {
   data.steveStreak += 1;
   store(data);
   return data.steveStreak;
+}
+
+export function played(gameId: string, racerId: string): Played {
+  return load().played?.[gameId]?.[racerId] ?? { count: 0 };
+}
+
+/** Een potje uitgespeeld; `result` (bijv. aantal beurten) telt als record als het lager is. */
+export function recordPlayed(gameId: string, racerId: string, result?: number): Played {
+  const data = load();
+  const now = played(gameId, racerId);
+  const next: Played = {
+    count: now.count + 1,
+    best: result === undefined ? now.best : now.best === undefined ? result : Math.min(now.best, result),
+  };
+  data.played = { ...data.played, [gameId]: { ...data.played?.[gameId], [racerId]: next } };
+  store(data);
+  return next;
 }

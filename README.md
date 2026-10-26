@@ -239,7 +239,7 @@ const turbo: PicknickRacer = {
 export default turbo;
 ```
 
-Momenten: `start`, `think`, `playerWins`, `racerWins`, `draw`; bij boter-kaas-en-eieren ook `opening`, `distracted`, `nap`, `pass`; bij steen-papier-schaar `hint`, `playerRound`, `racerRound`, `tieRound` en `streak` (met `{aantal}`).
+Momenten: `start`, `think`, `playerWins`, `racerWins`, `draw`; bij boter-kaas-en-eieren ook `opening`, `distracted`, `nap`, `pass`; bij steen-papier-schaar `hint`, `playerRound`, `racerRound`, `tieRound` en `streak` (met `{aantal}`); bij memory `point`, `pointKnown`, `pointSame`, `noTip`, `match`, `miss`, `finished` (met `{beurten}`); bij bekertje-schuiven `shuffle` en `noShuffle`; bij mini-sudoku `tip`, `tipDoubt` (met `{plaatje}`), `noTip`, `checkGood`, `checkBad`, `finished`.
 
 ## Voor ontwikkelaars
 

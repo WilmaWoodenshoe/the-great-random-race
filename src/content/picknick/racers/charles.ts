@@ -11,6 +11,18 @@ const charles: PicknickRacer = {
       hint: ['Charles koos vroeger altijd papier. Of was het steen?', 'Charles weet nog precies hoe het moet. Ongeveer.'],
       racerWins: ['Charles wint. Net als in 1987.'],
     },
+    memory: {
+      pointKnown: ['Charles weet het nog precies. Net als in 1987.'],
+      miss: ['Mis. In 1987 lagen de kaarten anders, zegt Charles.'],
+    },
+    'bekertje-schuiven': {
+      shuffle: ['Charles schuift zoals vroeger. Met veel gebaren.'],
+      playerWins: ['Gevonden. Charles zegt dat hij het expres deed.'],
+    },
+    'mini-sudoku': {
+      tipDoubt: ['Vroeger hoorde daar altijd {plaatje}, zegt Charles.'],
+      finished: ['Opgelost! Charles had dit in 1987 sneller gedaan. Zegt hij.'],
+    },
   },
 };
 

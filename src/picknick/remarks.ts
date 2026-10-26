@@ -21,5 +21,7 @@ export function remark(
   // Eigen teksten vaker, maar niet altijd: zo herhaalt het niet snel.
   const pool = mine.length && (rng.chance(0.6) || !fallback.length) ? mine : fallback;
   if (!pool.length) return undefined;
-  return fill(rng.pick(pool), { ...who(racer), ...extra });
+  const text = fill(rng.pick(pool), { ...who(racer), ...extra });
+  // Een zin begint altijd met een hoofdletter (ook als hij begint met bijv. {plaatje}).
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }

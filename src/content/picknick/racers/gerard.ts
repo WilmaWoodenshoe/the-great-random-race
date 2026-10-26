@@ -14,6 +14,18 @@ const gerard: PicknickRacer = {
       hint: ['Gerard denkt na over zijn keuze. Morgen weet hij het.', 'Gerard kiest iets. Het duurt even voor zijn hand er is.'],
       playerWins: ['Jij wint. Gerard zag onderweg een mooie steen.'],
     },
+    memory: {
+      point: ['Gerard wijst een kaart aan. Tegen de tijd dat zijn voelspriet er is, ben je al verder.'],
+      finished: ['Klaar in {beurten} beurten. Gerard had er {beurten} dagen over gedaan.'],
+    },
+    'bekertje-schuiven': {
+      shuffle: ['Gerard schuift. Heel langzaam. Je kunt alles volgen.'],
+      racerWins: ['Gerard schoof zo langzaam dat je in slaap viel. Mis!'],
+    },
+    'mini-sudoku': {
+      tipDoubt: ['Gerard zag een bloem in het rooster. Hij zegt {plaatje}.'],
+      tip: ['Gerard heeft lang nagedacht: {plaatje}.'],
+    },
   },
 };
 

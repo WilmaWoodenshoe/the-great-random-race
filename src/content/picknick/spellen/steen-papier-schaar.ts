@@ -4,6 +4,7 @@ const steenPapierSchaar: PicknickGame = {
   id: 'steen-papier-schaar',
   name: 'Steen-papier-schaar',
   intro: 'Wie het eerst twee rondes wint. Steve kiest… je raadt het al.',
+  role: 'opponent',
   order: 2,
   remarks: {
     start: [

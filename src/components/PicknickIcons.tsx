@@ -20,6 +20,38 @@ export function GameIcon({ id }: { id: string }) {
         <path d="M37 44c0-5 3-8 8-8 0 5-3 8-8 8z" fill="#5DBB63" />
       </svg>
     );
+  if (id === 'memory')
+    return (
+      <svg width="52" height="52" viewBox="0 0 52 52" aria-hidden="true">
+        <rect x="2" y="2" width="48" height="48" rx="10" fill="#FFF8EC" stroke="#E2D6BE" strokeWidth="2" />
+        <rect x="8" y="10" width="16" height="22" rx="3" fill="#2E8AD8" stroke="#1E63B5" strokeWidth="2" transform="rotate(-8 16 21)" />
+        <rect x="26" y="12" width="16" height="22" rx="3" fill="#FFFFFF" stroke="#C9A877" strokeWidth="2" transform="rotate(7 34 23)" />
+        <circle cx="34" cy="23" r="4" fill="#F2B71F" />
+        <rect x="16" y="26" width="16" height="20" rx="3" fill="#2E8AD8" stroke="#1E63B5" strokeWidth="2" />
+      </svg>
+    );
+  if (id === 'bekertje-schuiven')
+    return (
+      <svg width="52" height="52" viewBox="0 0 52 52" aria-hidden="true">
+        <rect x="2" y="2" width="48" height="48" rx="10" fill="#FFF8EC" stroke="#E2D6BE" strokeWidth="2" />
+        {[8, 20, 32].map((x) => (
+          <path key={x} d={`M${x} 40l3-22h7l3 22z`} fill="#E0601A" stroke="#9A3D0C" strokeWidth="1.6" strokeLinejoin="round" />
+        ))}
+        <path d="M14 46h24" stroke="#C9A877" strokeWidth="2" strokeLinecap="round" />
+      </svg>
+    );
+  if (id === 'mini-sudoku')
+    return (
+      <svg width="52" height="52" viewBox="0 0 52 52" aria-hidden="true">
+        <rect x="2" y="2" width="48" height="48" rx="10" fill="#FFF8EC" stroke="#E2D6BE" strokeWidth="2" />
+        <path d="M10 10h32v32H10zM26 10v32M10 26h32" fill="none" stroke="#1E2A36" strokeWidth="2.5" />
+        <path d="M18 10v32M34 10v32M10 18h32M10 34h32" fill="none" stroke="#C9A877" strokeWidth="1.2" />
+        <circle cx="14" cy="14" r="2.6" fill="#E0601A" />
+        <circle cx="30" cy="22" r="2.6" fill="#2E8AD8" />
+        <circle cx="22" cy="30" r="2.6" fill="#5DBB63" />
+        <circle cx="38" cy="38" r="2.6" fill="#F2B71F" />
+      </svg>
+    );
   return (
     <svg width="52" height="52" viewBox="0 0 52 52" aria-hidden="true">
       <rect x="2" y="2" width="48" height="48" rx="10" fill="#FFF8EC" stroke="#E2D6BE" strokeWidth="2" />
@@ -54,3 +86,13 @@ export function HandIcon({ hand, size = 56 }: { hand: string; size?: number }) {
     </svg>
   );
 }
+
+/** Omgekeerd bekertje (tijdelijk). */
+export const Cup = () => (
+  <svg viewBox="0 0 100 110" width="100%" height="100%" aria-hidden="true">
+    <path d="M18 100 30 12h40l12 88z" fill="#E0601A" stroke="#9A3D0C" strokeWidth="4" strokeLinejoin="round" />
+    <rect x="12" y="94" width="76" height="12" rx="6" fill="#C24F12" stroke="#9A3D0C" strokeWidth="4" />
+    <path d="M38 22 32 86" stroke="#F6A06A" strokeWidth="6" strokeLinecap="round" />
+    <ellipse cx="50" cy="12" rx="20" ry="5" fill="#F07E3A" stroke="#9A3D0C" strokeWidth="4" />
+  </svg>
+);

@@ -78,7 +78,14 @@ describe('Picknickkleed: opmerkingen', () => {
   const momentsPerGame: Record<string, string[]> = {
     'boter-kaas-en-eieren': ['start', 'think', 'opening', 'distracted', 'nap', 'pass', 'playerWins', 'racerWins', 'draw'],
     'steen-papier-schaar': ['start', 'hint', 'playerRound', 'racerRound', 'tieRound', 'playerWins', 'racerWins'],
+    memory: ['start', 'point', 'pointKnown', 'pointSame', 'noTip', 'match', 'miss', 'finished'],
+    'bekertje-schuiven': ['start', 'shuffle', 'noShuffle', 'playerWins', 'racerWins'],
+    'mini-sudoku': ['start', 'tip', 'tipDoubt', 'noTip', 'checkGood', 'checkBad', 'finished'],
   };
+
+  it('alle vijf spelletjes staan erin', () => {
+    expect(picknickGames.map((g) => g.id)).toEqual(Object.keys(momentsPerGame));
+  });
 
   it('elk spelletje heeft minstens 3 algemene opmerkingen per moment', () => {
     for (const g of picknickGames) {
@@ -105,7 +112,7 @@ describe('Picknickkleed: opmerkingen', () => {
     for (const g of picknickGames) {
       for (const m of momentsPerGame[g.id] ?? []) {
         for (const r of [...racers, nieuw]) {
-          const text = remark(g, r, picknickRacer(r.id), m as never, rng, { aantal: '3' });
+          const text = remark(g, r, picknickRacer(r.id), m as never, rng, { aantal: '3', beurten: '9', plaatje: 'de slak' });
           expect(text, `${g.id} ${m} ${r.id}`).toBeTruthy();
           expect(text).not.toMatch(/[{}]/);
         }
@@ -130,5 +137,78 @@ describe('Picknickkleed: stand', () => {
     expect(tally('steen-papier-schaar', 'gerard')).toEqual({ player: 0, racer: 0, draw: 0 });
     expect(mem.has('grr-picknick')).toBe(true);
     delete (globalThis as { localStorage?: unknown }).localStorage;
+  });
+});
+
+import { CLUES, countSolutions, fits, makePuzzle, mistakes, sudokuTip, type Level } from '../src/picknick/sudoku';
+import { makeDeck, racerPoint } from '../src/picknick/memory';
+import { planShuffle, positionsAfter } from '../src/picknick/cups';
+
+describe('Picknickkleed: mini-sudoku', () => {
+  for (const level of ['makkelijk', 'gemiddeld', 'lastig'] as Level[]) {
+    it(`elke puzzel (${level}) heeft precies één oplossing en ${CLUES[level]} gegeven vakjes`, () => {
+      const rng = createRng(77);
+      for (let n = 0; n < 60; n++) {
+        const { start, solution } = makePuzzle(level, rng);
+        expect(start.filter((x) => x !== null)).toHaveLength(CLUES[level]);
+        expect(countSolutions(start, 3)).toBe(1);
+        // De oplossing klopt: elk plaatje één keer per rij, kolom en blok.
+        solution.forEach((v, i) => expect(fits(solution, i, v)).toBe(true));
+        start.forEach((v, i) => v !== null && expect(v).toBe(solution[i]));
+      }
+    });
+  }
+  it('fouten worden gevonden; Roger geeft altijd een goede tip', () => {
+    const rng = createRng(4);
+    const { start, solution } = makePuzzle('gemiddeld', rng);
+    const wrong = start.slice();
+    const empty = wrong.indexOf(null);
+    wrong[empty] = (solution[empty] + 1) % 4;
+    expect(mistakes(wrong, solution)).toEqual([empty]);
+    const roger = racers.find((r) => r.id === 'roger')!;
+    for (let i = 0; i < 40; i++) expect(sudokuTip(start, solution, roger.traits, rng, true)!.right).toBe(true);
+  });
+});
+
+describe('Picknickkleed: memory', () => {
+  it('6 paren, elk plaatje precies twee keer', () => {
+    const deck = makeDeck(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'], createRng(2));
+    expect(deck).toHaveLength(12);
+    const counts = new Map<string, number>();
+    deck.forEach((c) => counts.set(c.face, (counts.get(c.face) ?? 0) + 1));
+    expect([...counts.values()]).toEqual([2, 2, 2, 2, 2, 2]);
+  });
+  it('Steve wijst nooit iets aan; anderen wel eens', () => {
+    const deck = makeDeck(['a', 'b', 'c', 'd', 'e', 'f'], createRng(2));
+    const steve = racers.find((r) => r.id === 'steve')!;
+    const roger = racers.find((r) => r.id === 'roger')!;
+    const rng = createRng(8);
+    expect(racerPoint(deck, new Set(), null, steve.traits, rng).kind).toBe('none');
+    const kinds = new Set(Array.from({ length: 40 }, () => racerPoint(deck, new Set(), null, roger.traits, rng).kind));
+    expect(kinds.has('pretty')).toBe(true);
+  });
+});
+
+describe('Picknickkleed: bekertje-schuiven', () => {
+  it('Steve schuift niet; anderen wel, en de wissels kloppen', () => {
+    const steve = racers.find((r) => r.id === 'steve')!;
+    expect(planShuffle(steve.traits, createRng(1)).swaps).toHaveLength(0);
+    for (const r of racers.filter((x) => x.id !== 'steve')) {
+      const plan = planShuffle(r.traits, createRng(5));
+      expect(plan.swaps.length, r.id).toBeGreaterThanOrEqual(2);
+      expect(plan.stepMs).toBeGreaterThan(300);
+    }
+    expect(positionsAfter([[0, 1]])).toEqual([1, 0, 2]);
+    expect(positionsAfter([[0, 1], [1, 2]])).toEqual([2, 0, 1]);
+    expect(positionsAfter([[0, 1], [0, 1]])).toEqual([0, 1, 2]);
+  });
+  it('luie racers schuiven minder dan chaotische', () => {
+    const avg = (id: string) => {
+      const r = racers.find((x) => x.id === id)!;
+      let n = 0;
+      for (let s = 0; s < 50; s++) n += planShuffle(r.traits, createRng(s)).swaps.length;
+      return n / 50;
+    };
+    expect(avg('bintje')).toBeLessThan(avg('ducky'));
   });
 });

@@ -6,7 +6,7 @@ import { picknickGames } from '../content/picknick';
 import { BackHeader } from '../components/BackHeader';
 import { LivingRacer } from '../components/Gerard';
 import { GameIcon } from '../components/PicknickIcons';
-import { tally } from '../picknick/score';
+import { played, tally } from '../picknick/score';
 import { usePicknickRacer } from '../picknick/useRacer';
 import { img } from '../utils/images';
 
@@ -55,7 +55,17 @@ export function Picknick() {
         <ul className="pk-games">
           {picknickGames.map((g) => {
             const s = tally(g.id, racer.id);
-            const played = s.player + s.racer + s.draw > 0;
+            const p = played(g.id, racer.id);
+            const scoreText =
+              g.role === 'opponent'
+                ? s.player + s.racer + s.draw > 0
+                  ? t.score(racer.name, s.player, s.racer)
+                  : t.noScore
+                : p.count === 0
+                  ? t.noScore
+                  : g.id === 'mini-sudoku'
+                    ? t.solvedCount(p.count)
+                    : [t.playedCount(p.count), p.best !== undefined ? t.bestTurns(p.best) : ''].filter(Boolean).join(' · ');
             return (
               <li key={g.id}>
                 <Link to={`/picknick/${g.id}${q}`} className="card card--wit pk-game">
@@ -63,19 +73,13 @@ export function Picknick() {
                   <span className="pk-game__body">
                     <span className="pk-game__name">{g.name}</span>
                     <span className="pk-game__intro">{g.intro}</span>
-                    <span className="pk-game__score">{played ? t.score(racer.name, s.player, s.racer) : t.noScore}</span>
+                    <span className="pk-game__score">{scoreText}</span>
                   </span>
                   <span className="pk-game__arrow" aria-hidden="true">→</span>
                 </Link>
               </li>
             );
           })}
-          <li className="card pk-game pk-game--soon">
-            <span className="pk-game__body">
-              <span className="pk-game__name">{t.soonTitle}</span>
-              <span className="pk-game__intro">{t.soonText}</span>
-            </span>
-          </li>
         </ul>
       </main>
     </div>

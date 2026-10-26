@@ -19,7 +19,23 @@ export type PicknickMoment =
   | 'playerRound'
   | 'racerRound'
   | 'tieRound'
-  | 'streak';
+  | 'streak'
+  // memory
+  | 'point'
+  | 'pointKnown'
+  | 'pointSame'
+  | 'noTip'
+  | 'match'
+  | 'miss'
+  | 'finished'
+  // bekertje-schuiven
+  | 'shuffle'
+  | 'noShuffle'
+  // mini-sudoku
+  | 'tip'
+  | 'tipDoubt'
+  | 'checkGood'
+  | 'checkBad';
 
 /** Opmerkingen per moment. Invulplekken: {naam}, {hij}, {zijn}, {hem}, {aantal}. */
 export type PicknickRemarks = Partial<Record<PicknickMoment, string[]>>;
@@ -33,6 +49,8 @@ export interface PicknickGame {
   intro: string;
   /** Volgorde in het overzicht. */
   order: number;
+  /** Tegenstander (stand Jij – racer) of helper (aantal keer gespeeld). */
+  role: 'opponent' | 'helper';
   /** Plaatje op de tegel, relatief aan public/images/ (optioneel; anders een tijdelijk icoon). */
   image?: string;
   /** Algemene opmerkingen (voor elke racer), minstens 3 per moment. */

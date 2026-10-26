@@ -11,6 +11,18 @@ const isabelle: PicknickRacer = {
       hint: ['Isabelle kiest papier. Dan kan ze je een briefje schrijven.', 'Isabelle wil niet tegen je, ze wil met je.'],
       playerWins: ['Jij wint. Isabelle is er blij om. Voor jou.'],
     },
+    memory: {
+      point: ['Isabelle wijst de kaart aan die het liefst kijkt.'],
+      finished: ['Alle paren gevonden! Isabelle wil iedereen een knuffel geven.'],
+    },
+    'bekertje-schuiven': {
+      shuffle: ['Isabelle schuift voorzichtig. Steve mag geen pijn doen.'],
+      racerWins: ['Mis! Isabelle troost je met een knuffel.'],
+    },
+    'mini-sudoku': {
+      tipDoubt: ['Isabelle vindt {plaatje} het liefst. Daarom zegt ze {plaatje}.'],
+      checkGood: ['Alles klopt! Isabelle is zo blij voor je.'],
+    },
   },
 };
 
