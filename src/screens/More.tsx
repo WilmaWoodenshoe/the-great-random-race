@@ -78,6 +78,9 @@ export function More() {
           ]}
         />
 
+        <h2 className="more__h2">{nl.picknick.moreSection}</h2>
+        <MenuList items={[{ to: '/picknick', title: nl.picknick.title, hint: nl.picknick.moreHint }]} />
+
         {accountsEnabled && account.status !== 'unavailable' && (
           <>
             <h2 className="more__h2">{t.accountSection}</h2>

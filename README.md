@@ -211,6 +211,36 @@ Tijdens een race krijgt iedereen die de melding aanzet (Meer → Account) elke d
 ]
 ```
 
+### Picknickkleed — `src/content/picknick/`
+
+Kleine spelletjes met de racers, alleen voor de lol. Twee soorten bestanden:
+
+**Spelletje** — `src/content/picknick/spellen/<naam>.ts`: naam, één regel uitleg en algemene opmerkingen per moment (minstens 3). Een nieuw spelletje heeft ook spelregels in `src/picknick/` nodig.
+
+**Opmerkingen van een racer** — `src/content/picknick/racers/<racer-id>.ts` (zelfde id als in `src/content/racers/`). Ontbreekt het bestand, dan gebruikt de app algemene teksten bij de sterkste eigenschap van de racer. Je mag `{naam}`, `{hij}`, `{Hij}`, `{zijn}` en `{hem}` gebruiken.
+
+```ts
+import type { PicknickRacer } from '../../../models/Picknick';
+
+const turbo: PicknickRacer = {
+  id: 'turbo',
+  thinkSeconds: 1, // zo lang denkt de racer na voor een zet (Gerard: 3)
+  remarks: {
+    'boter-kaas-en-eieren': {
+      start: ['Turbo kijkt alvast naar linksboven.'],
+      opening: ['Turbo begint linksboven. Turbo begint altijd linksboven.'],
+    },
+    'steen-papier-schaar': {
+      hint: ['Turbo kiest wat hij vorige keer koos.'],
+    },
+  },
+};
+
+export default turbo;
+```
+
+Momenten: `start`, `think`, `playerWins`, `racerWins`, `draw`; bij boter-kaas-en-eieren ook `opening`, `distracted`, `nap`, `pass`; bij steen-papier-schaar `hint`, `playerRound`, `racerRound`, `tieRound` en `streak` (met `{aantal}`).
+
 ## Voor ontwikkelaars
 
 ```bash

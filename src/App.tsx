@@ -25,6 +25,8 @@ import { Admin } from './screens/Admin';
 import { Inventory } from './screens/Inventory';
 import { Collection } from './screens/Collection';
 import { NotFound } from './screens/NotFound';
+import { Picknick } from './screens/Picknick';
+import { PicknickGame } from './screens/PicknickGame';
 
 /** Bij elk nieuw scherm bovenaan beginnen. */
 function ScrollToTop() {
@@ -72,6 +74,8 @@ export function App() {
               <Route path="/beheer" element={<Admin />} />
               <Route path="/inventaris" element={<Inventory />} />
               <Route path="/collectie" element={<Collection />} />
+              <Route path="/picknick" element={<Picknick />} />
+              <Route path="/picknick/:spel" element={<PicknickGame />} />
               <Route path="/spelers" element={<Navigate to="/races" replace />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

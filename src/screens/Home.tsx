@@ -125,6 +125,15 @@ export function Home() {
           </PrimaryButton>
         )}
 
+        <Link to="/picknick" className="card card--wit action-teaser pk-teaser">
+          <span className="action-teaser__icon pk-teaser__icon" aria-hidden="true" />
+          <span className="action-teaser__body">
+            <span className="action-teaser__title">{nl.picknick.homeTitle}</span>
+            <span className="action-teaser__text">{nl.picknick.homeText}</span>
+          </span>
+          <span className="action-teaser__arrow" aria-hidden="true">→</span>
+        </Link>
+
         {race.serverId && !view.finished && <PushInvite />}
 
         {fresh.length > 0 && (

@@ -1,8 +1,9 @@
-# Bouwt de app bij elke wijziging op main:
-# - de testversie (met tijdmachine) op GitHub Pages:
+# Bouwt de app:
+# - bij elke wijziging op main: de testversie (met tijdmachine) op GitHub Pages:
 #   https://wilmawoodenshoe.github.io/the-great-random-race/
-# - de echte versie voor thegreatrandomrace.nl in de tak 'productie'.
-#   De server haalt die tak elke 5 minuten op (zie deploy/UITLEG.md).
+# - alleen met de knop 'Run workflow' (Actions → Testversie), pas na akkoord
+#   van de eigenaar: de echte versie voor thegreatrandomrace.nl in de tak
+#   'productie'. De server haalt die tak elke 5 minuten op (zie deploy/UITLEG.md).
 name: Testversie
 
 on:
@@ -17,7 +18,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -66,7 +67,7 @@ jobs:
         uses: actions/deploy-pages@v4
 
   productie:
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
     needs: bouwen
     runs-on: ubuntu-latest
     permissions:
