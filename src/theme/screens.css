@@ -2575,9 +2575,17 @@ a.chip-btn {
 .pk-cups__steve {
   position: absolute;
   left: 50%;
-  bottom: 0;
-  width: 70px;
-  margin-left: -35px;
+  bottom: 2px;
+  width: 56px;
+  margin-left: -28px;
+  /* Onder een dicht bekertje is Steve onzichtbaar (anders steekt hij eronderuit). */
+  opacity: 0;
+  transition: opacity 0.05s linear 0.3s;
+}
+
+.pk-cups__cup--up .pk-cups__steve {
+  opacity: 1;
+  transition: none;
 }
 
 .pk-cups__shell {
