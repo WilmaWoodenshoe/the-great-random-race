@@ -20,7 +20,7 @@ export function Picknick() {
 
   return (
     <div className="screen pk">
-      <BackHeader title={t.title} subtitle={t.subtitle} fallback="/home" />
+      <BackHeader title={t.title} subtitle={t.subtitle} home />
       <main className="screen__main pk__main">
         <section className="pk-hero">
           <div className="pk-hero__blanket" aria-hidden="true" />

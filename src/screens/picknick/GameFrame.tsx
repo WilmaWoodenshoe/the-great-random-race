@@ -25,7 +25,7 @@ export function GameFrame({ game, racer, bubble, status, result, onAgain, childr
   const t = nl.picknick;
   return (
     <div className="screen pk">
-      <BackHeader title={game.name} fallback={`/picknick?racer=${racer.id}`} />
+      <BackHeader title={game.name} to={`/picknick?racer=${racer.id}`} />
       <main className="screen__main pk__main">
         <RacerBubble racer={racer} text={bubble} />
         {status && <p className="pk-status">{status}</p>}
