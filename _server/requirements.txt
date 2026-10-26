@@ -1,0 +1,7 @@
+# Wat de server nodig heeft. Vaste versies, zodat de server niet
+# ongemerkt verandert. Bijwerken: zie deploy/UITLEG.md.
+fastapi==0.162.0
+uvicorn==0.54.0
+webauthn==3.0.1
+tzdata==2025.2
+pywebpush==2.5.0
